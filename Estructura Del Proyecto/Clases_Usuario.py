@@ -1,22 +1,21 @@
-class Usuario:
-    def __init__(self,cedula,nombre,apellido,correo,contrasenia,codigoUsuario):
-        self._cedula=cedula
-        self.nombre=nombre
-        self.apellido=apellido
-        self._correo=correo
-        self.__contrasenia=contrasenia
-        self.codigo=codigoUsuario
-    @property
-    def Contrasenia(self):
-        return print(self.__contrasenia)
-    @Contrasenia.setter
-    def cambiarContrasenia(self,Contrasenia):
-        if self.__contrasenia == Contrasenia:
-            print("La contraseña es igual.")
-        else:
-            self.__contrasenia=Contrasenia
-            print(self.__contrasenia)
+from abc import ABC, abstractmethod
 
-persona1=Usuario(124,"pedro","benitez","@ffjsh",1234,"jd3uyy1")
-persona1.Contrasenia
-persona1.cambiarContrasenia=321
+class Usuario(ABC):
+    def __init__(self, cedula, nombres, apellidos, correo, contraseña):
+        self.__cedula = cedula          
+        self.nombres = nombres          
+        self.apellidos = apellidos      
+        self._correo = correo           
+        self.__contraseña = contraseña  
+    @abstractmethod
+    def iniciarSesion(self):
+        """este metodo de iniciar secion es abstracto"""
+        pass
+
+    @abstractmethod
+    def registrarse(self):
+        pass
+
+    @abstractmethod
+    def recuperarContraseña(self):
+        pass
