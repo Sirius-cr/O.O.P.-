@@ -1,4 +1,4 @@
-from Clase_Universidad import Universidad 
+from models.Clase_Universidad import Universidad 
 #en tal caso de que se programe la composición lo dejaré de esta manera
 
 class Carrera:

@@ -37,4 +37,24 @@ class Seccion:
     def importar_lista(self):
         return f"la lista a sido importada con exito!"
     
+class Horario:
+    #agregacion con seccion
+    def __init__(self, turno, hora_inicio, hora_fin, modalidad):
+        self.turno = turno
+        self.hora_inicio =hora_inicio
+        self.hora_fin=hora_fin
+        self.__modalidad=modalidad
+
+    
+class Aula:
+    def __init__(self, identificador_aula):
+        self.identificador_aula=identificador_aula
+
+class AulaVirtual:
+    def __init__(self, identidicador_aula_virtual, url):
+        self.identificador_aula_virtual=identidicador_aula_virtual
+        self.url=url
+        
+#composicion con <<interfaz>> con la clase de Materia
+
     
