@@ -27,34 +27,9 @@ class Materia:
     def __calcular_promedio(self):
         return f"el promedio es... CALCULADO XD"
     
-class Seccion:
-    #en capacidadEsudiantil hay una sobreescritura o ?? está usando un atributo de la clase <Carrera>
-    def __init__(self, lista_horarios, capacidad_estudiantil, estudiantes_inscritos):
-        self.lista_horarios = lista_horarios
-        self.capacidad_estudiantil = capacidad_estudiantil
-        self.estudiantes_inscritos = estudiantes_inscritos
 
-    def importar_lista(self):
-        return f"la lista a sido importada con exito!"
-    
-class Horario:
-    #agregacion con seccion
-    def __init__(self, turno, hora_inicio, hora_fin, modalidad):
-        self.turno = turno
-        self.hora_inicio =hora_inicio
-        self.hora_fin=hora_fin
-        self.__modalidad=modalidad
 
     
-class Aula:
-    def __init__(self, identificador_aula):
-        self.identificador_aula=identificador_aula
 
-class AulaVirtual:
-    def __init__(self, identidicador_aula_virtual, url):
-        self.identificador_aula_virtual=identidicador_aula_virtual
-        self.url=url
-        
-#composicion con <<interfaz>> con la clase de Materia
 
     
