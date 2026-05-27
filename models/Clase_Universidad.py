@@ -1,36 +1,17 @@
-class Sede:
-    def __init__(self, nombre_sede, ubicacion, direccion):
-        self.nombre_sede = nombre_sede
-        self.ubicacion = ubicacion
-        self.direccion = direccion
-    def modificar_datos(self):
-        pass
-    def mostrar_facultades(self):
-        return f"facultades de {self.nombre_sede} son..."
-    
-class Facultad:
-    def __init__(self, carrera, salones, laboratorios):
-        self.carrera=carrera
-        self.salones=salones
-        self.laboratorios=laboratorios
+   #Separe el codigo en cada uno de sus archivos correspondientes
 
-    def registrarAula(self):
-        return f"el aula a sido registrada"
-    
-    def registrar_aula(self):
-        return f"el aula a sido registrada"
-    
-    def importar_carrera(self):
-        return f"la carrera a sido importada"
-    
 class Universidad:
     def __init__(self, nombreUni, codigoUni):
         self.nombre_uni = nombreUni
         self.codigo_uni = codigoUni
+        
+        self.sedes = [] #Lista oara guardar las sedes creadas
 
     def modificar_datos(self):
         return f"Estas modificando los datos de {self.nombre_uni}"
     
-
+    def agregar_sede(self, sede):
+        self.sedes.append(sede)
+        return f"Sede {sede.nombre_sede} agregada a la universidad {self.nombre_uni}"
 
 
