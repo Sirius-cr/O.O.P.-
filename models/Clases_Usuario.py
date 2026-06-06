@@ -20,7 +20,10 @@ class Usuario(ABC):
     def recuperar_contrasena(self):
         pass
 
-
+class ServicioAutenticacion:
+    def enlace_BD_IncioSesion(self, usuario: Usuario):
+        print(f"Conectando a BD para autenticar a {usuario.cedula}...")
+        # Lógica de autenticación aislada
 
 
 

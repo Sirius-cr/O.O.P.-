@@ -3,3 +3,4 @@ from Clases_Usuario import Usuario
 class UsuarioAcademico(Usuario):
     def __init__(self, cedula, nombres, apellidos, correo, contrasena,):
         super().__init__(cedula, nombres, apellidos, correo, contrasena)
+        

@@ -12,3 +12,6 @@ class Leccion(InstrumentoEvaluacion):
 
     def _establecer_fecha_final(self):
         pass
+    
+    def calcular_puntaje(self):
+        return self.porcentaje_nota * 1.2

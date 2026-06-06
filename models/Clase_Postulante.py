@@ -23,3 +23,6 @@ class Postulante(UsuarioAcademico):
         pass
     def realizarPagoMatricula(self):
         pass
+    # Hereda de UsuarioAcademico pero no se le obliga a implementar calificar()
+    def solicitar_retiro(self):
+        print("Solicitando retiro de la postulación...")

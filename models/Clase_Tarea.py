@@ -16,3 +16,6 @@ class Tareas(InstrumentoEvaluacion):
     #hasta aqui
     def _agregar_descripcion(self):
         pass
+
+    def calcular_puntaje(self):
+        return self.porcentaje_nota * 1.0
