@@ -1,4 +1,4 @@
-from Clase_UsuarioAcademico import UsuarioAcademico
+from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
 from Clase_InstrumentoEvaluacion import GestorActividades
 
 class Docente(UsuarioAcademico):
