@@ -1,4 +1,4 @@
-from Clase_UsuarioAcademico import UsuarioAcademico
+from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
 class Postulante(UsuarioAcademico):
     def __init__(self, cedula, nombres, apellidos, correo, contrasena, idPostulante, tipoMatricula, celular, jornada, modalidad, cupo, asistencia, sexo, etnia, discapacidad):
         super().__init__(cedula, nombres, apellidos, correo, contrasena)
