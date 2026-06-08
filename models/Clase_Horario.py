@@ -5,5 +5,7 @@ class Horario:
         self.hora_fin=hora_fin
         self.__modalidad=modalidad
     
-    def ocultar_horario_lleno(self):
-        pass
+    def Detenccion_Colision(self, otro_horario):
+        if self.turno == otro_horario.turno:
+            pass
+        return False
