@@ -12,3 +12,4 @@ class ActividadEnClase(InstrumentoEvaluacion):
 
     def _establecer_fecha_final(self):
         pass
+    

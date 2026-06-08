@@ -1,5 +1,6 @@
 from models.usuarios.Clase_UsuarioAdministrativo import UsuarioAdministrativo
 from models.Clase_Periodo import Periodo
+from models.Clase_Reporte import Reporte
 
 class Coordinador(UsuarioAdministrativo):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia, idCoordinador, fechaAsignacionCargo):
@@ -26,3 +27,11 @@ class Coordinador(UsuarioAdministrativo):
     def asignarDocenteAParalelo(self): #Desarrollar lógica de asignación de docente a paralelo
         print("Asignando carga horaria y docente al paralelo seleccionado...")
         return True
+
+    def generarReporte(self, formatoDocumento):
+        contenido = (
+            f"ID Coordinador: {self._idCoordinador}\n"
+            f"Asignación:     {self.fechaAsignacionCargo}\n"
+            f"Acción:         Reporte del estado de periodos y docentes."
+        )
+        return Reporte("Reporte de Coordinación", formatoDocumento, self.obtener_nombre_completo(), contenido)
