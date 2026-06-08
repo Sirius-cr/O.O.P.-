@@ -1,5 +1,5 @@
 from Clase_UsuarioAcademico import UsuarioAcademico
-from Clases_InstrumentoEvaluacion import GestorActividades
+from Clase_InstrumentoEvaluacion import GestorActividades
 
 class Docente(UsuarioAcademico):
     def colocar_calificacion(self):
