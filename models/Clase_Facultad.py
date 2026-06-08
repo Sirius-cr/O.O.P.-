@@ -1,4 +1,3 @@
-# CORREGIDO: Importaciones absolutas apuntando al paquete 'models'
 from models.Clase_Carrera import Carrera
 from models.Clase_Aula import Aula
 
