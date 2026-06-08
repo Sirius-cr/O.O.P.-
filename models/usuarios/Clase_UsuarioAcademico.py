@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from models.usuarios.Clases_Usuario import Usuario
 
 class UsuarioAcademico(Usuario):
@@ -10,7 +11,7 @@ class UsuarioAcademico(Usuario):
         print("Datos de contacto actualizados en el sistema académico.")
         return True
 
+    @abstractmethod
     def verHorario(self):
-        print("Cargando cronograma de actividades académicas...")
-        return []
+        pass
 
