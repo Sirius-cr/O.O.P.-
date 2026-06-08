@@ -1,17 +1,12 @@
-   #Separe el codigo en cada uno de sus archivos correspondientes
+# Clase que solo crea la universidad individualmente,
+# luego se le asigna la sede, facultad y etc.
 
 class Universidad:
     def __init__(self, nombreUni, codigoUni):
         self.nombre_uni = nombreUni
         self.codigo_uni = codigoUni
-        
-        self.sedes = [] #Lista oara guardar las sedes creadas
+        self.sedes = [] # Lista para guardar las sedes creadas
 
-    def modificar_datos(self):
-        return f"Estas modificando los datos de {self.nombre_uni}"
-    
-    def agregar_sede(self, sede):
-        self.sedes.append(sede)
-        return f"Sede {sede.nombre_sede} agregada a la universidad {self.nombre_uni}"
-
-
+    def agregar_sede(self, sede_objeto) -> str:
+        self.sedes.append(sede_objeto)
+        return f"Sede {sede_objeto.nombre_sede} agregada a la universidad {self.nombre_uni}"
