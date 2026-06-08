@@ -8,7 +8,7 @@ class Horario:
     
     def Detenccion_Colision(self, otro_horario):
         if self.turno == otro_horario.turno:
-            pass
+            return True #"Error. El horario se choca con otra seccion"
         return False
 
     def resumen_de_Seccion(self,Seccion:Seccion):
@@ -19,3 +19,4 @@ class Horario:
             "Modalidad":self._modalidad,
             "Docente":self.docente_asignado
         }
+    

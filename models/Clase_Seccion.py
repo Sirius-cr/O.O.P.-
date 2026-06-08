@@ -8,16 +8,17 @@ class Seccion:
         self.estudiantes_inscritos = []
         self.disponibilidad=True
 
-    def importar_lista(self):
-        return f"la lista a sido importada con exito!"
+    def importar_lista_horario(self,lista_horario):
+        self.lista_horarios=lista_horario
+        return self.lista_horarios  #f"la lista a sido importada con exito!"
     
     def verificar_cupos_disponibles(self):
         limite_actual= self.calcular_limite_optimo()
         cupos_ocupado=len(self.estudiantes_inscritos)
         if cupos_ocupado < limite_actual:
-            return f"La cantidad de cupos disponibles es de:",limite_actual-cupos_ocupado
+            return True #f"La cantidad de cupos disponibles es de:",limite_actual-cupos_ocupado
         else:
-            return "No hay cupos disponibles."
+            return False #No hay cupos disponibles."
             
 
     def asignar_docente(self,docente):
