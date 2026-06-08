@@ -39,3 +39,6 @@ class Facultad:
         self.infraestructura.añadir_aulas(nueva_aula)
         
         return f"Aula física asignada con éxito: [{nueva_aula.identifiacadoEntorno}] para {carrera.nombre_carrera}."
+    
+    def mostrar_facultades(self):
+     return self.facultades
