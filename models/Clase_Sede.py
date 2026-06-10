@@ -3,10 +3,16 @@ class Sede:
         self.nombre_sede = nombre_sede
         self.ubicacion = ubicacion
         self.direccion = direccion
-    def modificar_datos(self):
-        pass
+        self.facultades = [] # Lista para guardar las facultades
+
+    def modificar_datos(self, nuevo_nombre_Sede : str, nueva_ubicacion : str, nueva_direccion : str):
+        self.nombre_sede = nuevo_nombre_Sede
+        self.ubicacion = nueva_ubicacion
+        self.direccion = nueva_direccion
+
     def mostrar_facultades(self):
-        return f"facultades de {self.nombre_sede} son..."
+        return self.facultades
     
-    def agregar_facultad(self, facultad):
-        return f"facultad {facultad.carrera} agregada a la sede {self.nombre_sede}"
+    def agregar_facultad(self, facultad_objeto):
+        self.facultades.append(facultad_objeto)
+        return f"facultad {facultad_objeto.nombre_facultad} agregada a la sede {self.nombre_sede}"

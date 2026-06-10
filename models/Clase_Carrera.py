@@ -3,16 +3,23 @@ from models.Clase_Reporte import Reporte
 #en tal caso de que se programe la composición lo dejaré de esta manera
 
 class Carrera:
-    def __init__(self, id_carrera, nombre_carrera, capacidad_estudiantil, estudiantes_inscritos):
+    def __init__(self, id_carrera : str, nombre_carrera : str, capacidad_estudiantil : int, estudiantes_inscritos : int = 0 ):
         self._id_carrera = id_carrera #este tipo de atributo es protegido o ( # en uml)
         self.nombre_carrera = nombre_carrera
         self.capacidad_estudiantil = capacidad_estudiantil
         self.estudiantes_inscritos = estudiantes_inscritos
+        self.malla_curricular = None
+    
+    @property
+    def id_carrera(self) -> str:
+        return self._id_carrera #Usar el property para que pueda ser accesible en las otras clases
         
     def __crear_lista_estudiantes(self): #esta funcion es privada segun yo se pone asi
         return f"la lista de estudiantes a sido creada, la lista cuenta con {self.estudiantes_inscritos}" 
 
-    def generarReporte(self, formatoDocumento):
+
+#revisar que hacia esto
+   # def moostrarDatosCarrera(self, formatoDocumento):
         contenido = (
             f"Código Carrera: {self._id_carrera}\n"
             f"Carrera:        {self.nombre_carrera}\n"
