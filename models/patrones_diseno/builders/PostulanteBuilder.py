@@ -47,10 +47,5 @@ class PostulanteBuilder:
 
     def build(self) -> Postulante:
         #este es el buider que nos va a retornar todo
-        return Postulante(
-            self._cedula, self._nombres, self._apellidos, self._correo, self._contrasena,
-            self._idPostulante, self._tipoMatricula, self._celular, self._jornada,
-            self._modalidad, self._cupo, self._asistencia, self._sexo, self._etnia,
-            self._discapacidad
-        )
-    
+        return Postulante(self)
+        

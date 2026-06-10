@@ -3,18 +3,18 @@ from models.Clase_Matricula import Matricula
 from models.Clase_Reporte import Reporte
 
 class Postulante(UsuarioAcademico):
-    def __init__(self, cedula, nombres, apellidos, correo, contrasena, idPostulante, tipoMatricula, celular, jornada, modalidad, cupo, asistencia, sexo, etnia, discapacidad):
-        super().__init__(cedula, nombres, apellidos, correo, contrasena)
-        self._idPostulante = idPostulante
-        self._tipoMatricula = tipoMatricula
-        self._celular = celular
-        self.jornada = jornada
-        self.modalidad = modalidad
-        self.cupo = cupo
-        self.asistencia = asistencia
-        self.sexo =  sexo
-        self.etnia = etnia  
-        self.discapacidad = discapacidad
+    def __init__(self, builder):
+        super().__init__(builder._cedula, builder._nombres, builder._apellidos, builder._correo, builder._contrasena)
+        self._idPostulante = builder._idPostulante
+        self._tipoMatricula = builder._tipoMatricula
+        self._celular = builder._celular
+        self.jornada = builder._jornada
+        self.modalidad = builder._modalidad
+        self.cupo = builder._cupo
+        self.asistencia = builder._asistencia
+        self.sexo =  builder._sexo
+        self.etnia = builder._etnia  
+        self.discapacidad = builder._discapacidad
         
     def seleccionarJornada(self):
         return f"¿POSTULANTE Elijiendo la jordnada a la que pertenecerá..."
