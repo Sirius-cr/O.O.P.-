@@ -1,4 +1,14 @@
 """
+==========================
+
+
+IMPORTANTE 
+arreglar la opcion 6 del menú de agregar aulas
+1. hacerlo mas intuitivo
+2. Evitar error NO GENERA AULA, NO SOLICITA NUEVA AULA Y HAY UN ERROR EN LLAMAR A LA FUNCION
+
+
+==========================
 Aqui es una prueba de mi modulo, funciona para entrada por terminal.
 Hay que programar la interfaz para fuera de la terminal cuando lanzen el web.
 Si no se logra pues se corrige esto para que haga parte del main
@@ -13,6 +23,8 @@ from models.Clase_Universidad import Universidad
 from models.Clase_Sede import Sede
 from models.Clase_Facultad import Facultad
 from models.Clase_Carrera import Carrera
+from models.Clase_Aula import Aula #importar bien
+
 
 class ControladorConsola:
     def __init__(self):
