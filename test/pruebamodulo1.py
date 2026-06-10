@@ -4,6 +4,11 @@ Hay que programar la interfaz para fuera de la terminal cuando lanzen el web.
 Si no se logra pues se corrige esto para que haga parte del main
 
 """
+import sys
+import os
+# Añadir el directorio raíz del proyecto al path de búsqueda de Python
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from models.Clase_Universidad import Universidad
 from models.Clase_Sede import Sede
 from models.Clase_Facultad import Facultad

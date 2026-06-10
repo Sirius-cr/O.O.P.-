@@ -12,7 +12,7 @@ class PostulanteBuilder:
         self._celular = None
         self._jornada = None
         self._modalidad = None
-        self._cupo = None
+        self._cupo = None #revisar
         self._asistencia = None
         self._sexo = None
         self._etnia = None
@@ -48,4 +48,3 @@ class PostulanteBuilder:
     def build(self) -> Postulante:
         #este es el buider que nos va a retornar todo
         return Postulante(self)
-        
