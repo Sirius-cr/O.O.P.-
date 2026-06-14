@@ -16,7 +16,7 @@ class NotaMateria:
     def estaAprobado(self):
         #Aqui tambien se deberá colocar una validación, si el estado del periodo aun no se cierra por el coordinador, el estaAprobado estará en estado pendiente, caso contrario se evaluará si el estudiante aprobó o no la materia, dependiendo de su nota final y asistencia.
 
-        if self.notaFinal >= EstadoDeAprobacionMateria.NOTA_MINIMA_APROBACION and self.asistencia >= EstadoDeAprobacionMateria.ASISTENCIA_MINIMA:
+        if self.notaFinal >= EstadoDeAprobacionMateria.NOTA_MINIMA_APROBACION.value and self.asistencia >= EstadoDeAprobacionMateria.ASISTENCIA_MINIMA.value:
             return EstadoDeAprobacionMateria.MATERIA_APROBADA
         else:
             return EstadoDeAprobacionMateria.MATERIA_REPROBADA
