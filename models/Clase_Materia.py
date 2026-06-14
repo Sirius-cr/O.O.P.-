@@ -1,5 +1,8 @@
+from models.enums.Estado_Aprobacion import EstadoDeAprobacionMateria
+
 class Materia:
-    def __init__(self, id_materia, nombre_materia, nota_minima, asistencia_minima):
+    def __init__(self, id_materia, nombre_materia, nota_minima = EstadoDeAprobacionMateria.NOTA_MINIMA_APROBACION.value, asistencia_minima = EstadoDeAprobacionMateria.ASISTENCIA_MINIMA.value):
+        
         self.id_materia = id_materia
         self.nombre_materia = nombre_materia
         self.nota_minima = nota_minima
