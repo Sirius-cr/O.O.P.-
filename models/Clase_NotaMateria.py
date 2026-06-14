@@ -1,20 +1,24 @@
-from models.enums.Estado_Aprobacion import EstadoDeAprobacion
+from models.enums.Estado_Aprobacion import EstadoDeAprobacionMateria
+from models.Clase_Materia import Materia
 
 class NotaMateria:
-
-    def __init__(self, parcial1, parcial2, asistencia):
+    def __init__(self, materia: Materia, parcial1 = 0.0 , parcial2 = 0.0, asistencia = 0):
+        self.materia = materia
         self.parcial1 = parcial1
         self.parcial2 = parcial2
         self.asistencia = asistencia
-        self.nota_final = self.calcular_nota_final()
 
-    def calcular_nota_final(self):
+    @property
+    def notaFinal(self):
         return (self.parcial1 + self.parcial2) / 2
 
-    def esta_aprobado(self):
-        return (
-            self.nota_final >= EstadoDeAprobacion.NOTA_MINIMA_APROBACION
-            and self.asistencia >= EstadoDeAprobacion.ASISTENCIA_MINIMA
-        )
+    @property
+    def estaAprobado(self):
+        #Aqui tambien se deberá colocar una validación, si el estado del periodo aun no se cierra por el coordinador, el estaAprobado estará en estado pendiente, caso contrario se evaluará si el estudiante aprobó o no la materia, dependiendo de su nota final y asistencia.
 
-    
+        if self.notaFinal >= EstadoDeAprobacionMateria.NOTA_MINIMA_APROBACION and self.asistencia >= EstadoDeAprobacionMateria.ASISTENCIA_MINIMA:
+            return EstadoDeAprobacionMateria.MATERIA_APROBADA
+        else:
+            return EstadoDeAprobacionMateria.MATERIA_REPROBADA
+
+    #Utilizar el archivo Estado_Aprobacion.py para definir los estados de aprobación de la materia y nivelación
