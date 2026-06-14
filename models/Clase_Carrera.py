@@ -28,7 +28,7 @@ class Carrera:
         )
         return Reporte("Reporte de Carrera", formatoDocumento, f"Dirección de Carrera: {self.nombre_carrera}", contenido)
 
-    
+
 
     
         
