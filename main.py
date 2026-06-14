@@ -42,19 +42,15 @@ if __name__ == "__main__":
 
 
     # =========================================================================
-    # PASO 3: Asignación de Notas vinculadas a las Materias (Agregación)
+    # PASO 3: Asignación de Notas vinculadas a las Materias (Composición)
     # =========================================================================
-    # Creamos las NotaMateria inyectándoles su respectivo objeto Materia
-    nota_prog = NotaMateria(materia=materia_prog)
-    nota_mate = NotaMateria(materia=materia_mate)
+    # El historial crea internamente las calificaciones por composición
+    nota_prog = alumno.historial.crearNotaMateria(materia=materia_prog)
+    nota_mate = alumno.historial.crearNotaMateria(materia=materia_mate)
 
     # Añadimos una propiedad dinámica en ejecución para emular el cierre del Coordinador
     nota_prog.periodo_cerrado = False
     nota_mate.periodo_cerrado = False
-
-    # Guardamos los contenedores en el historial de Julean
-    alumno.historial.agregarNotaMateria(nota_prog)
-    alumno.historial.agregarNotaMateria(nota_mate)
 
 
     # =========================================================================

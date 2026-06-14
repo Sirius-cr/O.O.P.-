@@ -1,54 +1,77 @@
 class Seccion:
-    def __init__(self, id_seccion,entorno_asignado, lista_horarios, capacidad_estudiantil):
-        self.id_seccion=id_seccion
-        self.docente_asignado=None
-        self.entorno_asignado=entorno_asignado
-        self.lista_horarios = lista_horarios
+    def __init__(self, id_seccion, capacidad_estudiantil, materia=None):
+        self.id_seccion = id_seccion
         self.capacidad_estudiantil = capacidad_estudiantil
+        self.materia = materia
+        
+        # Inicializamos TODAS las listas y variables desde el principio
         self.estudiantes_inscritos = []
-        self.disponibilidad=True
+        self.lista_horarios = []
+        self.docente_asignado = None
+        self.entorno_asignado = None
+        self.aula_virtual = None
+        self.disponibilidad = True
 
-    def importar_lista_horario(self,lista_horario):
-        self.lista_horarios=lista_horario
-        return self.lista_horarios  #f"la lista a sido importada con exito!"
-    
+    def agregar_horario(self, horario):
+        if horario not in self.lista_horarios:
+            self.lista_horarios.append(horario)
+
+    def asignar_aula_virtual(self, aula_virtual):
+        self.aula_virtual = aula_virtual
+        self.entorno_asignado = aula_virtual
+        return f"Aula Virtual asignada a la sección {self.id_seccion}"
+
+    def calcular_limite_optimo(self):
+        # Si aún no hay aula asignada, el límite es la capacidad deseada
+        if self.entorno_asignado is None:
+            return self.capacidad_estudiantil
+        
+        # Si hay aula, elegimos el número menor entre la sección y el aula física
+        return min(self.capacidad_estudiantil, self.entorno_asignado.capacidadMaxima)
+
     def verificar_cupos_disponibles(self):
-        limite_actual= self.calcular_limite_optimo()
-        cupos_ocupado=len(self.estudiantes_inscritos)
-        if cupos_ocupado < limite_actual:
-            return True #f"La cantidad de cupos disponibles es de:",limite_actual-cupos_ocupado
+        limite_actual = self.calcular_limite_optimo()
+        cupos_ocupados = len(self.estudiantes_inscritos)
+        
+        if cupos_ocupados < limite_actual:
+            return True
         else:
-            return False #No hay cupos disponibles."
-            
+            return False
 
-    def asignar_docente(self,docente):
-        self.docente_asignado=docente
-        return "Docente asignado al seccion",self.id_seccion       
+    def importar_lista_horario(self, lista_horario):
+        self.lista_horarios = lista_horario
+        return self.lista_horarios 
+    
+    def asignar_docente(self, docente):
+        self.docente_asignado = docente
+        return f"Docente asignado a la sección {self.id_seccion}"       
 
-    def asignar_entorno(self,entorno):
-        self.entorno_asignado=entorno
-        return f"Entorno asiganado al seccion", {self.id_seccion}
+    def asignar_entorno(self, entorno):
+        self.entorno_asignado = entorno
+        return f"Entorno asignado a la sección {self.id_seccion}"
 
-    def liberarCupo(self,estudiante):
+    def liberar_cupo(self, estudiante):
         if estudiante in self.estudiantes_inscritos:
-            self.estudiantes_inscritos.revome(estudiante)
+            self.estudiantes_inscritos.remove(estudiante) # Typo corregido
+            
+            # Si alguien se retira, automáticamente la sección vuelve a estar disponible
+            self.disponibilidad = True 
             return "Cupo liberado"
         return False
 
-    def actualizar_estudiantes_inscritos(self,estudiante):
+    def actualizar_estudiantes_inscritos(self, estudiante):
+        # 1. Verificamos si hay espacio general
         if self.verificar_cupos_disponibles():
+            # 2. Verificamos que el estudiante no esté duplicado
             if estudiante not in self.estudiantes_inscritos:
                 self.estudiantes_inscritos.append(estudiante)
-                if self.verificar_cupos_disponibles()==0:
-                    self.disponibilidad=False
+                
+                # 3. Volvemos a verificar los cupos DESPUÉS de agregarlo para ver si se llenó
+                if not self.verificar_cupos_disponibles():
+                    self.disponibilidad = False
+                
                 return "Estudiante inscrito correctamente."
-            return "El estudiante ya esta inscrito"
-        self.disponibilidad=False
-        return "No existe cupos disponibles."
-
-    def calcular_limite_optimo(self):
-        if self.entorno_asignado is None:
-            return self.capacidad_estudiantil
-
-        return min(self.capacidad_estudiantil,self.entorno_asignado.capacidadMaxima)
-    
+            return "El estudiante ya está inscrito."
+        
+        self.disponibilidad = False
+        return "No existen cupos disponibles."

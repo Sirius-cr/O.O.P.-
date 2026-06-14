@@ -1,9 +1,8 @@
-from Clase_Entorno_Academico import EntornoAcademico
-class AulaVirtual(EntornoAcademico):
-    def __init__(self,identificadorEntorno,capacidadMaxima,enlacePlataforma):
-        super().__init__(identificadorEntorno,capacidadMaxima)
-        self.enlacePlataforma=enlacePlataforma
+class AulaVirtual:
+    def __init__(self,capacidadMaxima,enlacePlataforma, tipoPlataforma):
+        self.capacidadMaxima = capacidadMaxima
+        self._enlacePlataforma=enlacePlataforma
+        self._tipoPlataforma=tipoPlataforma
     
     def obtenerAcceso(self):
-        return "Acceso a la plataforma:", self.enlacePlataforma
-#composicion con <<interfaz>> con la clase de Materia
+        return True

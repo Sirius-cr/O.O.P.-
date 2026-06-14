@@ -2,11 +2,16 @@ from models.enums.Estado_Aprobacion import EstadoDeAprobacionMateria
 from models.Clase_Materia import Materia
 
 class NotaMateria:
-    def __init__(self, materia: Materia, parcial1 = 0.0 , parcial2 = 0.0, asistencia = 0):
+    def __init__(self, materia: Materia, parcial1 = 0.0 , parcial2 = 0.0, asistencia = 0, historial = None):
         self.materia = materia
         self.parcial1 = parcial1
         self.parcial2 = parcial2
         self.asistencia = asistencia
+        self.historial = historial
+
+        if self.materia:
+            if self not in self.materia.notas_materia:
+                self.materia.notas_materia.append(self)
 
     @property
     def notaFinal(self):

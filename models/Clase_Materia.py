@@ -7,18 +7,20 @@ class Materia:
         self.nombre_materia = nombre_materia
         self.nota_minima = nota_minima
         self.asistencia_minima = asistencia_minima
-        self.secciones=[]
+        self.secciones = []
+        self.notas_materia = []  # Relación 0..* con NotaMateria
+
     def crear_plan_estudio(self):
         return f"Felciidades! has creado un plan de estudios con exito"
 
-    def agregar_secciones(self,seccion):
-        if seccion not in self.secciones:
-            self.secciones.append(seccion)
-            return "Seccion Creada correctamente"
-        return "La seccion ya existe."
+    def crear_seccion(self, id_seccion, capacidad_estudiantil):
+        from models.Clase_Seccion import Seccion
+        nueva_seccion = Seccion(id_seccion, capacidad_estudiantil, materia=self)
+        self.secciones.append(nueva_seccion)
+        return nueva_seccion
 
     def obtener_Secciones(self):
-        if len(self.secciones)==0:
+        if len(self.secciones) == 0:
             return "No existe secciones creadas"
         return self.secciones
 

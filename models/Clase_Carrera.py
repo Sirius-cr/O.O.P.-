@@ -9,6 +9,17 @@ class Carrera:
         self.capacidad_estudiantil = capacidad_estudiantil
         self.estudiantes_inscritos = estudiantes_inscritos
         self.malla_curricular = None
+        self.coordinadores = []
+
+    def asociar_coordinador(self, coordinador):
+        if coordinador not in self.coordinadores:
+            self.coordinadores.append(coordinador)
+            coordinador.asociar_carrera(self)
+
+    def crear_malla_curricular(self, codigo_malla: str, area_conocimiento: str):
+        from models.Clase_MallaCurricular import MallaCurricular
+        self.malla_curricular = MallaCurricular(codigo_malla, area_conocimiento, carrera=self)
+        return self.malla_curricular
     
     @property
     def id_carrera(self) -> str:

@@ -6,8 +6,11 @@ class HistorialAcademico:
         self.idHistorial = idHistorial
         self.listaNotaMateria = []  # Contiene objetos NotaMateria
 
-    def agregarNotaMateria(self, notaMateria: NotaMateria):
-        self.listaNotaMateria.append(notaMateria)
+    def crearNotaMateria(self, materia, parcial1=0.0, parcial2=0.0, asistencia=0):
+        # Composición: El historial crea internamente la calificación
+        nota = NotaMateria(materia=materia, parcial1=parcial1, parcial2=parcial2, asistencia=asistencia, historial=self)
+        self.listaNotaMateria.append(nota)
+        return nota
 
     @property
     def promedioGeneral(self):

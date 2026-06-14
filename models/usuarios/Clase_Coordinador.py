@@ -7,6 +7,12 @@ class Coordinador(UsuarioAdministrativo):
         super().__init__(cedula, nombres, apellidos, correo, contrasenia)
         self.idCoordinador = idCoordinador
         self.fechaAsignacionCargo = fechaAsignacionCargo
+        self.carreras = []
+
+    def asociar_carrera(self, carrera):
+        if carrera not in self.carreras:
+            self.carreras.append(carrera)
+            carrera.asociar_coordinador(self)
         
     def abrirPeriodoMatricula(self, periodo: Periodo):
         periodo.iniciarPeriodo()
