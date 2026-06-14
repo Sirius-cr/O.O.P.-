@@ -29,15 +29,14 @@ class Carrera:
         return f"la lista de estudiantes a sido creada, la lista cuenta con {self.estudiantes_inscritos}" 
 
 
-#revisar que hacia esto
-   # def moostrarDatosCarrera(self, formatoDocumento):
+    def mostrar_datos_carrera(self, formato_documento):
         contenido = (
             f"Código Carrera: {self._id_carrera}\n"
             f"Carrera:        {self.nombre_carrera}\n"
             f"Capacidad Máx:  {self.capacidad_estudiantil}\n"
             f"Inscritos:      {self.estudiantes_inscritos}"
         )
-        return Reporte("Reporte de Carrera", formatoDocumento, f"Dirección de Carrera: {self.nombre_carrera}", contenido)
+        return Reporte("Reporte de Carrera", formato_documento, f"Dirección de Carrera: {self.nombre_carrera}", contenido)
 
 
 

@@ -10,13 +10,13 @@ class Usuario():
     def cedula(self): 
         return self._cedula
 
-    def obtenerCedula(self):
+    def obtener_cedula(self):
         return self._cedula
 
-    def obtenerNombreCompleto(self):
+    def obtener_nombre_completo(self):
         return f"{self.nombres} {self.apellidos}"
     
-    def cambiarContrasenia(self, contrasenia_actual, nueva_contrasenia):
+    def cambiar_contrasenia(self, contrasenia_actual, nueva_contrasenia):
         if contrasenia_actual != self.__contrasenia:
             return False
             

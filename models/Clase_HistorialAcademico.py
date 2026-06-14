@@ -2,32 +2,32 @@ from models.enums.Estado_Aprobacion import EstadoDeAprobacionNivelacion, EstadoD
 from models.Clase_NotaMateria import NotaMateria
 
 class HistorialAcademico:
-    def __init__(self, idHistorial: str):
-        self.idHistorial = idHistorial
-        self.listaNotaMateria = []  # Contiene objetos NotaMateria
+    def __init__(self, id_historial: str):
+        self.id_historial = id_historial
+        self.lista_nota_materia = []  # Contiene objetos NotaMateria
 
-    def crearNotaMateria(self, materia, parcial1=0.0, parcial2=0.0, asistencia=0):
+    def crear_nota_materia(self, materia, parcial1=0.0, parcial2=0.0, asistencia=0):
         # Composición: El historial crea internamente la calificación
         nota = NotaMateria(materia=materia, parcial1=parcial1, parcial2=parcial2, asistencia=asistencia, historial=self)
-        self.listaNotaMateria.append(nota)
+        self.lista_nota_materia.append(nota)
         return nota
 
     @property
-    def promedioGeneral(self):
-        if not self.listaNotaMateria:
+    def promedio_general(self):
+        if not self.lista_nota_materia:
             return 0.0
-        suma_notas = sum(nota.notaFinal for nota in self.listaNotaMateria)
-        return suma_notas / len(self.listaNotaMateria)
+        suma_notas = sum(nota.nota_final for nota in self.lista_nota_materia)
+        return suma_notas / len(self.lista_nota_materia)
 
-    def verificarAprobacionNivelacion(self):
-        if not self.listaNotaMateria:
+    def verificar_aprobacion_nivelacion(self):
+        if not self.lista_nota_materia:
             return EstadoDeAprobacionNivelacion.PENDIENTE
 
         tiene_materias_pendientes = False
 
         # Recorremos los estados de cada materia individual
-        for nota in self.listaNotaMateria:
-            estado_materia = nota.estaAprobado  # Llama a la property de NotaMateria
+        for nota in self.lista_nota_materia:
+            estado_materia = nota.esta_aprobado  # Llama a la property de NotaMateria
             
             if estado_materia == EstadoDeAprobacionMateria.MATERIA_PENDIENTE:
                 tiene_materias_pendientes = True

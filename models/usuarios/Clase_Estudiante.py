@@ -2,36 +2,36 @@ from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
 from models.Clase_HistorialAcademico import HistorialAcademico
 
 class Estudiante(UsuarioAcademico):
-    def __init__(self, cedula, nombres, apellidos, correo, contrasenia, idEstudiante, nombrePeriodo, estadoMatricula, tipoMatricula):
+    def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, estado_matricula, tipo_matricula):
         super().__init__(cedula, nombres, apellidos, correo, contrasenia)
 
-        self._idEstudiante = idEstudiante
-        self.nombrePeriodo = nombrePeriodo
-        self.estadoMatricula = estadoMatricula
-        self.tipoMatricula = tipoMatricula
-        self.historial = HistorialAcademico(idHistorial=idEstudiante)  # Cada estudiante tiene un historial académico asociado
+        self._id_estudiante = id_estudiante
+        self.nombre_periodo = nombre_periodo
+        self.estado_matricula = estado_matricula
+        self.tipo_matricula = tipo_matricula
+        self.historial = HistorialAcademico(id_historial=id_estudiante)  # Cada estudiante tiene un historial académico asociado
+        self.secciones = []
+
+    def inscribir_seccion(self, seccion):
+        if seccion not in self.secciones:
+            self.secciones.append(seccion)
+            seccion.actualizar_estudiantes_inscritos(self)
 
     @property
-    def estaAprobado(self):
-        return self.historial.verificarAprobacionNivelacion()
+    def esta_aprobado(self):
+        return self.historial.verificar_aprobacion_nivelacion()
 
-    def verHorario(self): # Mapea a +verHorario(). Permite al estudiante revisar su horario de clases.
-        #print(f"Cargando el horario de clases para el estudiante {self._nombres}...")
-        return [] # Se desarrollará posteriormente para devolver una lista de clases programadas.
-
-    def solicitarCertificado(self):
-        #print("Solicitud de certificado académico enviada a secretaría...")
-        #Llama al metodo verificarAprobacionNivelacion() del historial académico. Deberá implementarse la lógica en el archivo HistorialAcademico.py, si retorna True el metodo verificarAprobacionNivelacion(), se solicita el certificado, caso contrario se muestra un mensaje indicando que no se puede solicitar el certificado por no haber aprobado la nivelación.
-        return True
-
-    def obtenerHistorialAcadémico(self):
-        #print("Consultando el registro histórico de calificaciones...")
+    def ver_horario(self):
         return []
 
-    def solicitarRetiro(self):
-        #print("Generando solicitud formal de retiro de la nivelación...")
+    def solicitar_certificado(self):
         return True
 
-    def __realizarPagoMatricula(self) -> bool:
-        #print("Procesando pago de matrícula en la pasarela interna...")
+    def obtener_historial_academico(self):
+        return []
+
+    def solicitar_retiro(self):
+        return True
+
+    def __realizar_pago_matricula(self) -> bool:
         return True

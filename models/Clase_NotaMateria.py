@@ -14,14 +14,14 @@ class NotaMateria:
                 self.materia.notas_materia.append(self)
 
     @property
-    def notaFinal(self):
+    def nota_final(self):
         return (self.parcial1 + self.parcial2) / 2
 
     @property
-    def estaAprobado(self):
-        #Aqui tambien se deberá colocar una validación, si el estado del periodo aun no se cierra por el coordinador, el estaAprobado estará en estado pendiente, caso contrario se evaluará si el estudiante aprobó o no la materia, dependiendo de su nota final y asistencia.
+    def esta_aprobado(self):
+        #Aqui tambien se deberá colocar una validación, si el estado del periodo aun no se cierra por el coordinador, el esta_aprobado estará en estado pendiente, caso contrario se evaluará si el estudiante aprobó o no la materia, dependiendo de su nota final y asistencia.
 
-        if self.notaFinal >= EstadoDeAprobacionMateria.NOTA_MINIMA_APROBACION.value and self.asistencia >= EstadoDeAprobacionMateria.ASISTENCIA_MINIMA.value:
+        if self.nota_final >= EstadoDeAprobacionMateria.NOTA_MINIMA_APROBACION.value and self.asistencia >= EstadoDeAprobacionMateria.ASISTENCIA_MINIMA.value:
             return EstadoDeAprobacionMateria.MATERIA_APROBADA
         else:
             return EstadoDeAprobacionMateria.MATERIA_REPROBADA

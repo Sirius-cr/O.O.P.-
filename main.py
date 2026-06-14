@@ -32,10 +32,10 @@ if __name__ == "__main__":
         apellidos="Pérez", 
         correo="julean@univ.com", 
         contrasenia="1234", 
-        idEstudiante="EST-99", 
-        nombrePeriodo="Nivelación 2026", 
-        estadoMatricula="Matriculado", 
-        tipoMatricula="Ordinaria"
+        id_estudiante="EST-99", 
+        nombre_periodo="Nivelación 2026", 
+        estado_matricula="Matriculado", 
+        tipo_matricula="Ordinaria"
     )
     # Al ser públicos nombres y apellidos, ya no arrojará AttributeError
     print(f"Estudiante ingresado al sistema: {alumno.nombres} {alumno.apellidos}")
@@ -45,8 +45,8 @@ if __name__ == "__main__":
     # PASO 3: Asignación de Notas vinculadas a las Materias (Composición)
     # =========================================================================
     # El historial crea internamente las calificaciones por composición
-    nota_prog = alumno.historial.crearNotaMateria(materia=materia_prog)
-    nota_mate = alumno.historial.crearNotaMateria(materia=materia_mate)
+    nota_prog = alumno.historial.crear_nota_materia(materia=materia_prog)
+    nota_mate = alumno.historial.crear_nota_materia(materia=materia_mate)
 
     # Añadimos una propiedad dinámica en ejecución para emular el cierre del Coordinador
     nota_prog.periodo_cerrado = False
@@ -58,23 +58,23 @@ if __name__ == "__main__":
     # =========================================================================
     print("\n--- ⏳ ESCENARIO 1: Notas en cero y periodo abierto por el Coordinador ---")
     
-    # Modificamos tu método estaAprobado de NotaMateria temporalmente para esta simulación:
-    def estaAprobado_con_coordinador(self_nota):
+    # Modificamos tu método esta_aprobado de NotaMateria temporalmente para esta simulación:
+    def esta_aprobado_con_coordinador(self_nota):
         if not getattr(self_nota, 'periodo_cerrado', False):
             return EstadoDeAprobacionMateria.MATERIA_PENDIENTE
         
         # Tu lógica original usando .value para extraer los enteros del Enum
-        if (self_nota.notaFinal >= EstadoDeAprobacionMateria.NOTA_MINIMA_APROBACION.value and 
+        if (self_nota.nota_final >= EstadoDeAprobacionMateria.NOTA_MINIMA_APROBACION.value and 
                 self_nota.asistencia >= EstadoDeAprobacionMateria.ASISTENCIA_MINIMA.value):
             return EstadoDeAprobacionMateria.MATERIA_APROBADA
         else:
             return EstadoDeAprobacionMateria.MATERIA_REPROBADA
 
     # Enlazamos dinámicamente el comportamiento para la prueba de consola
-    NotaMateria.estaAprobado = property(estaAprobado_con_coordinador)
+    NotaMateria.esta_aprobado = property(esta_aprobado_con_coordinador)
 
-    print(f"Estado en {nota_prog.materia.nombre_materia}: {nota_prog.estaAprobado.value}")
-    print(f"VERDICTO FINAL DE NIVELACIÓN: -> {alumno.estaAprobado.value} <-")
+    print(f"Estado en {nota_prog.materia.nombre_materia}: {nota_prog.esta_aprobado.value}")
+    print(f"VERDICTO FINAL DE NIVELACIÓN: -> {alumno.esta_aprobado.value} <-")
 
 
     # =========================================================================
@@ -93,10 +93,10 @@ if __name__ == "__main__":
     nota_mate.asistencia = 95
     nota_mate.periodo_cerrado = True
 
-    print(f"Promedio General calculado en Historial: {alumno.historial.promedioGeneral:.2f}")
-    print(f"Estado en {nota_prog.materia.nombre_materia}: {nota_prog.estaAprobado.value} (Asistencia: {nota_prog.asistencia}%)")
-    print(f"Estado en {nota_mate.materia.nombre_materia}: {nota_mate.estaAprobado.value}")
-    print(f"VERDICTO FINAL DE NIVELACIÓN: -> {alumno.estaAprobado.value} <-")
+    print(f"Promedio General calculado en Historial: {alumno.historial.promedio_general:.2f}")
+    print(f"Estado en {nota_prog.materia.nombre_materia}: {nota_prog.esta_aprobado.value} (Asistencia: {nota_prog.asistencia}%)")
+    print(f"Estado en {nota_mate.materia.nombre_materia}: {nota_mate.esta_aprobado.value}")
+    print(f"VERDICTO FINAL DE NIVELACIÓN: -> {alumno.esta_aprobado.value} <-")
 
 
     # =========================================================================
@@ -106,5 +106,5 @@ if __name__ == "__main__":
     # Modificamos la asistencia de la materia que estaba reprobada
     nota_prog.asistencia = 85  # Supera el mínimo requerido
 
-    print(f"Nuevo estado en {nota_prog.materia.nombre_materia}: {nota_prog.estaAprobado.value}")
-    print(f"VERDICTO FINAL DE NIVELACIÓN: -> {alumno.estaAprobado.value} <-")
+    print(f"Nuevo estado en {nota_prog.materia.nombre_materia}: {nota_prog.esta_aprobado.value}")
+    print(f"VERDICTO FINAL DE NIVELACIÓN: -> {alumno.esta_aprobado.value} <-")

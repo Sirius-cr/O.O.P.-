@@ -23,7 +23,6 @@ from models.Clase_Universidad import Universidad
 from models.Clase_Sede import Sede
 from models.Clase_Facultad import Facultad
 from models.Clase_Carrera import Carrera
-from models.Clase_Aula import Aula #importar bien
 
 
 class ControladorConsola:
@@ -174,40 +173,7 @@ class ControladorConsola:
         nueva_carrera = Carrera(id_carrera, nombre_carrera, capacidad)
         print(facultad_seleccionada.importar_carrera(nueva_carrera))
 
-    def generar_aula_automatica(self):
-        print("\n--- GENERACION AUTOMATICA DE AULAS ---")
-        if not self.registro_universidades:
-            print("Error: No hay registros en el sistema.")
-            return
 
-        facultad_seleccionada = self._seleccionar_facultad_interactiva()
-        if not facultad_seleccionada:
-            return
-
-        if not facultad_seleccionada.registro_carreras:
-            print("Error: Esta facultad no tiene carreras vinculadas.")
-            return
-
-        print("\nCarreras registradas en esta facultad:")
-        for codigo, carrera in facultad_seleccionada.registro_carreras.items():
-            print(f"  * [{codigo}] -> {carrera.nombre_carrera}")
-
-        codigo_busqueda = input("\nIngrese el codigo de la carrera para asignarle el aula: ").strip().upper()
-        
-        try:
-            capacidad_aula = int(input("Capacidad maxima de alumnos para esta nueva aula: "))
-        except ValueError:
-            print("La capacidad debe ser un numero entero.")
-            return
-            
-        ubicacion_aula = input("Ubicacion fisica interna (Ej: Edificio Alfa, Piso 2): ").strip()
-
-        if not ubicacion_aula:
-            print("La ubicacion fisica es requerida.")
-            return
-
-        resultado = facultad_seleccionada.solicitar_nueva_aula(codigo_busqueda, capacidad_aula, ubicacion_aula)
-        print(resultado)
 
     def mostrar_reporte_global(self):
         print("\n======================================================================")
@@ -243,11 +209,7 @@ class ControladorConsola:
                     for cod_car, car in fac.registro_carreras.items():
                         print(f"               └── [{cod_car}] {car.nombre_carrera} (Capacidad: {car.capacidad_estudiantil})")
                     
-                    print("           Aulas Fisicas Asignadas:")
-                    if not fac.infraestructura.lista_aulas:
-                        print("               └── (Ninguna aula fisica generada)")
-                    for aula in fac.infraestructura.lista_aulas:
-                        print(f"               └── ID: [{aula.identifiacadoEntorno}] | Capacidad: {aula.capacidadMaxima} | {aula.obtenerAcceso()}")
+
         print("======================================================================\n")
 
 
@@ -260,12 +222,11 @@ if __name__ == "__main__":
         print("2. Registrar Sede en una Universidad")
         print("3. Registrar Facultad en una Sede")
         print("4. Vincular Carrera a una Facultad")
-        print("5. Generar Aula Fisica Automatica")
-        print("6. Visualizar Reporte e Infraestructura Global")
-        print("7. Salir")
+        print("5. Visualizar Reporte e Infraestructura Global")
+        print("6. Salir")
         print("=================================================")
         
-        opcion = input("Seleccione una opcion (1-7): ").strip()
+        opcion = input("Seleccione una opcion (1-6): ").strip()
         
         if opcion == "1":
             controlador.registrar_universidad()
@@ -276,10 +237,8 @@ if __name__ == "__main__":
         elif opcion == "4":
             controlador.vincular_carrera()
         elif opcion == "5":
-            controlador.generar_aula_automatica()
-        elif opcion == "6":
             controlador.mostrar_reporte_global()
-        elif opcion == "7":
+        elif opcion == "6":
             print("\nSaliendo del modulo de infraestructura.")
             break
         else:

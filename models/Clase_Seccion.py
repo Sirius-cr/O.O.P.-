@@ -1,13 +1,14 @@
 class Seccion:
-    def __init__(self, id_seccion, capacidad_estudiantil, materia=None):
+    def __init__(self, id_seccion, capacidad_estudiantil, materia=None, coordinador=None):
         self.id_seccion = id_seccion
         self.capacidad_estudiantil = capacidad_estudiantil
         self.materia = materia
+        self.coordinador = coordinador
         
         # Inicializamos TODAS las listas y variables desde el principio
         self.estudiantes_inscritos = []
         self.lista_horarios = []
-        self.docente_asignado = None
+        self.docentes = []
         self.entorno_asignado = None
         self.aula_virtual = None
         self.disponibilidad = True
@@ -27,7 +28,7 @@ class Seccion:
             return self.capacidad_estudiantil
         
         # Si hay aula, elegimos el número menor entre la sección y el aula física
-        return min(self.capacidad_estudiantil, self.entorno_asignado.capacidadMaxima)
+        return min(self.capacidad_estudiantil, self.entorno_asignado.capacidad_maxima)
 
     def verificar_cupos_disponibles(self):
         limite_actual = self.calcular_limite_optimo()
@@ -42,9 +43,14 @@ class Seccion:
         self.lista_horarios = lista_horario
         return self.lista_horarios 
     
+    def agregar_docente(self, docente):
+        if docente not in self.docentes:
+            self.docentes.append(docente)
+            docente.asignar_seccion(self)
+        return f"Docente asignado a la sección {self.id_seccion}"
+
     def asignar_docente(self, docente):
-        self.docente_asignado = docente
-        return f"Docente asignado a la sección {self.id_seccion}"       
+        return self.agregar_docente(docente)
 
     def asignar_entorno(self, entorno):
         self.entorno_asignado = entorno

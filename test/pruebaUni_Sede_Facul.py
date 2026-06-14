@@ -20,5 +20,5 @@ facultadMasCabronaAquí = Facultad("Ing. Software", 10, 20)
 sedePrincipal.agregar_facultad(facultadMasCabronaAquí)
 universidad1.agregar_sede(sedePrincipal)
 
-print(f"La universidad {universidad1.nombre_uni} tiene la sede {sedePrincipal.nombre_sede} con la facultad {facultadMasCabronaAquí.carrera}")
+print(f"La universidad {universidad1.nombre_uni} tiene la sede {sedePrincipal.nombre_sede} con la facultad {facultadMasCabronaAquí.nombre_facultad}")
 print(f"La sede {sedePrincipal.nombre_sede} esta ubicada en {sedePrincipal.ubicacion} y su direccion es {sedePrincipal.direccion}")
