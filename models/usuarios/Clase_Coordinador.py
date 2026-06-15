@@ -31,6 +31,33 @@ class Coordinador(UsuarioAdministrativo):
     def aprobar_retiro(self):
         return True
 
-    def asignar_docente_a_seccion(self):
+# --- NUEVOS MÉTODOS DE FILTRADO Y ASIGNACIÓN ---
+
+    def obtener_docentes_por_materia(self, materia, lista_total_docentes):
+        """
+        Filtra y devuelve solo los docentes que tienen la materia en sus especialidades.
+        """
+        docentes_aptos = [
+            docente for docente in lista_total_docentes 
+            if materia in docente.especialidades
+        ]
+        return docentes_aptos
+
+    def asignar_docente_a_seccion(self, seccion, lista_total_docentes):
+        """
+        Muestra o selecciona automáticamente un docente apto para la materia de la sección.
+        """
+        # Asumiendo que 'seccion' conoce a qué 'materia' pertenece (ej. seccion.materia)
+        materia_requerida = seccion.materia 
+        
+        docentes_disponibles = self.obtener_docentes_por_materia(materia_requerida, lista_total_docentes)
+        
+        if not docentes_disponibles:
+            print(f"No hay docentes especializados en {materia_requerida.nombre}")
+            return False
+            
+        # Aquí puedes integrar la lógica de tu Builder o interfaz visual.
+        # Por ahora, como ejemplo, asignamos el primer docente apto disponible:
+        docente_elegido = docentes_disponibles[0] 
+        docente_elegido.asignar_seccion(seccion)
         return True
-        #Se terminará de programar despues de que seccion se realice correctamente con un builder

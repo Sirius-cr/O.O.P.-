@@ -4,7 +4,9 @@ class Docente(UsuarioAcademico):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia):
         super().__init__(cedula, nombres, apellidos, correo, contrasenia)
         self.secciones = []
+        self.especialidades = []
 
+        
     def colocar_calificacion(self):
         print("Calificando actividad...")
 
