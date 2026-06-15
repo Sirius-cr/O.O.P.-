@@ -1,5 +1,5 @@
-from models.Clase_Universidad import Universidad 
-from models.Clase_Reporte import Reporte
+from models.institucion.Clase_Universidad import Universidad 
+from models.gestion.Clase_Reporte import Reporte
 #en tal caso de que se programe la composición lo dejaré de esta manera
 
 class Carrera:
@@ -17,7 +17,7 @@ class Carrera:
             coordinador.asociar_carrera(self)
 
     def crear_malla_curricular(self, codigo_malla: str, area_conocimiento: str):
-        from models.Clase_MallaCurricular import MallaCurricular
+        from models.academico.Clase_MallaCurricular import MallaCurricular
         self.malla_curricular = MallaCurricular(codigo_malla, area_conocimiento, carrera=self)
         return self.malla_curricular
     

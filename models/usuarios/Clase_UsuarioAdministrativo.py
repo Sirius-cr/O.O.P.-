@@ -1,5 +1,5 @@
 from models.usuarios.Clases_Usuario import Usuario
-from models.Clase_Periodo import Periodo
+from models.academico.Clase_Periodo import Periodo
 
 class UsuarioAdministrativo(Usuario):
     def verificar_estado_sistema(self, periodo: Periodo):

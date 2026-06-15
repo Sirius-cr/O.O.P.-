@@ -1,4 +1,4 @@
-from Clase_Materia import Materia
+from models.academico.Clase_Materia import Materia
 
 class MallaCurricular:
     def __init__(self, codigo_malla: str, area_conocimiento: str, carrera=None):

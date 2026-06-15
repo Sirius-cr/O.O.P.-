@@ -4,9 +4,9 @@ por el momento no hay nada xd -joseph"""
 
 # 1. Importaciones de tus modelos según la estructura del proyecto
 from models.usuarios.Clase_Estudiante import Estudiante
-from models.Clase_Materia import Materia
-from models.Clase_NotaMateria import NotaMateria
-from models.Clase_HistorialAcademico import HistorialAcademico
+from models.academico.Clase_Materia import Materia
+from models.gestion.Clase_NotaMateria import NotaMateria
+from models.gestion.Clase_HistorialAcademico import HistorialAcademico
 
 # Importamos los Enums para poder imprimir descripciones amigables en la terminal
 from models.enums.Estado_Aprobacion import EstadoDeAprobacionMateria, EstadoDeAprobacionNivelacion

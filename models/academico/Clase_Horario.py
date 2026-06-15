@@ -1,4 +1,4 @@
-from Clase_Seccion import Seccion
+from models.academico.Clase_Seccion import Seccion
 class Horario:
     def __init__(self, turno, hora_inicio, hora_fin, modalidad):
         self.turno = turno

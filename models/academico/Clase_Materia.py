@@ -14,7 +14,7 @@ class Materia:
         return f"Felciidades! has creado un plan de estudios con exito"
 
     def crear_seccion(self, id_seccion, capacidad_estudiantil):
-        from models.Clase_Seccion import Seccion
+        from models.academico.Clase_Seccion import Seccion
         nueva_seccion = Seccion(id_seccion, capacidad_estudiantil, materia=self)
         self.secciones.append(nueva_seccion)
         return nueva_seccion

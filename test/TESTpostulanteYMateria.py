@@ -3,8 +3,8 @@ import os
 # Añadir el directorio raíz del proyecto al path de búsqueda de Python
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from models.Clase_Materia import Materia
-from models.Clase_Matricula import Matricula
+from models.academico.Clase_Materia import Materia
+from models.gestion.Clase_Matricula import Matricula
 from models.patrones_diseno.builders.PostulanteBuilder import PostulanteBuilder
 
 

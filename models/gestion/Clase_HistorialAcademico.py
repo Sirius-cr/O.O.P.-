@@ -1,5 +1,5 @@
 from models.enums.Estado_Aprobacion import EstadoDeAprobacionNivelacion, EstadoDeAprobacionMateria
-from models.Clase_NotaMateria import NotaMateria
+from models.gestion.Clase_NotaMateria import NotaMateria
 
 class HistorialAcademico:
     def __init__(self, id_historial: str):

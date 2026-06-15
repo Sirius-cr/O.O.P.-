@@ -1,6 +1,6 @@
 # Importaciones exactas simulando tu estructura de carpetas
-from models.Clase_Periodo import Periodo
-from models.Clase_MallaCurricular import MallaCurricular
+from models.academico.Clase_Periodo import Periodo
+from models.academico.Clase_MallaCurricular import MallaCurricular
 
 class OfertaAcademica:
     def __init__(self, periodo: Periodo, malla_curricular: MallaCurricular, cupos_disponibles: int):

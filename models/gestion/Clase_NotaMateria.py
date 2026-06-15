@@ -1,5 +1,5 @@
 from models.enums.Estado_Aprobacion import EstadoDeAprobacionMateria
-from models.Clase_Materia import Materia
+from models.academico.Clase_Materia import Materia
 
 class NotaMateria:
     def __init__(self, materia: Materia, parcial1 = 0.0 , parcial2 = 0.0, asistencia = 0, historial = None):

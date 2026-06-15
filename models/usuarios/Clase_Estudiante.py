@@ -1,5 +1,5 @@
 from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
-from models.Clase_HistorialAcademico import HistorialAcademico
+from models.gestion.Clase_HistorialAcademico import HistorialAcademico
 
 class Estudiante(UsuarioAcademico):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, estado_matricula, tipo_matricula):

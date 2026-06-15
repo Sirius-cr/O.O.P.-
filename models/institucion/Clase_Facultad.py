@@ -1,4 +1,4 @@
-from models.Clase_Carrera import Carrera
+from models.institucion.Clase_Carrera import Carrera
 
 class InfraestructuraFisica:
     def __init__(self, salones: int, laboratorios: int):
