@@ -56,7 +56,7 @@ if __name__ == "__main__":
     # =========================================================================
     # ESCENARIO 1: El Periodo Académico Sigue Abierto
     # =========================================================================
-    print("\n--- ⏳ ESCENARIO 1: Notas en cero y periodo abierto por el Coordinador ---")
+    print("\n---ESCENARIO 1: Notas en cero y periodo abierto por el Coordinador---")
     
     # Modificamos tu método esta_aprobado de NotaMateria temporalmente para esta simulación:
     def esta_aprobado_con_coordinador(self_nota):
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     # =========================================================================
     # ESCENARIO 2: Profesor sube notas pero reprueba por asistencia
     # =========================================================================
-    print("\n--- ESCENARIO 2: Profesor sube notas, Coordinador cierra ciclo (Falta de asistencia) ---")
+    print("\n---ESCENARIO 2: Profesor sube notas, Coordinador cierra ciclo (Falta de asistencia)---")
     # Datos de Programación (Buen promedio, mala asistencia)
     nota_prog.parcial1 = 8.5
     nota_prog.parcial2 = 9.0
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     # =========================================================================
     # ESCENARIO 3: Alumno justifica asistencias y aprueba la Nivelación
     # =========================================================================
-    print("\n--- 🏆 ESCENARIO 3: Estudiante justifica faltas y el sistema actualiza ---")
+    print("\n---ESCENARIO 3: Estudiante justifica faltas y el sistema actualiza---")
     # Modificamos la asistencia de la materia que estaba reprobada
     nota_prog.asistencia = 85  # Supera el mínimo requerido
 

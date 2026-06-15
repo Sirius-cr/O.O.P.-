@@ -20,10 +20,17 @@ class Estudiante(UsuarioAcademico):
     @property
     def esta_aprobado(self):
         return self.historial.verificar_aprobacion_nivelacion()
+    
+    def ver_rendimiento(self):
+        return self.historial.obtener_peor_nota() #este metodo se definirá en la clase HistorialAcademico para obtener la peor nota del estudiante en los parciales
 
     def ver_perfil(self):
-        print(f"NOMBRE : {self.nombres}") #cada usuario puede ver su perfil
-    
+        print(f"NOMBRE : {self.nombres}")
+        print(f"APELLIDOS : {self.apellidos}")
+        print(f"CEDULA : {self.cedula}")
+        print(f"CORREO : {self.correo}")
+        #cada usuario puede ver su perfil
+
     def solicitar_certificado(self):
         return True
 

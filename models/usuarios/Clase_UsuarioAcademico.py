@@ -22,4 +22,4 @@ class UsuarioAcademico(Usuario):
     
     @abstractmethod
     def ver_perfil(self):
-        return f"viendo el perfil" #cada usuario puede ver su perfil
+        pass #cada usuario puede ver su perfil

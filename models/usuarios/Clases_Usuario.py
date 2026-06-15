@@ -1,6 +1,4 @@
-from abc import ABC, abstractmethod
-
-class Usuario(ABC):
+class Usuario():
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia):
         self._cedula = cedula
         self.nombres = nombres
@@ -11,10 +9,6 @@ class Usuario(ABC):
     @property
     def cedula(self): 
         return self._cedula
-    
-    @abstractmethod
-    def ver_perfil(self):
-        return f"viendo el perfil" #cada usuario puede ver su perfil
     
     def obtener_cedula(self):
         return self._cedula
