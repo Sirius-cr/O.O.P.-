@@ -11,8 +11,11 @@ class Usuario(ABC):
     @property
     def cedula(self): 
         return self._cedula
-
-
+    
+    @abstractmethod
+    def ver_perfil(self):
+        return f"viendo el perfil" #cada usuario puede ver su perfil
+    
     def obtener_cedula(self):
         return self._cedula
 

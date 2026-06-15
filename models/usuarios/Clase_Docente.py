@@ -11,9 +11,6 @@ class Docente(UsuarioAcademico):
     def tomar_asistencia(self):
         return 
 
-    def ver_horario(self):
-        return [seccion.lista_horarios for seccion in self.secciones]
-
     def asignar_seccion(self, seccion):
         if seccion not in self.secciones:
             self.secciones.append(seccion)

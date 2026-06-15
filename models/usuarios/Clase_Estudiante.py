@@ -21,9 +21,9 @@ class Estudiante(UsuarioAcademico):
     def esta_aprobado(self):
         return self.historial.verificar_aprobacion_nivelacion()
 
-    def ver_horario(self):
-        return []
-
+    def ver_perfil(self):
+        print(f"NOMBRE : {self.nombres}") #cada usuario puede ver su perfil
+    
     def solicitar_certificado(self):
         return True
 
@@ -31,7 +31,4 @@ class Estudiante(UsuarioAcademico):
         return []
 
     def solicitar_retiro(self):
-        return True
-
-    def __realizar_pago_matricula(self) -> bool:
         return True
