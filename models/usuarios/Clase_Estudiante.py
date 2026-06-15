@@ -8,14 +8,14 @@ class Estudiante(UsuarioAcademico):
         self._id_estudiante = id_estudiante
         self.nombre_periodo = nombre_periodo
         self.estado_matricula = estado_matricula
-        self.tipo_matricula = tipo_matricula
+        self._tipo_matricula = tipo_matricula
         self.historial = HistorialAcademico(id_historial=id_estudiante)  # Cada estudiante tiene un historial académico asociado
-        self.secciones = []
+        self.secciones_asociadas = []
 
-    def inscribir_seccion(self, seccion):
-        if seccion not in self.secciones:
-            self.secciones.append(seccion)
-            seccion.actualizar_estudiantes_inscritos(self)
+    def inscribir_seccion(self, secciones_asociadas):
+        if secciones_asociadas not in self.secciones_asociadas:
+            self.secciones_asociadas.append(secciones_asociadas)
+            secciones_asociadas.actualizar_estudiantes_inscritos(self)
 
     @property
     def esta_aprobado(self):

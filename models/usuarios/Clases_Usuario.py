@@ -14,6 +14,7 @@ class Usuario(ABC):
     def cedula(self): 
         return self._cedula
 
+
     def obtener_cedula(self):
         return self._cedula
 
@@ -29,3 +30,4 @@ class Usuario(ABC):
             
         self.__contrasenia = nueva_contrasenia
         return True
+    

@@ -80,7 +80,7 @@ if __name__ == "__main__":
     # =========================================================================
     # ESCENARIO 2: Profesor sube notas pero reprueba por asistencia
     # =========================================================================
-    print("\n--- ❌ ESCENARIO 2: Profesor sube notas, Coordinador cierra ciclo (Falta de asistencia) ---")
+    print("\n--- ESCENARIO 2: Profesor sube notas, Coordinador cierra ciclo (Falta de asistencia) ---")
     # Datos de Programación (Buen promedio, mala asistencia)
     nota_prog.parcial1 = 8.5
     nota_prog.parcial2 = 9.0
