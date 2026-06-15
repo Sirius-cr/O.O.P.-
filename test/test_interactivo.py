@@ -169,9 +169,9 @@ def probar_gestion():
     estado = nota_materia.esta_aprobado
     print(f"VERDICTO: -> {estado.value} <-")
     if estado == EstadoDeAprobacionMateria.MATERIA_APROBADA:
-        print("🎉 ¡Felicidades! Cumple con la nota mínima (>= 7.0) y la asistencia (>= 70%).")
+        print("¡Felicidades! Cumple con la nota minima (>= 7.0) y la asistencia (>= 70%).")
     else:
-        print("❌ Reprobado. No cumple con la nota mínima o asistencia requerida.")
+        print("Reprobado. No cumple con la nota minima o asistencia requerida.")
 
 def probar_institucion():
     limpiar_pantalla()

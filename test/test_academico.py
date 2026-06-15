@@ -1,6 +1,7 @@
 import sys
 import os
 import unittest
+from unittest.mock import patch
 
 # Añadir el directorio raíz del proyecto al path de búsqueda de Python
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -121,6 +122,27 @@ class TestAcademicoParametrizado(unittest.TestCase):
             SeccionBuilder().con_capacidad_estudiantil(30).build()
         with self.assertRaises(ValueError):
             SeccionBuilder().con_id_seccion("SEC-100").build()
+
+    @patch('builtins.input', side_effect=["SEC-INTERACTIVO", "45"])
+    def test_seccion_builder_con_inputs(self, mock_input):
+        """Prueba que se puede construir una Sección obteniendo los valores desde inputs simulados del usuario."""
+        # Simulamos que le pedimos los datos al usuario por consola (inputs del usuario)
+        id_seccion_input = input("Ingrese el ID de la sección: ")
+        capacidad_input = int(input("Ingrese la capacidad estudiantil: "))
+        
+        # Construimos la sección usando el builder con las entradas obtenidas
+        seccion = (
+            SeccionBuilder()
+            .con_id_seccion(id_seccion_input)
+            .con_capacidad_estudiantil(capacidad_input)
+            .con_materia(self.materia)
+            .build()
+        )
+        
+        # Verificamos que se haya construido correctamente con los datos ingresados
+        self.assertEqual(seccion.id_seccion, "SEC-INTERACTIVO")
+        self.assertEqual(seccion.capacidad_estudiantil, 45)
+        self.assertEqual(seccion.materia, self.materia)
 
 if __name__ == '__main__':
     unittest.main()

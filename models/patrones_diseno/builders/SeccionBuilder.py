@@ -88,9 +88,6 @@ class SeccionBuilder:
         return self
 
     def build(self) -> Seccion:
-        """
-        Construye y retorna una instancia de la clase Seccion con los atributos configurados.
-        """
         if self._id_seccion is None:
             raise ValueError("El atributo 'id_seccion' es requerido para construir una sección.")
         if self._capacidad_estudiantil is None:
