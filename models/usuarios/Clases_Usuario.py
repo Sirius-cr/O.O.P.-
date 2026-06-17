@@ -1,9 +1,5 @@
-from abc import ABC, abstractmethod
-
-class Usuario(ABC):
+class Usuario():
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia):
-        if type(self) is Usuario:
-            raise TypeError("No se puede instanciar la clase abstracta Usuario directamente.")
         self._cedula = cedula
         self.nombres = nombres
         self.apellidos = apellidos
@@ -13,13 +9,14 @@ class Usuario(ABC):
     @property
     def cedula(self): 
         return self._cedula
-
+    
     def obtener_cedula(self):
         return self._cedula
 
     def obtener_nombre_completo(self):
         return f"{self.nombres} {self.apellidos}"
     
+
     def cambiar_contrasenia(self, contrasenia_actual, nueva_contrasenia):
         if contrasenia_actual != self.__contrasenia:
             return False

@@ -7,7 +7,6 @@ class HistorialAcademico:
         self.lista_nota_materia = []  # Contiene objetos NotaMateria
 
     def crear_nota_materia(self, materia, parcial1=0.0, parcial2=0.0, asistencia=0):
-        # Composición: El historial crea internamente la calificación
         nota = NotaMateria(materia=materia, parcial1=parcial1, parcial2=parcial2, asistencia=asistencia, historial=self)
         self.lista_nota_materia.append(nota)
         return nota
@@ -25,20 +24,15 @@ class HistorialAcademico:
 
         tiene_materias_pendientes = False
 
-        # Recorremos los estados de cada materia individual
         for nota in self.lista_nota_materia:
             estado_materia = nota.esta_aprobado  # Llama a la property de NotaMateria
             
             if estado_materia == EstadoDeAprobacionMateria.MATERIA_PENDIENTE:
                 tiene_materias_pendientes = True
             elif estado_materia == EstadoDeAprobacionMateria.MATERIA_REPROBADA:
-                # Caso contrario: con una sola que repruebe, toda la nivelación se reprueba
                 return EstadoDeAprobacionNivelacion.REPROBADO 
 
-        # Si no hubo ninguna reprobada, pero hay alguna pendiente, la nivelación sigue pendiente
         if tiene_materias_pendientes:
             return EstadoDeAprobacionNivelacion.PENDIENTE
-            
-        # Si salimos limpios del bucle (todas están como MATERIA_APROBADA)
         return EstadoDeAprobacionNivelacion.APROBADO
     #Implementar logica que determine que si todas las materias tienen estadoAprobacion = True (esto se encuentra en notaMateria), entonces se retornará True, caso contrario False
