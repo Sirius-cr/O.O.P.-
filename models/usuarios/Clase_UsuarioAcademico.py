@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from models.usuarios.Clases_Usuario import Usuario
 
-class UsuarioAcademico(Usuario):
+class UsuarioAcademico(Usuario, ABC):
     def actualizar_datos_contacto(self, nuevo_correo):
         if "@" not in nuevo_correo:
             #print("Error: Formato de correo inválido.")
@@ -20,6 +20,4 @@ class UsuarioAcademico(Usuario):
         #el docente al ver rendiminento vera la media de aula y podra comparar calificaciones entre los estudiantes
         pass
     
-    @abstractmethod
-    def ver_perfil(self):
-        pass #cada usuario puede ver su perfil
+    

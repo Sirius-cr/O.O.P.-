@@ -7,18 +7,6 @@ class Coordinador(UsuarioAdministrativo):
         super().__init__(cedula, nombres, apellidos, correo, contrasenia)
         self.id_coordinador = id_coordinador
         self.fecha_asignacion_cargo = fecha_asignacion_cargo
-        self.carreras = []
-        self.secciones_coordinadas = []
-
-    def asociar_carrera(self, carrera):
-        if carrera not in self.carreras:
-            self.carreras.append(carrera)
-            carrera.asociar_coordinador(self)
-
-    def coordinar_seccion(self, seccion):
-        if seccion not in self.secciones_coordinadas:
-            self.secciones_coordinadas.append(seccion)
-            seccion.coordinador = self
         
     def abrir_periodo_matricula(self, periodo: Periodo):
         periodo.iniciar_periodo()
@@ -29,8 +17,24 @@ class Coordinador(UsuarioAdministrativo):
         return True
 
     def aprobar_retiro(self):
+        #Se implementará una vez que tengamos la base de datos lista
         return True
 
     def asignar_docente_a_seccion(self):
+        
         return True
         #Se terminará de programar despues de que seccion se realice correctamente con un builder
+
+    def asignar_lista_estudiante(self):        
+        #Se implementará una vez que tengamos la base de datos lista
+        return True
+        
+    def ver_perfil(self):
+        perfil = {
+            "Cédula": self.cedula,
+            "Nombre Completo": self.obtener_nombre_completo(),
+            "Correo": self._correo,
+            "ID Coordinador": self.id_coordinador,
+            "Fecha de Asignación al Cargo": self.fecha_asignacion_cargo
+        }
+        return perfil

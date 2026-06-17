@@ -8,14 +8,8 @@ class Estudiante(UsuarioAcademico):
         self._id_estudiante = id_estudiante
         self.nombre_periodo = nombre_periodo
         self.estado_matricula = estado_matricula
-        self._tipo_matricula = tipo_matricula
+        self.tipo_matricula = tipo_matricula
         self.historial = HistorialAcademico(id_historial=id_estudiante)  # Cada estudiante tiene un historial académico asociado
-        self.secciones_asociadas = []
-
-    def inscribir_seccion(self, secciones_asociadas):
-        if secciones_asociadas not in self.secciones_asociadas:
-            self.secciones_asociadas.append(secciones_asociadas)
-            secciones_asociadas.actualizar_estudiantes_inscritos(self)
 
     @property
     def esta_aprobado(self):
@@ -25,17 +19,20 @@ class Estudiante(UsuarioAcademico):
         return self.historial.obtener_peor_nota() #este metodo se definirá en la clase HistorialAcademico para obtener la peor nota del estudiante en los parciales
 
     def ver_perfil(self):
-        print(f"NOMBRE : {self.nombres}")
-        print(f"APELLIDOS : {self.apellidos}")
-        print(f"CEDULA : {self.cedula}")
-        print(f"CORREO : {self.correo}")
-        #cada usuario puede ver su perfil
+        perfil = {
+            "Cédula": self.cedula,
+            "Nombre Completo": self.obtener_nombre_completo(),
+            "Correo": self._correo,
+            "Estado de Matrícula": self.estado_matricula,
+            "Tipo de Matrícula": self.tipo_matricula
+        }
+        return perfil
 
     def solicitar_certificado(self):
         return True
 
     def obtener_historial_academico(self):
-        return []
+        return self.historial
 
     def solicitar_retiro(self):
         return True
