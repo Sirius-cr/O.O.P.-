@@ -16,3 +16,4 @@ La clase NotaMateria aun no implemente al completo la logica porque aun no se fi
 Realizar pruebas de feature 2 una vez que se termine de programar el nuevo UML
 
 Crear interfaz grafica
+Agregar un patron estructural al sistema
