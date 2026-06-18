@@ -1,5 +1,6 @@
 from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
 from models.gestion.Clase_HistorialAcademico import HistorialAcademico
+from models.gestion.Clase_Reporte import Reporte
 
 class Estudiante(UsuarioAcademico):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, estado_matricula, tipo_matricula):
@@ -31,11 +32,29 @@ class Estudiante(UsuarioAcademico):
         print(f"CORREO : {self.correo}")
         #cada usuario puede ver su perfil
 
-    def solicitar_certificado(self):
-        return True
+    def solicitar_certificado(self, formato_documento="Consola"):
+        contenido = (
+            f"El estudiante {self.obtener_nombre_completo()} (ID: {self._id_estudiante}) "
+            f"solicita un certificado de estudios oficiales para el periodo {self.nombre_periodo}."
+        )
+        return Reporte(
+            tipo_de_reporte="Solicitud de Certificado",
+            formato_documento=formato_documento,
+            emisor=self.obtener_nombre_completo(),
+            contenido=contenido
+        )
 
     def obtener_historial_academico(self):
         return []
 
-    def solicitar_retiro(self):
-        return True
+    def solicitar_retiro(self, motivo, formato_documento="Consola"):
+        contenido = (
+            f"El estudiante {self.obtener_nombre_completo()} (ID: {self._id_estudiante}) "
+            f"solicita el retiro del ciclo académico actual por el siguiente motivo: {motivo}."
+        )
+        return Reporte(
+            tipo_de_reporte="Solicitud de Retiro",
+            formato_documento=formato_documento,
+            emisor=self.obtener_nombre_completo(),
+            contenido=contenido
+        )

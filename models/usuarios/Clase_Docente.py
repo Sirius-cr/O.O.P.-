@@ -1,4 +1,5 @@
 from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
+from models.gestion.Clase_Reporte import Reporte
 
 class Docente(UsuarioAcademico):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia, especialidad):
@@ -25,3 +26,13 @@ class Docente(UsuarioAcademico):
         if seccion not in self.secciones:
             self.secciones.append(seccion)
             seccion.agregar_docente(self)
+
+    def realizaReporte(self, tipo_de_reporte, formato_documento, contenido):
+        return Reporte(
+            tipo_de_reporte=tipo_de_reporte,
+            formato_documento=formato_documento,
+            emisor=self.obtener_nombre_completo(),
+            contenido=contenido
+        )
+
+            
