@@ -6,26 +6,31 @@ class Usuario(ABC):
         self.nombres = nombres
         self.apellidos = apellidos
         self._correo = correo
-        self.__contrasenia = contrasenia
+        self.__contrasenia = contrasenia # Atributo privado
+
     @property
     def cedula(self): 
-        return self._cedula
-    
-    #Métodos 
-    def cambiar_contrasenia(self, contrasenia_actual, nueva_contrasenia):
-        if contrasenia_actual != self.__contrasenia:
-            return False
-        if len(nueva_contrasenia) < 8:
-            return False
-        self.__contrasenia = nueva_contrasenia
-        return True
-    
-    @abstractmethod
-    def ver_perfil(self):
-        pass 
-
-    def obtener_cedula(self):
         return self._cedula
 
     def obtener_nombre_completo(self):
         return f"{self.nombres} {self.apellidos}"
+    
+    #Validación
+    def _es_contrasenia_valida(self, nueva_contrasenia: str) -> bool:
+        if len(nueva_contrasenia) < 8:
+            return False
+        # Aquí puedes añadir más reglas futuras: 
+        # (ej: debe tener números, mayúsculas, etc.)
+        return True
+
+    def cambiar_contrasenia(self, contrasenia_actual, nueva_contrasenia):
+        #Validar identidad
+        if contrasenia_actual != self.__contrasenia:
+            return False
+            
+        # Validar reglas de negocio
+        if not self._es_contrasenia_valida(nueva_contrasenia):
+            return False
+            
+        self.__contrasenia = nueva_contrasenia
+        return True

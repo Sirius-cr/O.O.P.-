@@ -1,8 +1,10 @@
 from enum import Enum
 
-class EstadoDeAprobacionMateria(Enum):
+class ReglasDeAprobacion:
     NOTA_MINIMA_APROBACION = 7.0
     ASISTENCIA_MINIMA = 70
+
+class EstadoDeAprobacionMateria(Enum):
     MATERIA_APROBADA = 'Materia aprobada'
     MATERIA_REPROBADA = 'Materia reprobada'
     MATERIA_PENDIENTE = 'Materia pendiente'

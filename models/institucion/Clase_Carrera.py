@@ -1,6 +1,5 @@
 from models.institucion.Clase_Universidad import Universidad 
-from models.gestion.Clase_Reporte import Reporte
-#en tal caso de que se programe la composición lo dejaré de esta manera
+#Se elimina la importacion para evitar que el acoplamietno se enrede entre modulos
 
 class Carrera:
     def __init__(self, id_carrera : str, nombre_carrera : str, capacidad_estudiantil : int, estudiantes_inscritos : int = 0 ):
@@ -28,8 +27,10 @@ class Carrera:
     def __crear_lista_estudiantes(self): #esta funcion es privada segun yo se pone asi
         return f"la lista de estudiantes a sido creada, la lista cuenta con {self.estudiantes_inscritos}" 
 
-
-    def mostrar_datos_carrera(self, formato_documento):
+    #Segun geminis es mejor dejarlo como un dicionario para enviar los datos 
+    # en crudo y luego se les aplica al formulario que los pida
+    #Desabilitada por si acaso
+    # def mostrar_datos_carrera(self, formato_documento):
         contenido = (
             f"Código Carrera: {self._id_carrera}\n"
             f"Carrera:        {self.nombre_carrera}\n"
@@ -38,7 +39,13 @@ class Carrera:
         )
         return Reporte("Reporte de Carrera", formato_documento, f"Dirección de Carrera: {self.nombre_carrera}", contenido)
 
-
-
-    
+#Metodo que devuelve los datos en crudo
+    def obtener_resumen_datos(self):
+            return {
+                "codigo_carrera": self._id_carrera,
+                "nombre": self.nombre_carrera,
+                "capacidad_maxima": self.capacidad_estudiantil,
+                "inscritos": self.estudiantes_inscritos
+            }
+        
         

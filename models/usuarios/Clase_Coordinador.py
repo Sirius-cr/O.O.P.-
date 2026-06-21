@@ -1,6 +1,6 @@
 from models.usuarios.Clase_UsuarioAdministrativo import UsuarioAdministrativo
 from models.academico.Clase_Periodo import Periodo
-from models.gestion.Clase_Reporte import Reporte
+from models.gestion.Clase_Reporte import GestorReportes
 
 class Coordinador(UsuarioAdministrativo):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_coordinador, fecha_asignacion_cargo):

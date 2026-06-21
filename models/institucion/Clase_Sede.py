@@ -13,6 +13,13 @@ class Sede:
     def mostrar_facultades(self):
         return self.facultades
     
-    def agregar_facultad(self, facultad_objeto):
+    def agregar_facultad(self, facultad_objeto) -> str:
+        # Validación para evitar duplicidad por nombre o instancia
+        if facultad_objeto in self.facultades:
+            return f"Error: La facultad {facultad_objeto.nombre_facultad} ya existe en esta sede."
+            
         self.facultades.append(facultad_objeto)
-        return f"facultad {facultad_objeto.nombre_facultad} agregada a la sede {self.nombre_sede}"
+        return f"Facultad {facultad_objeto.nombre_facultad} agregada a la sede {self.nombre_sede}"
+
+    def __str__(self):
+        return f"Sede {self.nombre_sede} ({self.ubicacion})"
