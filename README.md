@@ -17,3 +17,5 @@ Realizar pruebas de feature 2 una vez que se termine de programar el nuevo UML
 
 Crear interfaz grafica
 Agregar un patron estructural al sistema
+
+La funcion filtrar por docentes agregarla 

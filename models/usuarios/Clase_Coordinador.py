@@ -21,7 +21,6 @@ class Coordinador(UsuarioAdministrativo):
         return True
 
     def asignar_docente_a_seccion(self):
-        
         return True
         #Se terminará de programar despues de que seccion se realice correctamente con un builder
 
@@ -39,3 +38,13 @@ class Coordinador(UsuarioAdministrativo):
         }
         return perfil
 
+    
+    def filtrar_docentes_por_especialidad(self, docentes, especialidad):
+        docentes_filtrados = []
+
+        for docente in docentes:
+            if especialidad in docente.especialidades:
+                docentes_filtrados.append(docente)
+
+        return docentes_filtrados
+    
