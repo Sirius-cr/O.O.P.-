@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from models.academico.Clase_Materia import Materia
 from models.gestion.Clase_Matricula import Matricula
-from models.patrones_diseno.builders.PostulanteBuilder import PostulanteBuilder
+#from models.patrones_diseno.builders.PostulanteBuilder import PostulanteBuilder
 
 
 materia_prueba = Materia(
