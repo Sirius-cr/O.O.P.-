@@ -14,3 +14,6 @@ verHorario() metodo de los usuariosAcademicos se programará una vez que se term
 La clase NotaMateria aun no implemente al completo la logica porque aun no se finaliza la codificacion de la clase Periodo
 
 Realizar pruebas de feature 2 una vez que se termine de programar el nuevo UML
+
+Crear interfaz grafica
+Agregar un patron estructural al sistema
