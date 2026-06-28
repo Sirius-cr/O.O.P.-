@@ -1,5 +1,6 @@
 from models.enums.Estado_Aprobacion import EstadoDeAprobacionMateria
 from models.academico.Clase_Materia import Materia
+from models.enums.Estado_Periodo import EstadoPeriodo
 
 class NotaMateria:
     def __init__(self, materia: Materia, parcial1 = 0.0 , parcial2 = 0.0, asistencia = 0, historial = None):
@@ -19,8 +20,11 @@ class NotaMateria:
 
     @property
     def esta_aprobado(self):
-        #Aqui tambien se deberá colocar una validación, si el estado del periodo aun no se cierra por el coordinador, el esta_aprobado estará en estado pendiente, caso contrario se evaluará si el estudiante aprobó o no la materia, dependiendo de su nota final y asistencia.
+    # Si no hay historial o el período NO ha finalizado, la materia queda pendiente
+        if self.historial is None or self.historial.estado_periodo != EstadoPeriodo.FINALIZADO.value:
+            return EstadoDeAprobacionMateria.PENDIENTE
 
+    # Si el período ya finalizó, aplicamos las reglas de negocio con tus constantes
         if self.nota_final >= EstadoDeAprobacionMateria.NOTA_MINIMA_APROBACION.value and self.asistencia >= EstadoDeAprobacionMateria.ASISTENCIA_MINIMA.value:
             return EstadoDeAprobacionMateria.MATERIA_APROBADA
         else:
