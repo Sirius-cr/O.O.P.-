@@ -1,5 +1,5 @@
 from models.institucion.Clase_Universidad import Universidad 
-from models.gestion.Clase_Reporte import Reporte
+from models.gestion.Clase_Reporte import ReporteConsola
 #en tal caso de que se programe la composición lo dejaré de esta manera
 
 class Carrera:
@@ -36,7 +36,7 @@ class Carrera:
             f"Capacidad Máx:  {self.capacidad_estudiantil}\n"
             f"Inscritos:      {self.estudiantes_inscritos}"
         )
-        return Reporte("Reporte de Carrera", formato_documento, f"Dirección de Carrera: {self.nombre_carrera}", contenido)
+        return ReporteConsola("Reporte de Carrera", formato_documento, f"Dirección de Carrera: {self.nombre_carrera}", contenido)
 
 
 

@@ -6,11 +6,7 @@ class MallaCurricular:
         self.area_conocimiento = area_conocimiento
         self.lista_materias = []
         self.carrera = carrera
-        self.ofertas_academicas = []
 
-    def agregar_oferta_academica(self,oferta):
-        if oferta not in self.ofertas_academicas:
-            self.ofertas_academicas.append(oferta)
 
     def agregar_materias(self, materia_objeto):
         self.lista_materias.append(materia_objeto)
