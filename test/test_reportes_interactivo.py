@@ -50,10 +50,9 @@ def simular_interactivo():
             contrasenia = input("Contraseña [claveEstudiante]: ").strip() or "claveEstudiante"
             id_estudiante = input("ID Estudiante [EST-001]: ").strip() or "EST-001"
             nombre_periodo = input("Periodo Académico [Nivelación 2026]: ").strip() or "Nivelación 2026"
-            estado_matricula = input("Estado de Matricula [Matriculado]: ").strip() or "Matriculado"
             tipo_matricula = input("Tipo de Matricula [Ordinaria]: ").strip() or "Ordinaria"
             
-            estudiante = Estudiante(cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, estado_matricula, tipo_matricula)
+            estudiante = Estudiante(cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, tipo_matricula)
             
             formato = input("Formato del documento (PDF/Consola) [PDF]: ").strip() or "PDF"
             
@@ -71,10 +70,9 @@ def simular_interactivo():
             contrasenia = input("Contraseña [claveEstudiante]: ").strip() or "claveEstudiante"
             id_estudiante = input("ID Estudiante [EST-001]: ").strip() or "EST-001"
             nombre_periodo = input("Periodo Académico [Nivelación 2026]: ").strip() or "Nivelación 2026"
-            estado_matricula = input("Estado de Matricula [Matriculado]: ").strip() or "Matriculado"
             tipo_matricula = input("Tipo de Matricula [Ordinaria]: ").strip() or "Ordinaria"
             
-            estudiante = Estudiante(cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, estado_matricula, tipo_matricula)
+            estudiante = Estudiante(cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, tipo_matricula)
             
             motivo = input("Motivo del retiro [Fuerza Mayor]: ").strip() or "Fuerza Mayor"
             formato = input("Formato del documento (PDF/Consola) [Consola]: ").strip() or "Consola"

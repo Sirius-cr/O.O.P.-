@@ -1,5 +1,5 @@
 from models.institucion.Clase_Universidad import Universidad 
-from models.gestion.Clase_Reporte import Reporte
+from models.patrones_diseno.strategy.ReporteStrategy import Reporte
 #en tal caso de que se programe la composición lo dejaré de esta manera
 
 class Carrera:

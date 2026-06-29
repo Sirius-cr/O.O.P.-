@@ -1,0 +1,220 @@
+{
+  "periodo": {
+    "nombre_periodo": "Nivelación 2026",
+    "fecha_inicio": "2026-05-01",
+    "fecha_final": "2026-10-31",
+    "estado_periodo": "En curso"
+  },
+  "usuarios": {
+    "coordinadores": [
+      {
+        "cedula": "1307654321",
+        "nombres": "Alejandro",
+        "apellidos": "Véliz",
+        "correo": "coordinador@uleam.edu.ec",
+        "contrasenia": "claveCoordinador",
+        "id_coordinador": "COORD-01",
+        "fecha_asignacion_cargo": "2024-05-10"
+      },
+      {
+        "cedula": "1307654321",
+        "nombres": "Julean",
+        "apellidos": "Pilligua",
+        "correo": "coordinador2@uleam.edu.ec",
+        "contrasenia": "claveCoordinador",
+        "id_coordinador": "COORD-01",
+        "fecha_asignacion_cargo": "2024-05-10"
+      }
+    ],
+    "docentes": [
+      {
+        "cedula": "1309876543",
+        "nombres": "María",
+        "apellidos": "Rodríguez",
+        "correo": "maria.rodriguez@uleam.edu.ec",
+        "contrasenia": "docente2026",
+        "especialidad": "Ingeniería de Software"
+      }
+    ],
+    "estudiantes": [
+      {
+        "cedula": "1312345678",
+        "nombres": "Carlos",
+        "apellidos": "Mendoza",
+        "correo": "carlos.mendoza@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-001",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria"
+      }
+    ]
+  },
+  "materias": [
+    {
+      "id_materia": "MAT-01",
+      "nombre_materia": "Programación",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-02",
+      "nombre_materia": "Matemáticas",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    }
+  ],
+  "secciones": [
+    {
+      "id_seccion": "SEC-PROG-A",
+      "capacidad_estudiantil": 30,
+      "materia_id": "MAT-01",
+      "docentes_correos": [
+        "maria.rodriguez@uleam.edu.ec"
+      ],
+      "estudiantes_ids": [
+        "EST-001"
+      ],
+      "horarios": [
+        {
+          "turno": "Matutino",
+          "hora_inicio": "07:30",
+          "hora_fin": "09:30",
+          "modalidad": "Presencial"
+        }
+      ],
+      "aula_virtual": {
+        "capacidad_maxima": 40,
+        "enlace_plataforma": "https://teams.microsoft.com/meet/clase-teorica",
+        "tipo_plataforma": "TEAMS"
+      }
+    },
+    {
+      "id_seccion": "SEC-MATE-A",
+      "capacidad_estudiantil": 30,
+      "materia_id": "MAT-02",
+      "docentes_correos": [
+        "maria.rodriguez@uleam.edu.ec"
+      ],
+      "estudiantes_ids": [
+        "EST-001"
+      ],
+      "horarios": [
+        {
+          "turno": "Vespertino",
+          "hora_inicio": "13:00",
+          "hora_fin": "15:00",
+          "modalidad": "Virtual"
+        }
+      ],
+      "aula_virtual": {
+        "capacidad_maxima": 50,
+        "enlace_plataforma": "https://teams.microsoft.com/meet/clase-teorica",
+        "tipo_plataforma": "TEAMS"
+      }
+    },
+    {
+      "id_seccion": "MAT-105",
+      "capacidad_estudiantil": 40,
+      "materia_id": "MAT-02",
+      "docentes_correos": [
+        "maria.rodriguez@uleam.edu.ec"
+      ],
+      "estudiantes_ids": [],
+      "horarios": [
+        {
+          "turno": "Matutino",
+          "hora_inicio": "07:00",
+          "hora_fin": "09:00",
+          "modalidad": "Presencial"
+        }
+      ],
+      "aula_virtual": null
+    }
+  ],
+  "carreras": [
+    {
+      "id_carrera": "SOFT-001",
+      "nombre_carrera": "Ingeniería en Software",
+      "capacidad_estudiantil": 80
+    }
+  ],
+  "notas": [
+    {
+      "estudiante_id": "EST-001",
+      "materia_id": "MAT-01",
+      "parcial1": 5.0,
+      "parcial2": 3.8,
+      "asistencia": 100,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-001",
+      "materia_id": "MAT-02",
+      "parcial1": 3.8,
+      "parcial2": 4.0,
+      "asistencia": 90,
+      "periodo_cerrado": false
+    }
+  ],
+  "solicitudes_retiro": [
+    {
+      "id": 1,
+      "estudiante_id": "EST-001",
+      "nombre": "Carlos Mendoza",
+      "correo": "carlos.mendoza@live.uleam.edu.ec",
+      "motivo": "YA NO QUIERO ESTUDIAR ESTO",
+      "fecha": "2026-06-29 08:15:43",
+      "estado": "Rechazado"
+    }
+  ],
+  "reportes_generados": [
+    {
+      "tipo_de_reporte": "Hola amigos esta es la primera prueba de reporte docente",
+      "formato_documento": "PDF",
+      "emisor": "María Rodríguez",
+      "contenido": "Haber si funciona esto"
+    },
+    {
+      "tipo_de_reporte": "Reporte de Carrera",
+      "formato_documento": "PDF",
+      "emisor": "Dirección de Carrera: Ingeniería en Software",
+      "contenido": "Código Carrera: SOFT-001\nCarrera:        Ingeniería en Software\nCapacidad Máx:  80\nInscritos:      1"
+    },
+    {
+      "tipo_de_reporte": "prueba 2",
+      "formato_documento": "Consola",
+      "emisor": "María Rodríguez",
+      "contenido": "prueba 2"
+    },
+    {
+      "tipo_de_reporte": "3",
+      "formato_documento": "PDF",
+      "emisor": "María Rodríguez",
+      "contenido": "333"
+    },
+    {
+      "tipo_de_reporte": "4",
+      "formato_documento": "PDF",
+      "emisor": "María Rodríguez",
+      "contenido": "44444"
+    },
+    {
+      "tipo_de_reporte": "ffefeefffe",
+      "formato_documento": "Consola",
+      "emisor": "María Rodríguez",
+      "contenido": "ffef"
+    },
+    {
+      "tipo_de_reporte": "2424",
+      "formato_documento": "PDF",
+      "emisor": "María Rodríguez",
+      "contenido": "2424442"
+    },
+    {
+      "tipo_de_reporte": "Hola papus",
+      "formato_documento": "PDF",
+      "emisor": "María Rodríguez",
+      "contenido": "esta es otra prueba papus reporte deidad chad"
+    }
+  ]
+}

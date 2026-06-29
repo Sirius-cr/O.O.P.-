@@ -8,12 +8,11 @@ from models.usuarios.Clase_Estudiante import Estudiante
 from models.usuarios.Clase_Docente import Docente
 from models.academico.Clase_Materia import Materia
 from models.academico.Clase_Seccion import Seccion
-from models.academico.Clase_AulaVirtual import AulaVirtual
+from models.patrones_diseno.bridge.AulaVirtualBridge import AulaVirtual, ServicioTeams
 from models.gestion.Clase_NotaMateria import NotaMateria
 from models.enums.Estado_Aprobacion import EstadoDeAprobacionMateria
 from models.institucion.Clase_Universidad import Universidad
 from models.institucion.Clase_Sede import Sede
-from models.institucion.Clase_Facultad import Facultad
 from models.institucion.Clase_Carrera import Carrera
 
 def limpiar_pantalla():
@@ -46,7 +45,6 @@ def probar_usuarios():
         contrasenia=contrasenia,
         id_estudiante=id_est,
         nombre_periodo=periodo,
-        estado_matricula="Matriculado",
         tipo_matricula="Ordinaria"
     )
     print(f"\n[OK] Estudiante creado: {estudiante.obtener_nombre_completo()}")
@@ -99,7 +97,7 @@ def probar_academico():
             cap_aula = int(cap_aula_str)
         except ValueError:
             cap_aula = 20
-        aula = AulaVirtual(capacidad_maxima=cap_aula, enlace_plataforma="http://teams.uleam.edu.ec", tipo_plataforma="Teams")
+        aula = AulaVirtual(capacidad_maxima=cap_aula, servicio=ServicioTeams())
         seccion.asignar_aula_virtual(aula)
         print(f"[OK] Aula Virtual asignada con capacidad de {cap_aula}.")
     
@@ -123,7 +121,6 @@ def probar_academico():
             contrasenia="pass123",
             id_estudiante=f"EST-{i:03d}",
             nombre_periodo="2026",
-            estado_matricula="Matriculado",
             tipo_matricula="Ordinaria"
         )
         # El estudiante se inscribe en la sección
@@ -155,8 +152,13 @@ def probar_gestion():
         print("[ERROR] Entrada numérica inválida. Se usarán valores predeterminados (0).")
         parcial1, parcial2, asistencia = 0.0, 0.0, 0
         
+    from models.academico.Clase_Periodo import Periodo
+    from models.enums.Estado_Periodo import EstadoPeriodo
+    periodo = Periodo("Periodo Prueba", "2026-01-01", "2026-06-30")
+    periodo._estado_periodo = EstadoPeriodo.FINALIZADO
+
     materia = Materia("MAT-CALC", materia_nombre)
-    nota_materia = NotaMateria(materia=materia, parcial1=parcial1, parcial2=parcial2, asistencia=asistencia)
+    nota_materia = NotaMateria(materia=materia, periodo=periodo, parcial1=parcial1, parcial2=parcial2, asistencia=asistencia)
     
     print("\n--- Paso 2: Resultados calculados ---")
     print(f"Materia:      {nota_materia.materia.nombre_materia}")
@@ -190,19 +192,7 @@ def probar_institucion():
     universidad.agregar_sede(sede)
     print(f"\n[OK] Universidad '{universidad.nombre_uni}' registrada con sede '{sede.nombre_sede}'.")
     
-    print("\n--- Paso 2: Registrar Facultad ---")
-    nombre_fac = input("Nombre de la Facultad: ").strip() or "Facultad de Ingeniería"
-    try:
-        salones = int(input("Número de salones: ").strip() or "10")
-        labs = int(input("Número de laboratorios: ").strip() or "5")
-    except ValueError:
-        salones, labs = 10, 5
-        
-    facultad = Facultad(nombre_fac, salones, labs)
-    msg_fac = sede.agregar_facultad(facultad)
-    print(f"[OK] {msg_fac}")
-    
-    print("\n--- Paso 3: Vincular Carrera ---")
+    print("\n--- Paso 2: Registrar Carrera ---")
     id_carrera = input("Código único de la Carrera (Ej: SOFT): ").strip().upper() or "SOFT"
     nombre_carrera = input("Nombre completo de la Carrera: ").strip() or "Ingeniería en Software"
     try:
@@ -211,10 +201,9 @@ def probar_institucion():
         cap_carrera = 100
         
     carrera = Carrera(id_carrera, nombre_carrera, cap_carrera)
-    msg_carrera = facultad.importar_carrera(carrera)
-    print(f"[OK] {msg_carrera}")
+    print(f"[OK] Carrera '{carrera.nombre_carrera}' creada.")
     
-    print("\n--- Paso 4: Reporte final de la Carrera ---")
+    print("\n--- Paso 3: Reporte final de la Carrera ---")
     formato = input("Formato del reporte (Ej: PDF / TXT / EXCEL): ").strip().upper() or "PDF"
     reporte = carrera.mostrar_datos_carrera(formato)
     

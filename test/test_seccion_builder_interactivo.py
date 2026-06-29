@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from models.academico.Clase_Materia import Materia
-from models.academico.Clase_AulaVirtual import AulaVirtual
+from models.patrones_diseno.bridge.AulaVirtualBridge import AulaVirtual, ServicioTeams
 from models.patrones_diseno.builders.SeccionBuilder import SeccionBuilder
 
 def main():
@@ -55,7 +55,7 @@ def main():
             try:
                 cap_aula = int(cap_aula_str)
                 if cap_aula > 0:
-                    aula = AulaVirtual(capacidad_maxima=cap_aula, enlace_plataforma="http://virtual.uleam.edu.ec", tipo_plataforma="Teams")
+                    aula = AulaVirtual(capacidad_maxima=cap_aula, servicio=ServicioTeams())
                     builder.con_aula_virtual(aula)
                     print(f"   -> Aula Virtual (capacidad: {cap_aula}) agregada al Builder.")
                     break

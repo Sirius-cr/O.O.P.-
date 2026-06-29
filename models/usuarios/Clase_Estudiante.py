@@ -1,14 +1,13 @@
 from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
 from models.gestion.Clase_HistorialAcademico import HistorialAcademico
-from models.gestion.Clase_Reporte import Reporte
+from models.patrones_diseno.strategy.ReporteStrategy import Reporte
 
 class Estudiante(UsuarioAcademico):
-    def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, estado_matricula, tipo_matricula):
+    def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, tipo_matricula):
         super().__init__(cedula, nombres, apellidos, correo, contrasenia)
 
         self._id_estudiante = id_estudiante
         self.nombre_periodo = nombre_periodo
-        self.estado_matricula = estado_matricula
         self._tipo_matricula = tipo_matricula
         self.historial = HistorialAcademico(id_historial=id_estudiante)  # Cada estudiante tiene un historial académico asociado
         self.secciones_asociadas = []
@@ -20,7 +19,7 @@ class Estudiante(UsuarioAcademico):
 
     @property
     def esta_aprobado(self):
-        return self.historial.verificar_aprobacion_nivelacion()
+        return self.historial.estado_nivelacion_actual
     
     def ver_rendimiento(self):
         return self.historial.obtener_peor_nota() #este metodo se definirá en la clase HistorialAcademico para obtener la peor nota del estudiante en los parciales

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Docente - ULEAM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Barra Lateral Izquierda (Sidebar) -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo">ULEAM</div>
+                <div class="brand-subtitle">Portal Docente</div>
+            </div>
+            <div class="sidebar-menu">
+                <button class="nav-tab-btn active" data-tab="tab-secciones">Gestión de Secciones</button>
+                <button class="nav-tab-btn" data-tab="tab-reportes">Reportes y Solicitudes</button>
+            </div>
+            <div class="sidebar-footer">
+                <strong>Soporte Técnico</strong><br>
+                Universidad Laica Eloy Alfaro de Manabí
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <!-- Barra de Navegación Principal -->
+            <nav class="main-navbar">
+                <div class="nav-brand">Portal Docente</div>
+                <div class="nav-user">
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;">Cerrar Sesión</a>
+                </div>
+            </nav>
+
+            <!-- Contenido Principal -->
+            <main class="main-content">
+                <!-- Encabezado del Dashboard -->
+                <div class="dashboard-header">
+                    <div class="dashboard-title">
+                        <h2>Bienvenido, Prof. {{ docente.nombres }} {{ docente.apellidos }}</h2>
+                        <p>Especialidad: {{ docente.especialidad }} | Estado Periodo: <strong>{{ estado_periodo }}</strong></p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <!-- Dropdown de Usuario -->
+                        <div class="user-dropdown-container">
+                            <button class="btn btn-secondary" id="btn-usuario" style="padding: 10px 18px; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                                Usuario
+                            </button>
+                            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                                <div style="text-align: center; margin-bottom: 15px;">
+                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: #ffffff; border: 2px solid rgba(0,0,0,0.05);">
+                                        {{ docente.nombres[0] }}{{ docente.apellidos[0] }}
+                                    </div>
+                                    <h4 style="font-size: 1.1rem; margin-bottom: 2px; font-family: 'Merriweather', serif;">{{ docente.obtener_nombre_completo() }}</h4>
+                                    <span style="font-size: 0.75rem; color: var(--text-secondary);">Docente de Nivelación</span>
+                                </div>
+                                <hr style="border: 0; border-top: 1px solid var(--card-border); margin: 12px 0;">
+                                <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;">
+                                    <div><span style="color: var(--text-secondary);">Cédula:</span> <strong style="float: right;">{{ docente.cedula }}</strong></div>
+                                    <div><span style="color: var(--text-secondary);">Correo:</span> <strong style="float: right; font-size: 0.75rem;">{{ docente._correo }}</strong></div>
+                                    <div><span style="color: var(--text-secondary);">Especialidad:</span> <strong style="float: right; font-size: 0.75rem; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ docente.especialidad }}">{{ docente.especialidad }}</strong></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card" style="padding: 15px 25px; text-align: center; border-left: 4px solid var(--primary);">
+                            <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">Promedio de Rendimiento General</span>
+                            <div style="font-size: 1.5rem; font-weight: 700; margin-top: 5px; color: var(--primary);">
+                                {{ "%.2f"|format(promedio_rendimiento) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- TAB 1: Gestión de Secciones -->
+            <div id="tab-secciones" class="tab-pane active">
+                
+                <!-- VISTA A: Cuadritos de Materias -->
+                <div id="subjects-grid" class="subjects-grid">
+                    {% for sec in secciones %}
+                    <div class="subject-card glass-card" onclick="showSubjectStudents('{{ sec.id_seccion }}')">
+                        <div class="subject-card-header">
+                            {% if 'prog' in sec.materia|lower or 'sof' in sec.materia|lower %}
+                            <img src="{{ url_for('static', filename='images/programacion_cover.jpg') }}" alt="{{ sec.materia }}">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='images/matematicas_cover.jpg') }}" alt="{{ sec.materia }}">
+                            {% endif %}
+                        </div>
+                        <div class="subject-card-body">
+                            <h4>{{ sec.materia }}</h4>
+                            <p>Sección: <strong>{{ sec.id_seccion }}</strong></p>
+                            <p>Estudiantes: <strong>{{ sec.inscritos_count }} / {{ sec.capacidad }}</strong></p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="glass-card" style="padding: 20px; color: var(--text-secondary); text-align: center; width: 100%;">
+                        No tienes secciones asignadas en este período.
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- VISTA B: Listado de Alumnos (Oculto al inicio) -->
+                <div id="students-view-container" style="display: none; animation: fadeIn 0.3s ease-out;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; background: #ffffff; padding: 15px 20px; border-radius: var(--radius-sm); border: 1px solid var(--card-border); box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <button class="btn btn-secondary" onclick="hideSubjectStudents()" style="padding: 8px 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; width: auto; font-weight: 600;">
+                            Volver a Asignaturas
+                        </button>
+                        
+                        <!-- Barra de búsqueda única -->
+                        <div style="position: relative; width: 350px;">
+                            <input type="text" id="student-search-input" class="form-control" placeholder="Buscar por ID, nombre o cédula..." style="padding-left: 15px;">
+                        </div>
+                    </div>
+                    
+                    <div id="students-tables-list">
+                        {% for sec in secciones %}
+                        <div class="glass-card section-students-table" data-section-id="{{ sec.id_seccion }}" style="display: none; margin-bottom: 25px;">
+                            <div class="card-title-header">
+                                <div>
+                                    <h3>Listado de Alumnos - {{ sec.materia }}</h3>
+                                    <span style="font-size: 0.8rem; color: var(--text-secondary);">Código de Sección: {{ sec.id_seccion }} | Cupos Máximos: {{ sec.capacidad }}</span>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <span class="user-badge">Inscritos: <strong>{{ sec.inscritos_count }}</strong></span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body-content table-container">
+                                {% if estado_periodo == 'Finalizado' %}
+                                <div class="badge badge-danger" style="display: block; margin-bottom: 15px; padding: 10px; border-radius: 6px; text-transform: none; font-size: 0.85rem;">
+                                    El periodo académico ha sido FINALIZADO por el coordinador. Las notas están consolidadas y no se pueden modificar.
+                                </div>
+                                {% endif %}
+                                <table class="premium-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre Completo</th>
+                                            <th style="text-align: center; width: 100px;">Parcial 1 (5.0)</th>
+                                            <th style="text-align: center; width: 100px;">Parcial 2 (5.0)</th>
+                                            <th style="text-align: center; width: 100px;">Nota Final</th>
+                                            <th style="text-align: center; width: 100px;">Asistencia (%)</th>
+                                            <th style="text-align: center;">Estado</th>
+                                            {% if estado_periodo != 'Finalizado' %}
+                                            <th style="text-align: right; width: 100px;">Acciones</th>
+                                            {% endif %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for al in sec.estudiantes %}
+                                        <tr id="row-{{ al.id_estudiante }}" data-cedula="{{ al.cedula }}">
+                                            <td>{{ al.id_estudiante }}</td>
+                                            <td style="font-weight: 500;">
+                                                <a href="javascript:void(0)" onclick="viewStudentDetails('{{ al.id_estudiante }}')" style="color: var(--primary); text-decoration: underline; font-weight: 600; cursor: pointer;">
+                                                    {{ al.nombre }}
+                                                </a>
+                                            </td>
+                                            
+                                            <!-- Inputs de Notas -->
+                                            <td style="text-align: center;">
+                                                <input type="number" step="0.1" min="0" max="5.0" class="grade-input-field p1-input" value="{{ al.parcial1 }}" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <input type="number" step="0.1" min="0" max="5.0" class="grade-input-field p2-input" value="{{ al.parcial2 }}" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
+                                            </td>
+                                            
+                                            <!-- Nota Final Calculada -->
+                                            <td style="text-align: center; font-weight: 700; color: var(--primary);" class="final-grade-cell">
+                                                {{ "%.2f"|format(al.nota_final) }}
+                                            </td>
+                                            
+                                            <!-- Input de Asistencia -->
+                                            <td style="text-align: center;">
+                                                <input type="number" min="0" max="100" class="grade-input-field asistencia-input" value="{{ al.asistencia }}" style="width: 70px;" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
+                                            </td>
+
+                                            <td style="text-align: center;">
+                                                <span class="badge {% if 'aprobada' in al.estado_aprobacion.lower() %} badge-success {% elif 'reprobada' in al.estado_aprobacion.lower() %} badge-danger {% else %} badge-warning {% endif %}">
+                                                    {{ al.estado_aprobacion }}
+                                                </span>
+                                            </td>
+                                            
+                                            {% if estado_periodo != 'Finalizado' %}
+                                            <td style="text-align: right;">
+                                                <button onclick="saveGrades('{{ al.id_estudiante }}', '{{ sec.id_seccion }}')" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem; width: auto;">
+                                                    Guardar
+                                                </button>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="8" style="text-align: center; color: var(--text-secondary);">No hay estudiantes inscritos en esta sección.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Reportes y Solicitudes -->
+            <div id="tab-reportes" class="tab-pane">
+                <div class="glass-card">
+                    <div class="card-title-header">
+                        <h3>Crear Reporte como Docente</h3>
+                    </div>
+                    <div class="card-body-content">
+                        <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+                            Permite registrar reportes oficiales para solicitar equipamientos, mantenimientos, o documentar el rendimiento y conducta académica del aula.
+                        </p>
+                        <button onclick="openModal('modal-create-report')" class="btn btn-primary" style="width: auto;">
+                            Redactar Nuevo Reporte
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Historial de reportes generados -->
+                <div class="glass-card" style="margin-top: 25px;">
+                    <div class="card-title-header">
+                        <h3>Mis Reportes Generados</h3>
+                    </div>
+                    <div class="card-body-content table-container">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo de Reporte</th>
+                                    <th>Formato</th>
+                                    <th>Emisor</th>
+                                    <th style="text-align: right;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rep in reportes %}
+                                <tr>
+                                    <td style="font-weight: 500;">{{ rep.tipo_de_reporte }}</td>
+                                    <td><span class="badge badge-success">{{ rep.formato_documento }}</span></td>
+                                    <td>{{ rep.emisor }}</td>
+                                    <td style="text-align: right;">
+                                        <button onclick="viewReportConsole(`{{ rep.imprimir_reporte() }}`)" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                                            Imprimir / Ver Consola
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" style="text-align: center; color: var(--text-secondary);">Aún no has generado reportes oficiales en este periodo.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+
+
+        </main>
+    </div>
+</div>
+
+    <!-- MODAL DE REDACCIÓN DE REPORTE -->
+    <div id="modal-create-report" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header">
+                <h3>Redacción de Reporte del Docente</h3>
+                <button onclick="closeModal('modal-create-report')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-docente-report">
+                    <div class="form-group">
+                        <label for="tipo-reporte">Tipo de Reporte / Solicitud</label>
+                        <input type="text" id="tipo-reporte" name="tipo_reporte" class="form-control" placeholder="Ej: Solicitud de Mantenimiento de Aulas, Reporte de Notas" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contenido-reporte">Contenido del Reporte</label>
+                        <textarea id="contenido-reporte" name="contenido" class="form-control" rows="5" placeholder="Redacte el cuerpo de la solicitud u observaciones académicas..." required></textarea>
+                    </div>
+                    <div class="form-group" style="max-width: 250px;">
+                        <label for="formato-reporte">Formato de Salida</label>
+                        <select id="formato-reporte" name="formato" class="form-control" style="background: var(--bg-primary);">
+                            <option value="PDF">PDF Oficial</option>
+                            <option value="Consola">Consola Standard</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Enviar Reporte</button>
+                        <button type="button" onclick="closeModal('modal-create-report')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA VER CONSOLA DE REPORTE -->
+    <div id="modal-view-report" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 700px;">
+            <div class="card-title-header">
+                <h3>Visualizador de Consola (Vista de Reporte)</h3>
+                <button onclick="closeModal('modal-view-report')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">El reporte ha sido generado por las clases de la aplicación con la estructura de reportes POO de la universidad:</p>
+                <div id="report-console-content" class="console-box"></div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button onclick="closeModal('modal-view-report')" class="btn btn-primary" style="width: auto;">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FICHA DE ESTUDIANTE -->
+    <div id="modal-student-detail" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 850px; width: 95%;">
+            <div class="card-title-header">
+                <h3>Expediente del Estudiante</h3>
+                <button onclick="closeModal('modal-student-detail')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content" id="student-detail-content" style="padding: 24px;">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

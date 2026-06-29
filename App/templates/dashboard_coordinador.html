@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal del Coordinador - ULEAM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Barra Lateral Izquierda (Sidebar) -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo">ULEAM</div>
+                <div class="brand-subtitle">Coordinación</div>
+            </div>
+            <div class="sidebar-menu">
+                <button class="nav-tab-btn active" data-tab="tab-periodo">Período Académico</button>
+                <button class="nav-tab-btn" data-tab="tab-secciones">Gestión de Secciones</button>
+                <button class="nav-tab-btn" data-tab="tab-retiros">
+                    Solicitudes de Retiro 
+                    {% if solicitudes|selectattr('estado', 'equalto', 'Pendiente')|list|length > 0 %}
+                    <span style="background: var(--danger); color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; margin-left: 5px;">{{ solicitudes|selectattr('estado', 'equalto', 'Pendiente')|list|length }}</span>
+                    {% endif %}
+                </button>
+                <button class="nav-tab-btn" data-tab="tab-reportes">Reportes de Carrera</button>
+            </div>
+            <div class="sidebar-footer">
+                <strong>Soporte Técnico</strong><br>
+                Universidad Laica Eloy Alfaro de Manabí
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <!-- Barra de Navegación Principal -->
+            <nav class="main-navbar">
+                <div class="nav-brand">Portal Coordinación Académica</div>
+                <div class="nav-user">
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;">Cerrar Sesión</a>
+                </div>
+            </nav>
+
+            <!-- Contenido Principal -->
+            <main class="main-content">
+                <!-- Encabezado del Dashboard -->
+                <div class="dashboard-header">
+                    <div class="dashboard-title">
+                        <h2>Bienvenido, Coordinador {{ coordinador.nombres }} {{ coordinador.apellidos }}</h2>
+                        <p>Periodo Actual: <strong>{{ periodo.nombre_periodo }}</strong> (Desde {{ periodo.fecha_inicio }} hasta {{ periodo.fecha_final }})</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <!-- Dropdown de Usuario -->
+                        <div class="user-dropdown-container">
+                            <button class="btn btn-secondary" id="btn-usuario" style="padding: 10px 18px; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                                Usuario
+                            </button>
+                            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                                <div style="text-align: center; margin-bottom: 15px;">
+                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: #ffffff; border: 2px solid rgba(0,0,0,0.05);">
+                                        {{ coordinador.nombres[0] }}{{ coordinador.apellidos[0] }}
+                                    </div>
+                                    <h4 style="font-size: 1.1rem; margin-bottom: 2px; font-family: 'Merriweather', serif;">{{ coordinador.obtener_nombre_completo() }}</h4>
+                                    <span style="font-size: 0.75rem; color: var(--text-secondary);">ID: {{ coordinador.id_coordinador }}</span>
+                                </div>
+                                <hr style="border: 0; border-top: 1px solid var(--card-border); margin: 12px 0;">
+                                <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;">
+                                    <div><span style="color: var(--text-secondary);">Cédula:</span> <strong style="float: right;">{{ coordinador.cedula }}</strong></div>
+                                    <div><span style="color: var(--text-secondary);">Correo:</span> <strong style="float: right; font-size: 0.75rem;">{{ coordinador._correo }}</strong></div>
+                                    <div><span style="color: var(--text-secondary);">Asignado:</span> <strong style="float: right;">{{ coordinador.fecha_asignacion_cargo }}</strong></div>
+                                    <div style="margin-top: 5px;">
+                                        <span style="color: var(--text-secondary); display: block; margin-bottom: 4px;">Carreras Coordinadas:</span>
+                                        {% for carr in coordinador.carreras %}
+                                        <div class="badge badge-success" style="width: 100%; text-align: center; background: rgba(122,27,41,0.08); border-color: rgba(122,27,41,0.15); color: var(--primary); padding: 5px; font-size: 0.75rem;">{{ carr.nombre_carrera }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Indicador de Estado del Sistema -->
+                        <div class="glass-card" style="padding: 10px 20px; border-left: 4px solid 
+                            {% if periodo.estado_periodo == 'En curso' %} var(--success) 
+                            {% elif periodo.estado_periodo == 'Finalizado' %} var(--danger) 
+                            {% else %} var(--warning) {% endif %};">
+                            <span style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Estado del Periodo</span>
+                            <div style="font-size: 1rem; font-weight: 700; margin-top: 3px;">
+                                {{ periodo.estado_periodo }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Panel de Estadísticas Rápidas -->
+            <div class="grid-cols-3">
+                <div class="glass-card info-card" style="border-bottom: 3px solid var(--primary);">
+                    <div class="info-card-header">Estudiantes Inscritos</div>
+                    <div class="info-card-value">{{ stats.total }}</div>
+                    <div class="info-card-footer">Total registrados en la carrera</div>
+                </div>
+                <div class="glass-card info-card" style="border-bottom: 3px solid var(--success);">
+                    <div class="info-card-header">Aprobados (Proyectados)</div>
+                    <div class="info-card-value" style="color: var(--success);">{{ stats.aprobados }}</div>
+                    <div class="info-card-footer">Cumplen con nota (>= 7.0) y asistencia (>= 70%)</div>
+                </div>
+                <div class="glass-card info-card" style="border-bottom: 3px solid var(--warning);">
+                    <div class="info-card-header">Pendientes o Reprobados</div>
+                    <div class="info-card-value" style="color: var(--warning);">{{ stats.pendientes + stats.reprobados }}</div>
+                    <div class="info-card-footer">Materias en curso o sin cumplir mínimos</div>
+                </div>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="main-tabs-content">
+                    
+                    <!-- TAB 1: Período Académico -->
+                    <div id="tab-periodo" class="tab-pane active">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Control de Ciclo y Matrícula</h3>
+                            </div>
+                            <div class="card-body-content">
+                                <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 25px;">
+                                    Como Coordinador, controlas el estado del periodo lectivo de nivelación. 
+                                    Al <strong>Iniciar</strong> el período, habilitas el ingreso de notas y la matriculación. 
+                                    Al <strong>Finalizar</strong>, cierras formalmente el ciclo de nivelación, consolidando las calificaciones y fijando el estado de aprobación final de todos los estudiantes de manera irreversible.
+                                </p>
+                                
+                                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                                    {% if periodo.estado_periodo == 'Planificación' %}
+                                    <button onclick="togglePeriod('iniciar')" class="btn btn-primary" style="width: auto;">
+                                        🚀 Iniciar Periodo Académico
+                                    </button>
+                                    {% elif periodo.estado_periodo == 'En curso' %}
+                                    <button onclick="togglePeriod('finalizar')" class="btn btn-danger" style="width: auto;">
+                                        🔒 Finalizar/Cerrar Ciclo Académico
+                                    </button>
+                                    {% else %}
+                                    <div class="badge badge-danger" style="padding: 12px 20px; font-size: 0.85rem; border-radius: 6px; text-transform: none;">
+                                        🔒 El periodo académico ha concluido. Todos los procesos de esta nivelación han finalizado.
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: Gestión de Secciones -->
+                    <div id="tab-secciones" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Secciones y Docentes de Nivelación</h3>
+                                <div style="display: flex; gap: 15px;">
+                                    <button onclick="openModal('modal-create-section')" class="btn btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Crear Sección (Builder)
+                                    </button>
+                                    <button onclick="openModal('modal-assign-teacher')" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Asignar Docente
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body-content table-container">
+                                <table class="premium-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Código Sección</th>
+                                            <th>Materia</th>
+                                            <th>Docente Asignado</th>
+                                            <th style="text-align: center;">Inscritos</th>
+                                            <th style="text-align: center;">Capacidad Máx.</th>
+                                            <th>Aula Virtual/Entorno</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for sec in secciones %}
+                                        <tr>
+                                            <td style="font-weight: 600; color: #ffffff;">{{ sec.id_seccion }}</td>
+                                            <td>{{ sec.materia }}</td>
+                                            <td style="font-weight: 500; color: var(--accent);">{{ sec.docente }}</td>
+                                            <td style="text-align: center;">{{ sec.inscritos }}</td>
+                                            <td style="text-align: center;">{{ sec.capacidad }}</td>
+                                            <td style="font-size: 0.8rem; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                <a href="{{ sec.aula }}" target="_blank" style="color: var(--primary); text-decoration: none;">{{ sec.aula }}</a>
+                                            </td>
+                                            <td>
+                                                <span class="badge {% if sec.disponibilidad == 'Disponible' %} badge-success {% else %} badge-danger {% endif %}">
+                                                    {{ sec.disponibilidad }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="7" style="text-align: center; color: var(--text-secondary);">No hay secciones creadas en este periodo académico.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Solicitudes de Retiro -->
+                    <div id="tab-retiros" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Solicitudes de Retiro Pendientes</h3>
+                            </div>
+                            <div class="card-body-content table-container">
+                                <table class="premium-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Estudiante</th>
+                                            <th>ID</th>
+                                            <th>Fecha</th>
+                                            <th>Motivo</th>
+                                            <th>Estado</th>
+                                            <th style="text-align: right;">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for sol in solicitudes %}
+                                        <tr>
+                                            <td style="font-weight: 500;">{{ sol.nombre }}</td>
+                                            <td>{{ sol.estudiante_id }}</td>
+                                            <td style="font-size: 0.8rem; color: var(--text-secondary);">{{ sol.fecha }}</td>
+                                            <td style="max-width: 220px; font-size: 0.85rem; color: var(--text-secondary); word-wrap: break-word;" title="{{ sol.motivo }}">
+                                                {{ sol.motivo }}
+                                            </td>
+                                            <td>
+                                                <span class="badge {% if sol.estado == 'Aprobado' %} badge-success {% elif sol.estado == 'Rechazado' %} badge-danger {% else %} badge-warning {% endif %}">
+                                                    {{ sol.estado }}
+                                                </span>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                {% if sol.estado == 'Pendiente' %}
+                                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                                    <button onclick="manageWithdrawal({{ sol.id }}, 'aprobar')" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem; width: auto; background: var(--success); box-shadow: none;">Aprobar</button>
+                                                    <button onclick="manageWithdrawal({{ sol.id }}, 'rechazar')" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; width: auto; color: var(--danger);">Rechazar</button>
+                                                </div>
+                                                {% else %}
+                                                <button onclick="viewReportConsole(`{{ sol.reporte.imprimir_reporte() }}`)" class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;">Ver Acta</button>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="6" style="text-align: center; color: var(--text-secondary);">No se registran solicitudes de retiro de asignaturas.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Reportes de Carrera -->
+                    <div id="tab-reportes" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Reporte Físico de Carrera (Modelo POO)</h3>
+                            </div>
+                            <div class="card-body-content">
+                                <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+                                    Genera un reporte del estado de la carrera de Ingeniería en Software, incluyendo capacidad de alumnos y total de matriculados actualmente en base a la composición de clases del backend.
+                                </p>
+                                <form id="form-career-report">
+                                    <div class="form-group" style="max-width: 300px; display: inline-block; margin-right: 15px; margin-bottom: 0;">
+                                        <label for="formato-carrera">Formato de Reporte</label>
+                                        <select id="formato-carrera" name="formato" class="form-control" style="background: var(--bg-primary);">
+                                            <option value="PDF">PDF de Carrera</option>
+                                            <option value="TXT">Archivo Plano TXT</option>
+                                            <option value="EXCEL">Matriz Excel</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="width: auto; vertical-align: bottom;">
+                                        Generar Reporte de Carrera
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL DE CREACIÓN DE SECCIÓN -->
+    <div id="modal-create-section" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header">
+                <h3>Crear Nueva Sección de Asignatura</h3>
+                <button onclick="closeModal('modal-create-section')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-create-section">
+                    <div class="form-group">
+                        <label for="id_seccion">Código Único de Sección</label>
+                        <input type="text" id="id_seccion" name="id_seccion" class="form-control" placeholder="Ej: SEC-PROG-B" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="materia_id">Asignar Materia Base</label>
+                        <select id="materia_id" name="materia_id" class="form-control" style="background: var(--bg-primary);">
+                            {% for mat in materias %}
+                            <option value="{{ mat.id }}">{{ mat.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="capacidad">Capacidad de Estudiantes</label>
+                        <input type="number" id="capacidad" name="capacidad" class="form-control" min="5" max="100" value="30" required>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Crear con Builder</button>
+                        <button type="button" onclick="closeModal('modal-create-section')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE ASIGNACIÓN DE DOCENTE -->
+    <div id="modal-assign-teacher" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header">
+                <h3>Asignar Docente a Sección</h3>
+                <button onclick="closeModal('modal-assign-teacher')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-assign-teacher">
+                    <div class="form-group">
+                        <label for="seccion_id">Seleccionar Sección</label>
+                        <select id="seccion_id" name="seccion_id" class="form-control" style="background: var(--bg-primary);">
+                            {% for sec in secciones %}
+                            <option value="{{ sec.id_seccion }}">{{ sec.id_seccion }} - {{ sec.materia }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="docente_correo">Seleccionar Docente Disponible</label>
+                        <select id="docente_correo" name="docente_correo" class="form-control" style="background: var(--bg-primary);">
+                            {% for doc in docentes %}
+                            <option value="{{ doc.correo }}">{{ doc.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar Asignación</button>
+                        <button type="button" onclick="closeModal('modal-assign-teacher')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA VER CONSOLA DE REPORTE -->
+    <div id="modal-view-report" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 700px;">
+            <div class="card-title-header">
+                <h3>Visualizador de Consola (Vista de Reporte)</h3>
+                <button onclick="closeModal('modal-view-report')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">El reporte ha sido generado por las clases de la aplicación con la estructura de reportes POO de la universidad:</p>
+                <div id="report-console-content" class="console-box"></div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button onclick="closeModal('modal-view-report')" class="btn btn-primary" style="width: auto;">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

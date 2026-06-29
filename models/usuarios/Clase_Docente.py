@@ -1,5 +1,5 @@
 from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
-from models.gestion.Clase_Reporte import Reporte
+from models.patrones_diseno.strategy.ReporteStrategy import Reporte
 
 class Docente(UsuarioAcademico):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia, especialidad):

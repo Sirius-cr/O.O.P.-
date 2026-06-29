@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from models.academico.Clase_Materia import Materia
 from models.academico.Clase_Seccion import Seccion
-from models.academico.Clase_AulaVirtual import AulaVirtual
+from models.patrones_diseno.bridge.AulaVirtualBridge import AulaVirtual, ServicioTeams, ServicioZoom
 from models.usuarios.Clase_Estudiante import Estudiante
 from models.patrones_diseno.builders.SeccionBuilder import SeccionBuilder
 
@@ -46,7 +46,7 @@ class TestAcademicoParametrizado(unittest.TestCase):
             with self.subTest(cap_seccion=cap_seccion, cap_aula=cap_aula, limite_esperado=limite_esperado):
                 seccion = Seccion(id_seccion="SEC-A", capacidad_estudiantil=cap_seccion, materia=self.materia)
                 if cap_aula is not None:
-                    aula = AulaVirtual(capacidad_maxima=cap_aula, enlace_plataforma="http://virtual.uleam.edu.ec", tipo_plataforma="Teams")
+                    aula = AulaVirtual(capacidad_maxima=cap_aula, servicio=ServicioTeams())
                     seccion.asignar_aula_virtual(aula)
                 
                 resultado = seccion.calcular_limite_optimo()
@@ -85,7 +85,6 @@ class TestAcademicoParametrizado(unittest.TestCase):
                         contrasenia="pass123",
                         id_estudiante=f"EST-{i:03d}",
                         nombre_periodo="2026-1",
-                        estado_matricula="Matriculado",
                         tipo_matricula="Ordinaria"
                     )
                     # Forzar inscripción en la lista directamente para probar verificar_cupos_disponibles de forma aislada
@@ -101,7 +100,7 @@ class TestAcademicoParametrizado(unittest.TestCase):
 
     def test_seccion_builder(self):
         """Prueba la construcción de una Sección utilizando SeccionBuilder."""
-        aula = AulaVirtual(capacidad_maxima=25, enlace_plataforma="http://test.com", tipo_plataforma="Zoom")
+        aula = AulaVirtual(capacidad_maxima=25, servicio=ServicioZoom())
         seccion = (
             SeccionBuilder()
             .con_id_seccion("SEC-100")

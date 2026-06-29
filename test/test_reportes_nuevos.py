@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from models.usuarios.Clase_Docente import Docente
 from models.usuarios.Clase_Estudiante import Estudiante
-from models.gestion.Clase_Reporte import Reporte
+from models.patrones_diseno.strategy.ReporteStrategy import Reporte
 
 class TestReportesNuevos(unittest.TestCase):
     def setUp(self):
@@ -28,7 +28,6 @@ class TestReportesNuevos(unittest.TestCase):
             contrasenia="claveEstudiante",
             id_estudiante="EST-001",
             nombre_periodo="Nivelación 2026",
-            estado_matricula="Matriculado",
             tipo_matricula="Ordinaria"
         )
 
