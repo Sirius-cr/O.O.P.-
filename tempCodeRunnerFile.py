@@ -1,1 +1,2 @@
-    print("[Aviso] No se encontró el ejecutable en .venv. Iniciando con el python del sistema...")
+
+# Asegurar que el directorio de trabajo es la raíz del proyecto

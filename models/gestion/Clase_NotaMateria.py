@@ -17,7 +17,7 @@ class Sujeto(ABC):
         for observador in self._observadores:
             observador.actualizar()
 
-# Tu clase modificada
+
 class NotaMateria(Sujeto):
     def __init__(self, materia: Materia, periodo: Periodo, parcial1 = 0.0 , parcial2 = 0.0, asistencia = 0, historial = None):
         super().__init__()

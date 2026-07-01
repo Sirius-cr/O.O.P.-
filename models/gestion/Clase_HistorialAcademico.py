@@ -7,7 +7,6 @@ class Observador(ABC):
     def actualizar(self):
         pass
 
-# Tu clase modificada
 class HistorialAcademico(Observador):
     def __init__(self, id_historial: str):
         self.id_historial = id_historial
@@ -53,7 +52,6 @@ class HistorialAcademico(Observador):
             return EstadoDeAprobacionNivelacion.PENDIENTE
         return EstadoDeAprobacionNivelacion.APROBADO
 
-    # EL TRIGGER AUTOMÁTICO DEL OBSERVER
     def actualizar(self):
         self.estado_nivelacion_actual = self.verificar_aprobacion_nivelacion()
         print(f"--> [OBSERVER] Historial '{self.id_historial}' se ha auto-calculado:")

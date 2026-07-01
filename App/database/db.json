@@ -142,8 +142,8 @@
     {
       "estudiante_id": "EST-001",
       "materia_id": "MAT-01",
-      "parcial1": 5.0,
-      "parcial2": 3.8,
+      "parcial1": 2.6,
+      "parcial2": 3.6,
       "asistencia": 100,
       "periodo_cerrado": false
     },
