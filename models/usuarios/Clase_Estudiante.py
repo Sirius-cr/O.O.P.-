@@ -1,16 +1,17 @@
 from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
-from models.gestion.Clase_HistorialAcademico import HistorialAcademico
+from models.gestion.Clase_HistorialAcademico import HistorialAcademico, Observador
 from models.patrones_diseno.strategy.ReporteStrategy import Reporte
 
-class Estudiante(UsuarioAcademico):
+class Estudiante(UsuarioAcademico, Observador):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, tipo_matricula):
         super().__init__(cedula, nombres, apellidos, correo, contrasenia)
 
         self._id_estudiante = id_estudiante
         self.nombre_periodo = nombre_periodo
         self._tipo_matricula = tipo_matricula
-        self.historial = HistorialAcademico(id_historial=id_estudiante)  # Cada estudiante tiene un historial académico asociado
+        self.historial = HistorialAcademico(id_historial=id_estudiante, estudiante=self)  # Cada estudiante tiene un historial académico asociado
         self.secciones_asociadas = []
+        self.notificaciones = []
 
     def inscribir_seccion(self, secciones_asociadas):
         if secciones_asociadas not in self.secciones_asociadas:
@@ -20,6 +21,20 @@ class Estudiante(UsuarioAcademico):
     @property
     def esta_aprobado(self):
         return self.historial.estado_nivelacion_actual
+    
+    def actualizar(self, cambio=None, valor=None, nota=None, **kwargs):
+        import time
+        autor = kwargs.get('autor', 'Un docente')
+        if nota and cambio:
+            print(f"[NOTIFICACIÓN] Estudiante {self.obtener_nombre_completo()} (ID: {self._id_estudiante}) notificado:")
+            print(f"    Su calificación '{cambio}' en la materia '{nota.materia.nombre_materia}' ha sido cambiada a: {valor} por {autor}\n")
+            
+            mensaje = f"El docente {autor} ha modificado tu calificación de {cambio} en '{nota.materia.nombre_materia}' a {valor}."
+            self.notificaciones.append({
+                "mensaje": mensaje,
+                "fecha": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "leido": False
+            })
     
     def ver_rendimiento(self):
         return self.historial.obtener_peor_nota() #este metodo se definirá en la clase HistorialAcademico para obtener la peor nota del estudiante en los parciales

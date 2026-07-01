@@ -4,12 +4,13 @@ from models.gestion.Clase_NotaMateria import NotaMateria
 
 class Observador(ABC):
     @abstractmethod
-    def actualizar(self):
+    def actualizar(self, cambio=None, valor=None, nota=None, **kwargs):
         pass
 
 class HistorialAcademico(Observador):
-    def __init__(self, id_historial: str):
+    def __init__(self, id_historial: str, estudiante=None):
         self.id_historial = id_historial
+        self.estudiante = estudiante
         self.lista_nota_materia = []
         self.estado_nivelacion_actual = EstadoDeAprobacionNivelacion.PENDIENTE
 
@@ -52,7 +53,7 @@ class HistorialAcademico(Observador):
             return EstadoDeAprobacionNivelacion.PENDIENTE
         return EstadoDeAprobacionNivelacion.APROBADO
 
-    def actualizar(self):
+    def actualizar(self, cambio=None, valor=None, nota=None, **kwargs):
         self.estado_nivelacion_actual = self.verificar_aprobacion_nivelacion()
         print(f"--> [OBSERVER] Historial '{self.id_historial}' se ha auto-calculado:")
         print(f"    Promedio General Actual: {self.promedio_general:.2f}")

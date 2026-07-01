@@ -35,15 +35,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // =========================================================================
-    // DROPDOWN DE USUARIO (TOGGLE)
+    // DROPDOWN DE USUARIO Y NOTIFICACIONES (TOGGLE)
     // =========================================================================
     const btnUsuario = document.getElementById('btn-usuario');
     const userDropdown = document.getElementById('user-dropdown-menu');
+    const btnNotif = document.getElementById('btn-notificaciones');
+    const notifDropdown = document.getElementById('notif-dropdown-menu');
 
     if (btnUsuario && userDropdown) {
         btnUsuario.addEventListener('click', (e) => {
             e.stopPropagation();
             userDropdown.classList.toggle('active');
+            if (notifDropdown) notifDropdown.classList.remove('active');
         });
 
         document.addEventListener('click', (e) => {
@@ -52,6 +55,56 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    if (btnNotif && notifDropdown) {
+        btnNotif.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifDropdown.classList.toggle('active');
+            if (userDropdown) userDropdown.classList.remove('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!notifDropdown.contains(e.target) && e.target !== btnNotif) {
+                notifDropdown.classList.remove('active');
+            }
+        });
+    }
+
+    window.marcarLeidas = function() {
+        fetch('/student/mark_notifications_read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Quitar badge
+                const badge = btnNotif.querySelector('.notification-badge');
+                if (badge) badge.remove();
+                
+                // Actualizar estilos en la lista
+                const listItems = notifDropdown.querySelectorAll('#notif-list > div');
+                listItems.forEach(item => {
+                    item.style.borderLeftColor = 'var(--card-border)';
+                    item.style.background = 'rgba(0, 0, 0, 0.02)';
+                    const p = item.querySelector('p');
+                    if (p) {
+                        p.style.color = 'var(--text-secondary)';
+                        p.style.fontWeight = 'normal';
+                    }
+                });
+                
+                // Ocultar botón de marcar leídas
+                const btnMarcar = notifDropdown.querySelector('button');
+                if (btnMarcar) btnMarcar.remove();
+                
+                showNotification("Notificaciones marcadas como leídas", "success");
+            }
+        })
+        .catch(err => console.error("Error al marcar notificaciones como leídas:", err));
+    };
 
     // =========================================================================
     // MODALES (ABRIR Y CERRAR)

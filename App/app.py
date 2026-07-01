@@ -126,6 +126,7 @@ def load_db():
             nombre_periodo=e["nombre_periodo"],
             tipo_matricula=e["tipo_matricula"]
         )
+        est.notificaciones = e.get("notificaciones", [])
         estudiantes[est._correo] = est
 
     # 7. Cargar Secciones
@@ -273,7 +274,8 @@ def save_db():
             "contrasenia": getattr(e, "_Usuario__contrasenia", ""),
             "id_estudiante": e._id_estudiante,
             "nombre_periodo": e.nombre_periodo,
-            "tipo_matricula": e._tipo_matricula
+            "tipo_matricula": e._tipo_matricula,
+            "notificaciones": getattr(e, "notificaciones", [])
         })
         
     # Materias
@@ -553,6 +555,17 @@ def student_request_withdrawal():
     save_db() # Guardar base de datos
     return jsonify({"status": "success", "message": "Solicitud de retiro enviada correctamente al Coordinador."})
 
+@app.route('/student/mark_notifications_read', methods=['POST'])
+def student_mark_notifications_read():
+    if 'usuario' not in session or session['rol'] != 'estudiante':
+        return jsonify({"status": "error", "message": "No autorizado"})
+    
+    est = estudiantes[session['usuario']]
+    for notif in est.notificaciones:
+        notif['leido'] = True
+    save_db()
+    return jsonify({"status": "success"})
+
 
 # -------------------------------------------------------------------------
 # RUTA DOCENTE
@@ -668,19 +681,23 @@ def teacher_save_grades():
     if not est or not sec:
         return jsonify({"status": "error", "message": "Estudiante o Sección no encontrados."})
 
+    docente_obj = docentes.get(session['usuario'])
+    docente_nombre = docente_obj.obtener_nombre_completo() if docente_obj else "Un docente"
+
     nota_obj = next((n for n in est.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
-    if nota_obj:
-        nota_obj.parcial1 = parcial1
-        nota_obj.parcial2 = parcial2
-        nota_obj.asistencia = asistencia
-    else:
-        est.historial.crear_nota_materia(
+    if not nota_obj:
+        nota_obj = est.historial.crear_nota_materia(
             materia=sec.materia,
             periodo=periodo_actual,
-            parcial1=parcial1,
-            parcial2=parcial2,
-            asistencia=asistencia
+            parcial1=0.0,
+            parcial2=0.0,
+            asistencia=0
         )
+    
+    nota_obj.ultimo_modificador = docente_nombre
+    nota_obj.parcial1 = parcial1
+    nota_obj.parcial2 = parcial2
+    nota_obj.asistencia = asistencia
 
     save_db() # Guardar base de datos
     return jsonify({"status": "success", "message": f"Notas de {est.obtener_nombre_completo()} guardadas con éxito."})

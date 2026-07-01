@@ -45,7 +45,24 @@
         "contrasenia": "admin1234",
         "id_estudiante": "EST-001",
         "nombre_periodo": "Nivelación 2026",
-        "tipo_matricula": "Ordinaria"
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": [
+          {
+            "mensaje": "El docente María Rodríguez ha modificado tu calificación de parcial1 en 'Programación' a 4.1.",
+            "fecha": "2026-07-01 09:47:32",
+            "leido": true
+          },
+          {
+            "mensaje": "El docente María Rodríguez ha modificado tu calificación de parcial2 en 'Programación' a 4.9.",
+            "fecha": "2026-07-01 09:47:32",
+            "leido": true
+          },
+          {
+            "mensaje": "El docente María Rodríguez ha modificado tu calificación de asistencia en 'Programación' a 100.",
+            "fecha": "2026-07-01 09:47:32",
+            "leido": true
+          }
+        ]
       }
     ]
   },
@@ -142,8 +159,8 @@
     {
       "estudiante_id": "EST-001",
       "materia_id": "MAT-01",
-      "parcial1": 2.6,
-      "parcial2": 3.6,
+      "parcial1": 4.1,
+      "parcial2": 4.9,
       "asistencia": 100,
       "periodo_cerrado": false
     },
