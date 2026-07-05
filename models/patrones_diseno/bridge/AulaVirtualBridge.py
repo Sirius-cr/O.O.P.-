@@ -18,9 +18,10 @@ class ServicioZoom(IServicioStreaming):
 
 # 3. LA ABSTRACCIÓN (Virtual Classroom Base)
 class AulaVirtual:
-    def __init__(self, capacidad_maxima, servicio: IServicioStreaming):
+    def __init__(self, capacidad_maxima, servicio: IServicioStreaming, enlace_personalizado=None):
         self.capacidad_maxima = capacidad_maxima
         self.servicio = servicio  # El PUENTE (Bridge)
+        self.enlace_personalizado = enlace_personalizado
 
     @property
     def _tipo_plataforma(self) -> str:
@@ -32,6 +33,8 @@ class AulaVirtual:
     @property
     def _enlace_plataforma(self) -> str:
         # Genera el enlace de forma dinámica usando el servicio de streaming
+        if self.enlace_personalizado:
+            return self.enlace_personalizado
         return self.servicio.crear_reunion("general")
 
     def obtener_acceso(self) -> bool:
@@ -42,11 +45,16 @@ class AulaVirtual:
 class AulaClaseSincrona(AulaVirtual):
     @property
     def _enlace_plataforma(self) -> str:
-        # Genera un enlace específico para una clase de teoría sincrónica
+        # Genera un enlace específico para una clase de teoría sincrónica o retorna el personalizado
+        if self.enlace_personalizado:
+            return self.enlace_personalizado
         return self.servicio.crear_reunion("clase-teorica")
 
 class AulaExamen(AulaVirtual):
     @property
     def _enlace_plataforma(self) -> str:
-        # Genera un enlace específico para un examen con seguridad integrada
+        # Genera un enlace específico para un examen o retorna el personalizado
+        if self.enlace_personalizado:
+            return self.enlace_personalizado
         return self.servicio.crear_reunion("aula-examen-seguro")
+

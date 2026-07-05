@@ -150,7 +150,7 @@ def load_db():
                 
         # Asignar Horarios
         for h in s["horarios"]:
-            sec.agregar_horario(Horario(h["turno"], h["hora_inicio"], h["hora_fin"], h["modalidad"]))
+            sec.agregar_horario(Horario(h["turno"], h["hora_inicio"], h["hora_fin"], h["modalidad"], h.get("dias")))
             
         # Asignar Aula Virtual
         if s["aula_virtual"]:
@@ -299,7 +299,8 @@ def save_db():
                 "turno": h.turno,
                 "hora_inicio": h.hora_inicio,
                 "hora_fin": h.hora_fin,
-                "modalidad": h._modalidad
+                "modalidad": h._modalidad,
+                "dias": h.dias
             })
             
         av_dict = None
@@ -491,7 +492,9 @@ def dashboard_estudiante():
                 "inicio": resumen["Inicializacion"],
                 "fin": resumen["Terminacion"],
                 "modalidad": resumen["Modalidad"],
-                "docente": resumen["Docente"]
+                "docente": resumen["Docente"],
+                "dias": hor.dias,
+                "aula": sec.aula_virtual._enlace_plataforma if sec.aula_virtual else None
             })
 
     mis_reportes = [r for r in reportes_generados if r.emisor == est.obtener_nombre_completo()]
@@ -839,6 +842,8 @@ def coordinator_create_section():
     id_seccion = request.form.get('id_seccion', '').strip().upper()
     capacidad = request.form.get('capacidad')
     materia_id = request.form.get('materia_id')
+    aula_link = request.form.get('aula_link', '').strip()
+    aula_plataforma = request.form.get('aula_plataforma', 'TEAMS')
     
     if not id_seccion or not capacidad or not materia_id:
         return jsonify({"status": "error", "message": "Todos los campos son obligatorios para crear la sección."})
@@ -857,12 +862,28 @@ def coordinator_create_section():
 
     coord = coordinadores[session['usuario']]
 
+    # Crear Aula Virtual si se proporciona enlace
+    aula_obj = None
+    if aula_link:
+        if aula_plataforma.upper() == "ZOOM":
+            servicio = ServicioZoom()
+        else:
+            servicio = ServicioTeams()
+            
+        is_examen = "examen" in id_seccion.lower()
+        if is_examen:
+            aula_obj = AulaExamen(40, servicio, aula_link)
+        else:
+            aula_obj = AulaClaseSincrona(40, servicio, aula_link)
+
     try:
         nueva_sec = (SeccionBuilder()
                     .con_id_seccion(id_seccion)
                     .con_capacidad_estudiantil(capacidad)
                     .con_materia(materia_obj)
                     .con_coordinador(coord)
+                    .con_aula_virtual(aula_obj)
+                    .con_entorno_asignado(aula_obj)
                     .build())
         
         nueva_sec.agregar_horario(Horario("Matutino", "07:00", "09:00", "Presencial"))
@@ -872,6 +893,168 @@ def coordinator_create_section():
         return jsonify({"status": "success", "message": f"Sección {id_seccion} creada exitosamente para {materia_obj.nombre_materia}."})
     except Exception as e:
         return jsonify({"status": "error", "message": f"Error al crear sección con Builder: {e}"})
+
+@app.route('/coordinator/update_section_aula', methods=['POST'])
+def coordinator_update_section_aula():
+    if 'usuario' not in session or session['rol'] != 'coordinador':
+        return jsonify({"status": "error", "message": "No autorizado"})
+        
+    seccion_id = request.form.get('seccion_id')
+    enlace = request.form.get('enlace', '').strip()
+    plataforma = request.form.get('plataforma', 'TEAMS')
+    
+    if not seccion_id or seccion_id not in secciones:
+        return jsonify({"status": "error", "message": "Sección no encontrada"})
+        
+    sec = secciones[seccion_id]
+    
+    if not enlace:
+        sec.aula_virtual = None
+        sec.entorno_asignado = None
+        msg = f"Aula virtual desasignada de la sección {seccion_id}."
+    else:
+        if plataforma.upper() == "ZOOM":
+            servicio = ServicioZoom()
+        else:
+            servicio = ServicioTeams()
+            
+        is_examen = "examen" in seccion_id.lower()
+        if is_examen:
+            aula = AulaExamen(40, servicio, enlace)
+        else:
+            aula = AulaClaseSincrona(40, servicio, enlace)
+            
+        sec.asignar_aula_virtual(aula)
+        msg = f"Enlace de aula virtual actualizado para la sección {seccion_id}."
+        
+    save_db() # Guardar base de datos
+    return jsonify({"status": "success", "message": msg})
+
+@app.route('/coordinator/import_students', methods=['POST'])
+def coordinator_import_students():
+    if 'usuario' not in session or session['rol'] != 'coordinador':
+        return jsonify({"status": "error", "message": "No autorizado"})
+        
+    seccion_id = request.form.get('seccion_id')
+    if not seccion_id or seccion_id not in secciones:
+        return jsonify({"status": "error", "message": "Sección no encontrada"})
+        
+    sec = secciones[seccion_id]
+    
+    if 'file' not in request.files:
+        return jsonify({"status": "error", "message": "No se subió ningún archivo"})
+        
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"status": "error", "message": "Nombre de archivo no válido"})
+        
+    if not (file.filename.endswith('.xlsx') or file.filename.endswith('.xls')):
+        return jsonify({"status": "error", "message": "El archivo debe ser un libro de Excel (.xlsx, .xls)"})
+        
+    import openpyxl
+    from datetime import datetime
+    import json
+    import os
+    
+    try:
+        wb = openpyxl.load_workbook(file, read_only=True, data_only=True)
+        sheet = wb.active
+        
+        rows = list(sheet.iter_rows(values_only=True))
+        if len(rows) < 2:
+            return jsonify({"status": "error", "message": "El archivo de Excel está vacío o no contiene filas de datos"})
+            
+        headers = [str(h).strip().lower() for h in rows[0]]
+        
+        required_fields = ['cedula', 'nombres', 'apellidos', 'correo', 'contrasenia', 'id_estudiante', 'nombre_periodo', 'tipo_matricula']
+        
+        missing = [f for f in required_fields if f not in headers]
+        if missing:
+            return jsonify({"status": "error", "message": f"Faltan las siguientes columnas en el archivo: {', '.join(missing)}"})
+            
+        excel_students = []
+        for row in rows[1:]:
+            if all(val is None for val in row):
+                continue
+                
+            student_data = {}
+            for field in required_fields:
+                col_idx = headers.index(field)
+                val = row[col_idx]
+                student_data[field] = str(val).strip() if val is not None else ""
+                
+            excel_students.append(student_data)
+            
+        # El número de estudiantes debe coincidir exactamente con la capacidad de la sección
+        if len(excel_students) != sec.capacidad_estudiantil:
+            return jsonify({
+                "status": "error", 
+                "message": f"El número de estudiantes en el archivo ({len(excel_students)}) no coincide con la capacidad de la sección ({sec.capacidad_estudiantil})."
+            })
+            
+        imported_list = []
+        for s_data in excel_students:
+            correo = s_data['correo']
+            
+            est_obj = estudiantes.get(correo)
+            if not est_obj:
+                est_obj = Estudiante(
+                    cedula=s_data['cedula'],
+                    nombres=s_data['nombres'],
+                    apellidos=s_data['apellidos'],
+                    correo=correo,
+                    contrasenia=s_data['contrasenia'],
+                    id_estudiante=s_data['id_estudiante'],
+                    nombre_periodo=s_data['nombre_periodo'],
+                    tipo_matricula=s_data['tipo_matricula']
+                )
+                estudiantes[correo] = est_obj
+            else:
+                est_obj.cedula = s_data['cedula']
+                est_obj.nombres = s_data['nombres']
+                est_obj.apellidos = s_data['apellidos']
+                est_obj.contrasenia = s_data['contrasenia']
+                est_obj.nombre_periodo = s_data['nombre_periodo']
+                est_obj._tipo_matricula = s_data['tipo_matricula']
+                
+            sec.actualizar_estudiantes_inscritos(est_obj)
+            if sec not in est_obj.secciones_asociadas:
+                est_obj.secciones_asociadas.append(sec)
+                
+            nota_obj = next((x for x in est_obj.historial.lista_nota_materia if x.materia.id_materia == sec.materia.id_materia), None)
+            if not nota_obj:
+                est_obj.historial.crear_nota_materia(
+                    materia=sec.materia,
+                    periodo=periodo_actual,
+                    parcial1=0.0,
+                    parcial2=0.0,
+                    asistencia=0
+                )
+                
+            imported_list.append(s_data)
+            
+        save_db()
+        
+        students_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database', 'students')
+        if not os.path.exists(students_dir):
+            os.makedirs(students_dir)
+            
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        json_filename = f"import_{seccion_id}_{timestamp}.json"
+        json_filepath = os.path.join(students_dir, json_filename)
+        
+        with open(json_filepath, 'w', encoding='utf-8') as f_json:
+            json.dump(imported_list, f_json, indent=2, ensure_ascii=False)
+            
+        return jsonify({
+            "status": "success", 
+            "message": f"Se importaron con éxito {len(imported_list)} estudiantes a la sección {seccion_id} y se guardó el registro {json_filename}."
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"status": "error", "message": f"Error al procesar el archivo Excel: {e}"})
 
 @app.route('/coordinator/assign_teacher', methods=['POST'])
 def coordinator_assign_teacher():

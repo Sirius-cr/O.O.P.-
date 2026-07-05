@@ -163,43 +163,83 @@
                     <!-- Pestaña 2: Horarios -->
                     <div id="tab-horario" class="tab-pane">
                         <div class="glass-card">
-                            <div class="card-title-header">
+                            <div class="card-title-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                                 <h3>Mi Distribución de Horarios</h3>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-secondary active-view-btn" id="btn-view-graphic" style="padding: 6px 12px; font-size: 0.8rem;">📅 Vista Gráfica</button>
+                                    <button class="btn btn-secondary" id="btn-view-list" style="padding: 6px 12px; font-size: 0.8rem;">📋 Vista de Lista</button>
+                                </div>
                             </div>
-                            <div class="card-body-content table-container">
-                                <table class="premium-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Materia</th>
-                                            <th>Sección</th>
-                                            <th>Turno</th>
-                                            <th>Entrada</th>
-                                            <th>Salida</th>
-                                            <th>Modalidad</th>
-                                            <th>Docente Asignado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for hor in horarios %}
-                                        <tr>
-                                            <td style="font-weight: 500;">{{ hor.materia }}</td>
-                                            <td>{{ hor.seccion }}</td>
-                                            <td>{{ hor.turno }}</td>
-                                            <td>{{ hor.inicio }}</td>
-                                            <td>{{ hor.fin }}</td>
-                                            <td><span class="badge badge-success" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.3); color: var(--primary);">{{ hor.modalidad }}</span></td>
-                                            <td>{{ hor.docente }}</td>
-                                        </tr>
-                                        {% else %}
-                                        <tr>
-                                            <td colspan="7" style="text-align: center; color: var(--text-secondary);">No se encontraron secciones matriculadas con horarios vigentes.</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                            <div class="card-body-content">
+                                <!-- Vista Gráfica -->
+                                <div id="schedule-graphic-container">
+                                    <div class="schedule-calendar-wrapper">
+                                        <div class="schedule-calendar-grid" id="calendar-grid-body">
+                                            <div class="calendar-header-cell">Hora</div>
+                                            <div class="calendar-header-cell">Lunes</div>
+                                            <div class="calendar-header-cell">Martes</div>
+                                            <div class="calendar-header-cell">Miércoles</div>
+                                            <div class="calendar-header-cell">Jueves</div>
+                                            <div class="calendar-header-cell">Viernes</div>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-legend" style="margin-top: 15px; display: flex; gap: 20px; justify-content: center; font-size: 0.85rem; flex-wrap: wrap;">
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <span style="display: inline-block; width: 12px; height: 12px; border-radius: 2px; background: rgba(122, 27, 41, 0.05); border: 1px solid var(--primary); border-left: 4px solid var(--primary);"></span>
+                                            <span style="font-weight: 500; color: var(--text-secondary);">Presencial</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <span style="display: inline-block; width: 12px; height: 12px; border-radius: 2px; background: rgba(15, 118, 110, 0.05); border: 1px solid var(--accent); border-left: 4px solid var(--accent);"></span>
+                                            <span style="font-weight: 500; color: var(--text-secondary);">Virtual</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vista de Lista (Alternativa) -->
+                                <div id="schedule-list-container" class="table-container" style="display: none;">
+                                    <table class="premium-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Materia</th>
+                                                <th>Sección</th>
+                                                <th>Turno</th>
+                                                <th>Entrada</th>
+                                                <th>Salida</th>
+                                                <th>Modalidad</th>
+                                                <th>Docente Asignado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for hor in horarios %}
+                                            <tr>
+                                                <td style="font-weight: 500;">{{ hor.materia }}</td>
+                                                <td>{{ hor.seccion }}</td>
+                                                <td>{{ hor.turno }}</td>
+                                                <td>{{ hor.inicio }}</td>
+                                                <td>{{ hor.fin }}</td>
+                                                <td>
+                                                    <span class="badge badge-success" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.3); color: var(--primary);">
+                                                        {{ hor.modalidad }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ hor.docente }}</td>
+                                            </tr>
+                                            {% else %}
+                                            <tr>
+                                                <td colspan="7" style="text-align: center; color: var(--text-secondary);">No se encontraron secciones matriculadas con horarios vigentes.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Datos serializados de horarios -->
+                    <script id="horarios-data" type="application/json">
+                        {{ horarios | tojson }}
+                    </script>
 
                     <!-- Pestaña 3: Trámites -->
                     <div id="tab-tramites" class="tab-pane">
@@ -335,6 +375,19 @@
                 <div style="text-align: right; margin-top: 20px;">
                     <button onclick="closeModal('modal-view-report')" class="btn btn-primary" style="width: auto;">Aceptar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA DETALLE DE CLASE INDIVIDUAL -->
+    <div id="modal-class-detail" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 480px; padding: 30px;">
+            <div class="card-title-header">
+                <h3>Detalle de la Asignatura</h3>
+                <button onclick="closeModal('modal-class-detail')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content" id="class-detail-content" style="margin-top: 15px;">
+                <!-- Contenido dinámico inyectado por JS -->
             </div>
         </div>
     </div>

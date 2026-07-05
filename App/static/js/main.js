@@ -435,6 +435,111 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // =========================================================================
+    // ACCIONES DE EDICIÓN DE AULA VIRTUAL (COORDINADOR)
+    // =========================================================================
+    window.openEditAulaModal = function(seccionId, currentLink) {
+        const modal = document.getElementById('modal-edit-aula');
+        const inputId = document.getElementById('edit-aula-seccion-id');
+        const displayId = document.getElementById('edit-aula-seccion-display');
+        const inputLink = document.getElementById('edit-aula-link');
+        const selectPlat = document.getElementById('edit-aula-plataforma');
+
+        if (modal && inputId && displayId && inputLink) {
+            inputId.value = seccionId;
+            displayId.textContent = seccionId;
+            inputLink.value = currentLink;
+            
+            // Intentar adivinar la plataforma en base al enlace
+            if (currentLink.toLowerCase().includes('zoom')) {
+                selectPlat.value = 'ZOOM';
+            } else {
+                selectPlat.value = 'TEAMS';
+            }
+            
+            openModal('modal-edit-aula');
+        }
+    };
+
+    const editAulaForm = document.getElementById('form-edit-aula');
+    if (editAulaForm) {
+        editAulaForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/coordinator/update_section_aula', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification(data.message, 'success');
+                    closeModal('modal-edit-aula');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                console.error("Error al actualizar aula virtual:", err);
+                showNotification("Error de conexión.", "error");
+            });
+        });
+    }
+
+    // =========================================================================
+    // IMPORTACIÓN DE ESTUDIANTES (COORDINADOR)
+    // =========================================================================
+    window.openImportStudentsModal = function(seccionId, capacidad) {
+        const modal = document.getElementById('modal-import-students');
+        const inputId = document.getElementById('import-students-seccion-id');
+        const displayId = document.getElementById('import-students-seccion-display');
+        const displayCap = document.getElementById('import-students-capacidad-display');
+        const inputFile = document.getElementById('import-file');
+
+        if (modal && inputId && displayId && displayCap) {
+            inputId.value = seccionId;
+            displayId.textContent = seccionId;
+            displayCap.textContent = capacidad;
+            if (inputFile) inputFile.value = ''; // Reset file input
+            openModal('modal-import-students');
+        }
+    };
+
+    const importStudentsForm = document.getElementById('form-import-students');
+    if (importStudentsForm) {
+        importStudentsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            showNotification("Procesando archivo de Excel...", "success");
+
+            fetch('/coordinator/import_students', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification(data.message, 'success');
+                    closeModal('modal-import-students');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                console.error("Error al importar estudiantes:", err);
+                showNotification("Error de conexión al importar.", "error");
+            });
+        });
+    }
+
+    // =========================================================================
     // VISUALIZADOR DE CONSOLA DE REPORTES PREVIAMENTE GENERADOS
     // =========================================================================
     window.viewReportConsole = function(escapedContent) {
@@ -657,7 +762,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div style="flex: 2; min-width: 320px;">
                                 <h4 style="font-size: 0.95rem; font-family: 'Merriweather', serif; color: var(--primary); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Calificaciones y Asistencia</h4>
                                 <div class="table-container">
-                                    ${gradesHtml}
+                                     ${gradesHtml}
                                 </div>
                             </div>
                         </div>
@@ -675,4 +780,215 @@ document.addEventListener('DOMContentLoaded', function() {
             showNotification('Error al conectar con el servidor.', 'error');
         });
     };
+
+    // =========================================================================
+    // RENDERIZADO DEL HORARIO GRÁFICO (STUDENT)
+    // =========================================================================
+    const horariosDataEl = document.getElementById('horarios-data');
+    const calendarGridBody = document.getElementById('calendar-grid-body');
+
+    if (horariosDataEl && calendarGridBody) {
+        let horariosList = [];
+        try {
+            horariosList = JSON.parse(horariosDataEl.textContent);
+        } catch (e) {
+            console.error("Error parsing horarios-data", e);
+        }
+
+        // Configuración de la cuadrícula
+        // Días de la semana: de Lunes (Col 2) a Viernes (Col 6)
+        const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+        
+        // Intervalos de 30 minutos desde las 07:00 hasta las 19:00 (24 filas de 30 min)
+        // Fila 1: Cabecera (Lunes a Viernes) -> grid-row: 1
+        // Fila 2: 07:00 - 07:30
+        // Fila 3: 07:30 - 08:00
+        // ...
+        // Fila 25: 18:30 - 19:00
+
+        const horaInicioBase = 7; // 07:00
+        const totalFilas = 24;   // 12 horas * 2 bloques por hora = 24 bloques de 30 min
+
+        // 1. Generar etiquetas de horas (columna 1) y celdas de fondo vacías
+        for (let fila = 0; fila < totalFilas; fila++) {
+            const indexFila = fila + 2; // +2 porque la fila 1 es la cabecera
+            const totalMinutos = fila * 30;
+            const hora = Math.floor(horaInicioBase + totalMinutos / 60);
+            const minuto = totalMinutos % 60;
+            const horaStr = `${hora.toString().padStart(2, '0')}:${minuto.toString().padStart(2, '0')}`;
+
+            // Solo mostrar etiqueta de hora completa (ej: 07:00, 08:00...) en el lado izquierdo
+            const isLabelRow = (minuto === 0);
+            
+            if (isLabelRow) {
+                const timeLabelCell = document.createElement('div');
+                timeLabelCell.className = 'calendar-time-label';
+                timeLabelCell.style.gridRow = `${indexFila} / span 2`;
+                timeLabelCell.textContent = horaStr;
+                calendarGridBody.appendChild(timeLabelCell);
+            }
+
+            // Crear las celdas vacías del fondo para Lunes a Viernes
+            for (let col = 0; col < 5; col++) {
+                const bgCell = document.createElement('div');
+                bgCell.className = `calendar-grid-cell col-${col + 2} row-${indexFila}`;
+                bgCell.style.gridColumn = col + 2;
+                bgCell.style.gridRow = indexFila;
+                
+                // Si es borde de hora completa (es decir, el final de la media hora :30, o sea fila impar en indexFila)
+                if (indexFila % 2 === 1) {
+                    bgCell.classList.add('hour-boundary');
+                }
+                calendarGridBody.appendChild(bgCell);
+            }
+        }
+
+        // 2. Colocar las tarjetas de clases sobre la cuadrícula
+        // Función para convertir "HH:MM" a índice de fila (0-indexed desde las 07:00)
+        function timeToRowIndex(timeStr) {
+            const [h, m] = timeStr.split(':').map(Number);
+            const diffMinutos = (h - horaInicioBase) * 60 + m;
+            return Math.round(diffMinutos / 30);
+        }
+
+        const diasColumnMap = {
+            "Lunes": 2,
+            "Martes": 3,
+            "Miércoles": 4,
+            "Jueves": 5,
+            "Viernes": 6
+        };
+
+        // Renderizar cada horario de cada sección matriculada
+        horariosList.forEach((hor) => {
+            const startRowOffset = timeToRowIndex(hor.inicio);
+            const endRowOffset = timeToRowIndex(hor.fin);
+            
+            const startRow = startRowOffset + 2;
+            const spanRows = endRowOffset - startRowOffset;
+
+            // Determinar los días en que se dicta la clase
+            const diasClase = hor.dias || ["Lunes", "Miércoles", "Viernes"];
+
+            diasClase.forEach(dia => {
+                const col = diasColumnMap[dia];
+                if (!col) return; // Si es sábado u otro no configurado en este grid
+
+                // Crear tarjeta
+                const card = document.createElement('div');
+                const isVirtual = hor.modalidad.toLowerCase() === 'virtual';
+                card.className = `calendar-class-card ${isVirtual ? 'mode-virtual' : 'mode-presencial'}`;
+                card.style.gridColumn = col;
+                card.style.gridRow = `${startRow} / span ${spanRows}`;
+                
+                card.innerHTML = `
+                    <div class="class-materia" title="${hor.materia}">${hor.materia}</div>
+                    <div class="class-details">
+                        <span>Sección: <strong>${hor.seccion}</strong></span>
+                        <span>Docente: <strong>${hor.docente.split(',')[0]}</strong></span>
+                    </div>
+                    <div class="class-footer">
+                        <span>${hor.inicio} - ${hor.fin}</span>
+                        <span>${isVirtual ? '💻' : '🏫'}</span>
+                    </div>
+                `;
+
+                // Clic para abrir detalle
+                card.addEventListener('click', () => {
+                    showClassDetail(hor);
+                });
+
+                calendarGridBody.appendChild(card);
+            });
+        });
+
+        // 3. Función para mostrar detalle de clase en modal
+        function showClassDetail(hor) {
+            const detailContent = document.getElementById('class-detail-content');
+            if (!detailContent) return;
+
+            const isVirtual = hor.modalidad.toLowerCase() === 'virtual';
+            const badgeClass = isVirtual ? 'badge-warning' : 'badge-success';
+            const badgeColor = isVirtual ? 'var(--accent)' : 'var(--primary)';
+            const badgeBg = isVirtual ? 'rgba(15, 118, 110, 0.1)' : 'rgba(122, 27, 41, 0.05)';
+
+            let virtualLinkHtml = '';
+            if (isVirtual) {
+                if (hor.aula) {
+                    virtualLinkHtml = `
+                        <div style="margin-top: 20px;">
+                            <a href="${hor.aula}" target="_blank" class="btn btn-primary" style="display: flex; gap: 8px; width: 100%; text-decoration: none; align-items: center; justify-content: center; font-size: 0.9rem; background: var(--accent);">
+                                💻 Unirse a Clase Virtual
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    virtualLinkHtml = `
+                        <div style="margin-top: 15px; padding: 12px; background: var(--warning-bg); border-radius: var(--radius-sm); font-size: 0.85rem; border-left: 3px solid var(--warning); display: flex; align-items: center; gap: 8px;">
+                            ⚠️ <span style="color: var(--warning);"><strong>Aula Virtual:</strong> Enlace no asignado aún por coordinación.</span>
+                        </div>
+                    `;
+                }
+            } else {
+                virtualLinkHtml = `
+                    <div style="margin-top: 15px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); font-size: 0.85rem; border-left: 3px solid var(--primary); display: flex; align-items: center; gap: 8px;">
+                        🏫 <span><strong>Aula Asignada:</strong> Entorno Físico - Campus Universitario</span>
+                    </div>
+                `;
+            }
+
+            const diasFormat = (hor.dias || ["Lunes", "Miércoles", "Viernes"]).join(', ');
+
+            detailContent.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <span class="badge ${badgeClass}" style="background: ${badgeBg}; border-color: ${badgeBg}; color: ${badgeColor}; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; padding: 4px 8px;">
+                            ${hor.modalidad}
+                        </span>
+                        <h4 style="font-size: 1.25rem; font-family: 'Merriweather', serif; color: var(--primary); margin-top: 8px; line-height: 1.3;">${hor.materia}</h4>
+                    </div>
+                    
+                    <hr style="border: 0; border-top: 1px solid var(--card-border);">
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem;">
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Sección:</span><strong>${hor.seccion}</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Turno:</span><strong>${hor.turno}</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Días de Clase:</span><strong>${diasFormat}</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Horario de Entrada:</span><strong>${hor.inicio}</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Horario de Salida:</span><strong>${hor.fin}</strong></div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 4px;">
+                            <span style="color: var(--text-secondary);">Docente Asignado:</span>
+                            <strong style="color: var(--text-primary); font-size: 0.9rem; padding-left: 8px; border-left: 2px solid var(--card-border);">${hor.docente}</strong>
+                        </div>
+                    </div>
+
+                    ${virtualLinkHtml}
+                </div>
+            `;
+
+            openModal('modal-class-detail');
+        }
+
+        // 4. Toggle entre vistas (Calendario vs Lista)
+        const btnViewGraphic = document.getElementById('btn-view-graphic');
+        const btnViewList = document.getElementById('btn-view-list');
+        const graphicContainer = document.getElementById('schedule-graphic-container');
+        const listContainer = document.getElementById('schedule-list-container');
+
+        if (btnViewGraphic && btnViewList && graphicContainer && listContainer) {
+            btnViewGraphic.addEventListener('click', () => {
+                btnViewGraphic.classList.add('active-view-btn');
+                btnViewList.classList.remove('active-view-btn');
+                graphicContainer.style.display = 'block';
+                listContainer.style.display = 'none';
+            });
+
+            btnViewList.addEventListener('click', () => {
+                btnViewList.classList.add('active-view-btn');
+                btnViewGraphic.classList.remove('active-view-btn');
+                graphicContainer.style.display = 'none';
+                listContainer.style.display = 'block';
+            });
+        }
+    }
 });

@@ -5,11 +5,14 @@ import sys
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Comprobar la existencia del python del entorno virtual
-venv_python = os.path.join(".venv", "Scripts", "python.exe")
+if sys.platform == "win32":
+    venv_python = os.path.join(".venv", "Scripts", "python.exe")
+else:
+    venv_python = os.path.join(".venv", "bin", "python")
+
 if os.path.exists(venv_python):
     print("---------------------------------------------------------")
     print(" Levantando el Sistema Académico con WebView (en .venv)...")
- 
     print("---------------------------------------------------------")
     os.system(f'"{venv_python}" App/app.py')
 else:

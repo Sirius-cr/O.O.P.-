@@ -61,8 +61,353 @@
             "mensaje": "El docente María Rodríguez ha modificado tu calificación de asistencia en 'Programación' a 100.",
             "fecha": "2026-07-01 09:47:32",
             "leido": true
+          },
+          {
+            "mensaje": "El docente María Rodríguez ha modificado tu calificación de parcial1 en 'Programación' a 3.8.",
+            "fecha": "2026-07-04 19:35:07",
+            "leido": true
+          },
+          {
+            "mensaje": "El docente María Rodríguez ha modificado tu calificación de parcial2 en 'Programación' a 4.8.",
+            "fecha": "2026-07-04 19:35:07",
+            "leido": true
+          },
+          {
+            "mensaje": "El docente María Rodríguez ha modificado tu calificación de asistencia en 'Programación' a 98.",
+            "fecha": "2026-07-04 19:35:07",
+            "leido": true
           }
         ]
+      },
+      {
+        "cedula": "0847612652",
+        "nombres": "Elena Beatriz",
+        "apellidos": "Álava Vargas",
+        "correo": "elena.alava@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-001",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1231508787",
+        "nombres": "María Belén",
+        "apellidos": "Reyes Castillo",
+        "correo": "maria.reyes@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-002",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1704852514",
+        "nombres": "Daniel Sebastián",
+        "apellidos": "Torres Muñoz",
+        "correo": "daniel.torres@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-003",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "0940562127",
+        "nombres": "Ruth Noemí",
+        "apellidos": "Pérez Castro",
+        "correo": "ruth.perez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-004",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1750814376",
+        "nombres": "Carlos Javier",
+        "apellidos": "Chávez Reyes",
+        "correo": "carlos.chavez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-005",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "0826021610",
+        "nombres": "Valeria Sofía",
+        "apellidos": "Ramos Chávez",
+        "correo": "valeria.ramos@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-006",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "0953273034",
+        "nombres": "René Marcelo",
+        "apellidos": "Silva García",
+        "correo": "rene.silva@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-007",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1748706254",
+        "nombres": "Yolanda Beatriz",
+        "apellidos": "Zambrano Espinoza",
+        "correo": "yolanda.zambrano@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-008",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1743159491",
+        "nombres": "Sandra Milena",
+        "apellidos": "Sánchez Álava",
+        "correo": "sandra.sanchez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-009",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1346585043",
+        "nombres": "Álvaro Vinicio",
+        "apellidos": "Martínez Rodríguez",
+        "correo": "alvaro.martinez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-010",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1338745308",
+        "nombres": "Ana Lucía",
+        "apellidos": "Vargas Cevallos",
+        "correo": "ana.vargas@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-011",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "0846909976",
+        "nombres": "Iván Darío",
+        "apellidos": "Castillo Rodríguez",
+        "correo": "ivan.castillo@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-012",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "0945728574",
+        "nombres": "Estela Rosa",
+        "apellidos": "Torres Mendoza",
+        "correo": "estela.torres@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-013",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1350477079",
+        "nombres": "Juan José",
+        "apellidos": "Benítez Gómez",
+        "correo": "juan.benitez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-014",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1710462084",
+        "nombres": "Marcelo Fabián",
+        "apellidos": "Vélez Guzmán",
+        "correo": "marcelo.velez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-015",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1336156441",
+        "nombres": "Mateo Alejandro",
+        "apellidos": "Salazar Reyes",
+        "correo": "mateo.salazar@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-016",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "0921695565",
+        "nombres": "Gloria Mercedes",
+        "apellidos": "Rojas Intriago",
+        "correo": "gloria.rojas@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-017",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1708585797",
+        "nombres": "Gabriela Alejandra",
+        "apellidos": "Intriago Palma",
+        "correo": "gabriela.intriago@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-018",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1333297727",
+        "nombres": "Marco Antonio",
+        "apellidos": "Barberán Solórzano",
+        "correo": "marco.barberan@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-019",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1350924658",
+        "nombres": "César Augusto",
+        "apellidos": "Espinoza Gómez",
+        "correo": "cesar.espinoza@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-020",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "0934214495",
+        "nombres": "Walter Vinicio",
+        "apellidos": "Moreira Saltos",
+        "correo": "walter.moreira@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-021",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1307352094",
+        "nombres": "Jorge Andrés",
+        "apellidos": "Saltos Medina",
+        "correo": "jorge.saltos@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-022",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1314119254",
+        "nombres": "Paola Andrea",
+        "apellidos": "Flores Álava",
+        "correo": "paola.flores@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-023",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1344837859",
+        "nombres": "Carmen Elena",
+        "apellidos": "López Salazar",
+        "correo": "carmen.lopez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-024",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Especial",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1332147170",
+        "nombres": "Sofía Valentina",
+        "apellidos": "Silva Pérez",
+        "correo": "sofia.silva@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-025",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Especial",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1324302650",
+        "nombres": "Santiago David",
+        "apellidos": "Cedeño Guzmán",
+        "correo": "santiago.cedeno@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-026",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1300696117",
+        "nombres": "Camila Nicole",
+        "apellidos": "Acosta Flores",
+        "correo": "camila.acosta@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-027",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "0929759074",
+        "nombres": "Isabella Marie",
+        "apellidos": "Loor Reyes",
+        "correo": "isabella.loor@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-028",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "0821359999",
+        "nombres": "Liliana María",
+        "apellidos": "Intriago Macías",
+        "correo": "liliana.intriago@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-029",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "notificaciones": []
+      },
+      {
+        "cedula": "1214506188",
+        "nombres": "Roberto Carlos",
+        "apellidos": "Benítez Gómez",
+        "correo": "roberto.benitez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-030",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "notificaciones": []
       }
     ]
   },
@@ -76,6 +421,60 @@
     {
       "id_materia": "MAT-02",
       "nombre_materia": "Matemáticas",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-03",
+      "nombre_materia": "Química",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-04",
+      "nombre_materia": "Historia",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-05",
+      "nombre_materia": "Lengua y Literatura",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-06",
+      "nombre_materia": "Física",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-07",
+      "nombre_materia": "Biología",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-08",
+      "nombre_materia": "Inglés",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-09",
+      "nombre_materia": "Filosofía",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-10",
+      "nombre_materia": "Sociología",
+      "nota_minima": 7.0,
+      "asistencia_minima": 70
+    },
+    {
+      "id_materia": "MAT-11",
+      "nombre_materia": "Emprendimiento y Gestión",
       "nota_minima": 7.0,
       "asistencia_minima": 70
     }
@@ -96,7 +495,12 @@
           "turno": "Matutino",
           "hora_inicio": "07:30",
           "hora_fin": "09:30",
-          "modalidad": "Presencial"
+          "modalidad": "Presencial",
+          "dias": [
+            "Lunes",
+            "Miércoles",
+            "Viernes"
+          ]
         }
       ],
       "aula_virtual": {
@@ -120,7 +524,11 @@
           "turno": "Vespertino",
           "hora_inicio": "13:00",
           "hora_fin": "15:00",
-          "modalidad": "Virtual"
+          "modalidad": "Virtual",
+          "dias": [
+            "Martes",
+            "Jueves"
+          ]
         }
       ],
       "aula_virtual": {
@@ -142,7 +550,87 @@
           "turno": "Matutino",
           "hora_inicio": "07:00",
           "hora_fin": "09:00",
-          "modalidad": "Presencial"
+          "modalidad": "Presencial",
+          "dias": [
+            "Lunes",
+            "Miércoles",
+            "Viernes"
+          ]
+        }
+      ],
+      "aula_virtual": null
+    },
+    {
+      "id_seccion": "FIS-304",
+      "capacidad_estudiantil": 30,
+      "materia_id": "MAT-06",
+      "docentes_correos": [
+        "maria.rodriguez@uleam.edu.ec"
+      ],
+      "estudiantes_ids": [],
+      "horarios": [
+        {
+          "turno": "Matutino",
+          "hora_inicio": "07:00",
+          "hora_fin": "09:00",
+          "modalidad": "Presencial",
+          "dias": [
+            "Lunes",
+            "Miércoles",
+            "Viernes"
+          ]
+        }
+      ],
+      "aula_virtual": null
+    },
+    {
+      "id_seccion": "SOC-343",
+      "capacidad_estudiantil": 30,
+      "materia_id": "MAT-10",
+      "docentes_correos": [],
+      "estudiantes_ids": [
+        "EST-001",
+        "EST-002",
+        "EST-003",
+        "EST-004",
+        "EST-005",
+        "EST-006",
+        "EST-007",
+        "EST-008",
+        "EST-009",
+        "EST-010",
+        "EST-011",
+        "EST-012",
+        "EST-013",
+        "EST-014",
+        "EST-015",
+        "EST-016",
+        "EST-017",
+        "EST-018",
+        "EST-019",
+        "EST-020",
+        "EST-021",
+        "EST-022",
+        "EST-023",
+        "EST-024",
+        "EST-025",
+        "EST-026",
+        "EST-027",
+        "EST-028",
+        "EST-029",
+        "EST-030"
+      ],
+      "horarios": [
+        {
+          "turno": "Matutino",
+          "hora_inicio": "07:00",
+          "hora_fin": "09:00",
+          "modalidad": "Presencial",
+          "dias": [
+            "Lunes",
+            "Miércoles",
+            "Viernes"
+          ]
         }
       ],
       "aula_virtual": null
@@ -159,9 +647,9 @@
     {
       "estudiante_id": "EST-001",
       "materia_id": "MAT-01",
-      "parcial1": 4.1,
-      "parcial2": 4.9,
-      "asistencia": 100,
+      "parcial1": 3.8,
+      "parcial2": 4.8,
+      "asistencia": 98,
       "periodo_cerrado": false
     },
     {
@@ -170,6 +658,246 @@
       "parcial1": 3.8,
       "parcial2": 4.0,
       "asistencia": 90,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-001",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-002",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-003",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-004",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-005",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-006",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-007",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-008",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-009",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-010",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-011",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-012",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-013",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-014",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-015",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-016",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-017",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-018",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-019",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-020",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-021",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-022",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-023",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-024",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-025",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-026",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-027",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-028",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-029",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
+      "periodo_cerrado": false
+    },
+    {
+      "estudiante_id": "EST-030",
+      "materia_id": "MAT-10",
+      "parcial1": 0.0,
+      "parcial2": 0.0,
+      "asistencia": 0,
       "periodo_cerrado": false
     }
   ],
@@ -232,6 +960,12 @@
       "formato_documento": "PDF",
       "emisor": "María Rodríguez",
       "contenido": "esta es otra prueba papus reporte deidad chad"
+    },
+    {
+      "tipo_de_reporte": "Solicitud de Certificado",
+      "formato_documento": "PDF",
+      "emisor": "Carlos Mendoza",
+      "contenido": "El estudiante Carlos Mendoza (ID: EST-001) solicita un certificado de estudios oficiales para el periodo Nivelación 2026."
     }
   ]
 }

@@ -1,10 +1,11 @@
 from models.academico.Clase_Seccion import Seccion
 class Horario:
-    def __init__(self, turno, hora_inicio, hora_fin, modalidad):
+    def __init__(self, turno, hora_inicio, hora_fin, modalidad, dias=None):
         self.turno = turno
-        self.hora_inicio =hora_inicio
-        self.hora_fin=hora_fin
-        self._modalidad=modalidad
+        self.hora_inicio = hora_inicio
+        self.hora_fin = hora_fin
+        self._modalidad = modalidad
+        self.dias = dias if dias is not None else ["Lunes", "Miércoles", "Viernes"]
     
     
     def deteccion_colision(self, otro_horario):
@@ -21,4 +22,5 @@ class Horario:
             "Modalidad": self._modalidad,
             "Docente": docentes_nombres
         }
+
     

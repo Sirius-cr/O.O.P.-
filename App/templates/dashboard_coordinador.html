@@ -169,28 +169,40 @@
                                             <th style="text-align: center;">Capacidad Máx.</th>
                                             <th>Aula Virtual/Entorno</th>
                                             <th>Estado</th>
+                                            <th style="text-align: center;">Estudiantes</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for sec in secciones %}
                                         <tr>
-                                            <td style="font-weight: 600; color: #ffffff;">{{ sec.id_seccion }}</td>
+                                            <td style="font-weight: 600; color: #000000;">{{ sec.id_seccion }}</td>
                                             <td>{{ sec.materia }}</td>
                                             <td style="font-weight: 500; color: var(--accent);">{{ sec.docente }}</td>
                                             <td style="text-align: center;">{{ sec.inscritos }}</td>
                                             <td style="text-align: center;">{{ sec.capacidad }}</td>
-                                            <td style="font-size: 0.8rem; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                                <a href="{{ sec.aula }}" target="_blank" style="color: var(--primary); text-decoration: none;">{{ sec.aula }}</a>
+                                            <td>
+                                                {% if sec.aula == "No asignada" %}
+                                                    <span style="color: var(--text-muted); font-style: italic; font-size: 0.82rem;">No asignada</span>
+                                                    <button onclick="openEditAulaModal('{{ sec.id_seccion }}', '')" class="btn btn-secondary" style="padding: 2px 6px; font-size: 0.72rem; margin-left: 8px; display: inline-flex; align-items: center;" title="Asignar Aula">➕</button>
+                                                {% else %}
+                                                    <div style="display: flex; align-items: center; gap: 6px; max-width: 200px;">
+                                                        <a href="{{ sec.aula }}" target="_blank" style="color: var(--accent); text-decoration: underline; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;" title="{{ sec.aula }}">{{ sec.aula }}</a>
+                                                        <button onclick="openEditAulaModal('{{ sec.id_seccion }}', '{{ sec.aula }}')" class="btn btn-secondary" style="padding: 2px 6px; font-size: 0.72rem; display: inline-flex; align-items: center; flex-shrink: 0;" title="Modificar Enlace">✏️</button>
+                                                    </div>
+                                                {% endif %}
                                             </td>
                                             <td>
                                                 <span class="badge {% if sec.disponibilidad == 'Disponible' %} badge-success {% else %} badge-danger {% endif %}">
                                                     {{ sec.disponibilidad }}
                                                 </span>
                                             </td>
+                                            <td style="text-align: center;">
+                                                <button onclick="openImportStudentsModal('{{ sec.id_seccion }}', {{ sec.capacidad }})" class="btn btn-primary" style="padding: 4px 10px; font-size: 0.72rem; width: auto; background: var(--accent); border-color: var(--accent);">📥 Importar Excel</button>
+                                            </td>
                                         </tr>
                                         {% else %}
                                         <tr>
-                                            <td colspan="7" style="text-align: center; color: var(--text-secondary);">No hay secciones creadas en este periodo académico.</td>
+                                            <td colspan="8" style="text-align: center; color: var(--text-secondary);">No hay secciones creadas en este periodo académico.</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -309,6 +321,17 @@
                         <label for="capacidad">Capacidad de Estudiantes</label>
                         <input type="number" id="capacidad" name="capacidad" class="form-control" min="5" max="100" value="30" required>
                     </div>
+                    <div class="form-group">
+                        <label for="aula_link">Enlace de Aula Virtual (Opcional)</label>
+                        <input type="url" id="aula_link" name="aula_link" class="form-control" placeholder="Ej: https://teams.microsoft.com/meet/...">
+                    </div>
+                    <div class="form-group">
+                        <label for="aula_plataforma">Plataforma (Si se asigna enlace)</label>
+                        <select id="aula_plataforma" name="aula_plataforma" class="form-control" style="background: var(--bg-primary);">
+                            <option value="TEAMS">Microsoft Teams</option>
+                            <option value="ZOOM">Zoom Meetings</option>
+                        </select>
+                    </div>
                     <div style="display: flex; gap: 15px; margin-top: 25px;">
                         <button type="submit" class="btn btn-primary" style="flex: 1;">Crear con Builder</button>
                         <button type="button" onclick="closeModal('modal-create-section')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
@@ -365,6 +388,81 @@
                 <div style="text-align: right; margin-top: 20px;">
                     <button onclick="closeModal('modal-view-report')" class="btn btn-primary" style="width: auto;">Aceptar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE EDICIÓN DE AULA VIRTUAL (COORDINADOR) -->
+    <div id="modal-edit-aula" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 450px;">
+            <div class="card-title-header">
+                <h3>Gestionar Aula Virtual</h3>
+                <button onclick="closeModal('modal-edit-aula')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-edit-aula">
+                    <input type="hidden" id="edit-aula-seccion-id" name="seccion_id">
+                    
+                    <div style="margin-bottom: 15px; font-size: 0.9rem; color: var(--text-secondary);">
+                        Sección: <strong id="edit-aula-seccion-display" style="color: var(--primary);"></strong>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-aula-link">Enlace del Aula Virtual (Dejar vacío para desasignar)</label>
+                        <input type="url" id="edit-aula-link" name="enlace" class="form-control" placeholder="Ej: https://teams.microsoft.com/meet/...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-aula-plataforma">Plataforma</label>
+                        <select id="edit-aula-plataforma" name="plataforma" class="form-control" style="background: var(--bg-primary);">
+                            <option value="TEAMS">Microsoft Teams</option>
+                            <option value="ZOOM">Zoom Meetings</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar Cambios</button>
+                        <button type="button" onclick="closeModal('modal-edit-aula')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE IMPORTACIÓN DE ESTUDIANTES DESDE EXCEL (COORDINADOR) -->
+    <div id="modal-import-students" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 500px;">
+            <div class="card-title-header">
+                <h3>Importar Estudiantes desde Excel</h3>
+                <button onclick="closeModal('modal-import-students')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-import-students" enctype="multipart/form-data">
+                    <input type="hidden" id="import-students-seccion-id" name="seccion_id">
+                    
+                    <div style="margin-bottom: 20px; font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary);">
+                        Sección Destino: <strong id="import-students-seccion-display" style="color: var(--primary);"></strong><br>
+                        Capacidad Requerida: <strong id="import-students-capacidad-display" style="color: var(--primary);"></strong> estudiantes.
+                    </div>
+
+                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 20px; border-left: 4px solid var(--primary); line-height: 1.4;">
+                        <strong>Requisitos del Archivo Excel:</strong>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Debe contener exactamente el número de filas correspondiente a la capacidad de la sección.</li>
+                            <li>Debe contener las siguientes columnas (minúsculas): <code>cedula</code>, <code>nombres</code>, <code>apellidos</code>, <code>correo</code>, <code>contrasenia</code>, <code>id_estudiante</code>, <code>nombre_periodo</code>, <code>tipo_matricula</code>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="import-file">Seleccionar Libro de Excel (.xlsx, .xls)</label>
+                        <input type="file" id="import-file" name="file" class="form-control" accept=".xlsx, .xls" required>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Iniciar Importación</button>
+                        <button type="button" onclick="closeModal('modal-import-students')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
