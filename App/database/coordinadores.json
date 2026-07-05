@@ -1,0 +1,11 @@
+[
+    {
+        "cedula": "1307654321",
+        "nombres": "Alejandro",
+        "apellidos": "Véliz",
+        "correo": "coordinador@uleam.edu.ec",
+        "contrasenia": "claveCoordinador",
+        "id_coordinador": "COORD-01",
+        "fecha_asignacion_cargo": "2024-05-10"
+    }
+]

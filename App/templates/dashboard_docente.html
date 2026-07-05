@@ -16,6 +16,7 @@
             </div>
             <div class="sidebar-menu">
                 <button class="nav-tab-btn active" data-tab="tab-secciones">Gestión de Secciones</button>
+                <button class="nav-tab-btn" data-tab="tab-horario">Mi Horario</button>
                 <button class="nav-tab-btn" data-tab="tab-reportes">Reportes y Solicitudes</button>
             </div>
             <div class="sidebar-footer">
@@ -73,132 +74,155 @@
                     </div>
                 </div>
 
-            <!-- TAB 1: Gestión de Secciones -->
+            <!-- TAB 1: Gestión de Secciones (ACORDEÓN) -->
             <div id="tab-secciones" class="tab-pane active">
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: var(--text-main); font-family: 'Merriweather', serif; font-size: 1.5rem;">Mis Secciones Asignadas</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem;">Haz clic en una sección para desplegar o colapsar el listado de estudiantes correspondientes.</p>
+                </div>
                 
-                <!-- VISTA A: Cuadritos de Materias -->
-                <div id="subjects-grid" class="subjects-grid">
+                <div class="accordion-container" style="display: flex; flex-direction: column; gap: 15px;">
                     {% for sec in secciones %}
-                    <div class="subject-card glass-card" onclick="showSubjectStudents('{{ sec.id_seccion }}')">
-                        <div class="subject-card-header">
-                            {% if 'prog' in sec.materia|lower or 'sof' in sec.materia|lower %}
-                            <img src="{{ url_for('static', filename='images/programacion_cover.jpg') }}" alt="{{ sec.materia }}">
-                            {% else %}
-                            <img src="{{ url_for('static', filename='images/matematicas_cover.jpg') }}" alt="{{ sec.materia }}">
+                    <details class="glass-card accordion-section">
+                        <summary class="accordion-header" style="cursor: pointer; padding: 18px 25px; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none;">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 50px; height: 50px; border-radius: 8px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">
+                                    {{ sec.materia[:2] | upper }}
+                                </div>
+                                <div>
+                                    <h3 style="margin: 0; font-size: 1.2rem;">{{ sec.materia }}</h3>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Sección: <strong>{{ sec.id_seccion }}</strong> | Estudiantes Inscritos: <strong>{{ sec.inscritos_count }} / {{ sec.capacidad }}</strong></span>
+                                </div>
+                            </div>
+                            <span class="accordion-icon" style="font-size: 1.5rem; color: var(--primary); transition: transform 0.3s;">▼</span>
+                        </summary>
+                        
+                        <div class="accordion-content table-container" style="padding: 0 25px 25px 25px; border-top: 1px solid var(--card-border); margin-top: 15px; padding-top: 20px;">
+                            <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
+                                <input type="text" class="form-control student-search-input" data-section="{{ sec.id_seccion }}" placeholder="Buscar estudiante..." style="max-width: 300px;">
+                            </div>
+                            
+                            {% if estado_periodo == 'Finalizado' %}
+                            <div class="badge badge-danger" style="display: block; margin-bottom: 15px; padding: 10px; border-radius: 6px; text-transform: none; font-size: 0.85rem;">
+                                El periodo académico ha sido FINALIZADO por el coordinador. Las notas están consolidadas y no se pueden modificar.
+                            </div>
                             {% endif %}
+                            
+                            <table class="premium-table" id="table-{{ sec.id_seccion }}">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre Completo</th>
+                                        <th style="text-align: center; width: 100px;">Parcial 1 (5.0)</th>
+                                        <th style="text-align: center; width: 100px;">Parcial 2 (5.0)</th>
+                                        <th style="text-align: center; width: 100px;">Nota Final</th>
+                                        <th style="text-align: center; width: 100px;">Asistencia (%)</th>
+                                        <th style="text-align: center;">Estado</th>
+                                        {% if estado_periodo != 'Finalizado' %}
+                                        <th style="text-align: right; width: 100px;">Acciones</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for al in sec.estudiantes %}
+                                    <tr id="row-{{ al.id_estudiante }}-{{ sec.id_seccion }}" data-nombre="{{ al.nombre | lower }}">
+                                        <td>{{ al.id_estudiante }}</td>
+                                        <td style="font-weight: 500;">
+                                            <a href="javascript:void(0)" onclick="viewStudentDetails('{{ al.id_estudiante }}')" style="color: var(--primary); text-decoration: underline; font-weight: 600; cursor: pointer;">
+                                                {{ al.nombre }}
+                                            </a>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="number" step="0.1" min="0" max="5.0" class="grade-input-field p1-input" value="{{ al.parcial1 }}" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="number" step="0.1" min="0" max="5.0" class="grade-input-field p2-input" value="{{ al.parcial2 }}" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
+                                        </td>
+                                        <td style="text-align: center; font-weight: 700; color: var(--primary);" class="final-grade-cell">
+                                            {{ "%.2f"|format(al.nota_final) }}
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="number" min="0" max="100" class="grade-input-field asistencia-input" value="{{ al.asistencia }}" style="width: 70px;" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <span class="badge {% if 'aprobada' in al.estado_aprobacion.lower() %} badge-success {% elif 'reprobada' in al.estado_aprobacion.lower() %} badge-danger {% else %} badge-warning {% endif %}">
+                                                {{ al.estado_aprobacion }}
+                                            </span>
+                                        </td>
+                                        {% if estado_periodo != 'Finalizado' %}
+                                        <td style="text-align: right;">
+                                            <button onclick="saveGrades('{{ al.id_estudiante }}', '{{ sec.id_seccion }}')" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem; width: auto;">
+                                                Guardar
+                                            </button>
+                                        </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="8" style="text-align: center; color: var(--text-secondary);">No hay estudiantes inscritos en esta sección.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="subject-card-body">
-                            <h4>{{ sec.materia }}</h4>
-                            <p>Sección: <strong>{{ sec.id_seccion }}</strong></p>
-                            <p>Estudiantes: <strong>{{ sec.inscritos_count }} / {{ sec.capacidad }}</strong></p>
-                        </div>
-                    </div>
+                    </details>
                     {% else %}
-                    <div class="glass-card" style="padding: 20px; color: var(--text-secondary); text-align: center; width: 100%;">
-                        No tienes secciones asignadas en este período.
+                    <div class="glass-card" style="padding: 30px; color: var(--text-secondary); text-align: center; border: 2px dashed var(--card-border);">
+                        No tienes secciones asignadas en este período académico.
                     </div>
                     {% endfor %}
                 </div>
+            </div>
 
-                <!-- VISTA B: Listado de Alumnos (Oculto al inicio) -->
-                <div id="students-view-container" style="display: none; animation: fadeIn 0.3s ease-out;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; background: #ffffff; padding: 15px 20px; border-radius: var(--radius-sm); border: 1px solid var(--card-border); box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <button class="btn btn-secondary" onclick="hideSubjectStudents()" style="padding: 8px 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; width: auto; font-weight: 600;">
-                            Volver a Asignaturas
-                        </button>
-                        
-                        <!-- Barra de búsqueda única -->
-                        <div style="position: relative; width: 350px;">
-                            <input type="text" id="student-search-input" class="form-control" placeholder="Buscar por ID, nombre o cédula..." style="padding-left: 15px;">
-                        </div>
+            <!-- TAB: Mi Horario -->
+            <div id="tab-horario" class="tab-pane">
+                <div class="glass-card">
+                    <div class="card-title-header">
+                        <h3>Mi Horario de Clases</h3>
                     </div>
-                    
-                    <div id="students-tables-list">
-                        {% for sec in secciones %}
-                        <div class="glass-card section-students-table" data-section-id="{{ sec.id_seccion }}" style="display: none; margin-bottom: 25px;">
-                            <div class="card-title-header">
-                                <div>
-                                    <h3>Listado de Alumnos - {{ sec.materia }}</h3>
-                                    <span style="font-size: 0.8rem; color: var(--text-secondary);">Código de Sección: {{ sec.id_seccion }} | Cupos Máximos: {{ sec.capacidad }}</span>
-                                </div>
-                                <div style="display: flex; gap: 10px;">
-                                    <span class="user-badge">Inscritos: <strong>{{ sec.inscritos_count }}</strong></span>
-                                </div>
-                            </div>
-                            
-                            <div class="card-body-content table-container">
-                                {% if estado_periodo == 'Finalizado' %}
-                                <div class="badge badge-danger" style="display: block; margin-bottom: 15px; padding: 10px; border-radius: 6px; text-transform: none; font-size: 0.85rem;">
-                                    El periodo académico ha sido FINALIZADO por el coordinador. Las notas están consolidadas y no se pueden modificar.
-                                </div>
-                                {% endif %}
-                                <table class="premium-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nombre Completo</th>
-                                            <th style="text-align: center; width: 100px;">Parcial 1 (5.0)</th>
-                                            <th style="text-align: center; width: 100px;">Parcial 2 (5.0)</th>
-                                            <th style="text-align: center; width: 100px;">Nota Final</th>
-                                            <th style="text-align: center; width: 100px;">Asistencia (%)</th>
-                                            <th style="text-align: center;">Estado</th>
-                                            {% if estado_periodo != 'Finalizado' %}
-                                            <th style="text-align: right; width: 100px;">Acciones</th>
-                                            {% endif %}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for al in sec.estudiantes %}
-                                        <tr id="row-{{ al.id_estudiante }}" data-cedula="{{ al.cedula }}">
-                                            <td>{{ al.id_estudiante }}</td>
-                                            <td style="font-weight: 500;">
-                                                <a href="javascript:void(0)" onclick="viewStudentDetails('{{ al.id_estudiante }}')" style="color: var(--primary); text-decoration: underline; font-weight: 600; cursor: pointer;">
-                                                    {{ al.nombre }}
-                                                </a>
-                                            </td>
-                                            
-                                            <!-- Inputs de Notas -->
-                                            <td style="text-align: center;">
-                                                <input type="number" step="0.1" min="0" max="5.0" class="grade-input-field p1-input" value="{{ al.parcial1 }}" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                <input type="number" step="0.1" min="0" max="5.0" class="grade-input-field p2-input" value="{{ al.parcial2 }}" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
-                                            </td>
-                                            
-                                            <!-- Nota Final Calculada -->
-                                            <td style="text-align: center; font-weight: 700; color: var(--primary);" class="final-grade-cell">
-                                                {{ "%.2f"|format(al.nota_final) }}
-                                            </td>
-                                            
-                                            <!-- Input de Asistencia -->
-                                            <td style="text-align: center;">
-                                                <input type="number" min="0" max="100" class="grade-input-field asistencia-input" value="{{ al.asistencia }}" style="width: 70px;" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
-                                            </td>
-
-                                            <td style="text-align: center;">
-                                                <span class="badge {% if 'aprobada' in al.estado_aprobacion.lower() %} badge-success {% elif 'reprobada' in al.estado_aprobacion.lower() %} badge-danger {% else %} badge-warning {% endif %}">
-                                                    {{ al.estado_aprobacion }}
-                                                </span>
-                                            </td>
-                                            
-                                            {% if estado_periodo != 'Finalizado' %}
-                                            <td style="text-align: right;">
-                                                <button onclick="saveGrades('{{ al.id_estudiante }}', '{{ sec.id_seccion }}')" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem; width: auto;">
-                                                    Guardar
-                                                </button>
-                                            </td>
-                                            {% endif %}
-                                        </tr>
-                                        {% else %}
-                                        <tr>
-                                            <td colspan="8" style="text-align: center; color: var(--text-secondary);">No hay estudiantes inscritos en esta sección.</td>
-                                        </tr>
+                    <div class="card-body-content table-container">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>Materia</th>
+                                    <th>Sección</th>
+                                    <th>Modalidad</th>
+                                    <th>Días</th>
+                                    <th>Turno</th>
+                                    <th>Hora de Inicio</th>
+                                    <th>Hora de Fin</th>
+                                    <th>Aula Virtual</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for h in horarios %}
+                                <tr>
+                                    <td style="font-weight: 500; color: var(--text-main);">{{ h.materia }}</td>
+                                    <td>{{ h.seccion }}</td>
+                                    <td><span class="badge badge-info">{{ h.modalidad }}</span></td>
+                                    <td>
+                                        {% for d in h.dias %}
+                                        <span class="badge badge-secondary" style="margin-right: 4px; font-size: 0.75rem;">{{ d }}</span>
                                         {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        {% endfor %}
+                                    </td>
+                                    <td>{{ h.turno }}</td>
+                                    <td>{{ h.inicio }}</td>
+                                    <td>{{ h.fin }}</td>
+                                    <td>
+                                        {% if h.aula %}
+                                        <a href="{{ h.aula }}" target="_blank" style="color: var(--primary); text-decoration: underline;">Ir a Clases</a>
+                                        {% else %}
+                                        <span style="color: var(--text-muted); font-style: italic;">No asignada</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 20px; color: var(--text-secondary);">No hay horarios registrados.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -7,12 +7,12 @@ class Coordinador(UsuarioAdministrativo):
         super().__init__(cedula, nombres, apellidos, correo, contrasenia)
         self.id_coordinador = id_coordinador
         self.fecha_asignacion_cargo = fecha_asignacion_cargo
-        self.carreras = []
+        self.carrera = None
         self.secciones_coordinadas = []
 
     def asociar_carrera(self, carrera):
-        if carrera not in self.carreras:
-            self.carreras.append(carrera)
+        if self.carrera != carrera:
+            self.carrera = carrera
             carrera.asociar_coordinador(self)
 
     def coordinar_seccion(self, seccion):

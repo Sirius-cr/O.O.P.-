@@ -16,7 +16,17 @@
             </div>
             <div class="sidebar-menu">
                 <button class="nav-tab-btn active" data-tab="tab-periodo">Período Académico</button>
+                
+                <button class="nav-tab-btn" data-tab="tab-docentes">Gestión de Docentes</button>
+                
+                <button class="nav-tab-btn" data-tab="tab-materias">Gestión de Materias</button>
+                
+                {% if not materias %}
+                <button class="nav-tab-btn" data-tab="tab-secciones" style="opacity: 0.5; cursor: not-allowed;" onclick="alert('Debe importar la Malla Curricular en la sección \'Gestión de Materias\' primero.'); return false;">Gestión de Secciones (Bloqueado)</button>
+                {% else %}
                 <button class="nav-tab-btn" data-tab="tab-secciones">Gestión de Secciones</button>
+                {% endif %}
+                
                 <button class="nav-tab-btn" data-tab="tab-retiros">
                     Solicitudes de Retiro 
                     {% if solicitudes|selectattr('estado', 'equalto', 'Pendiente')|list|length > 0 %}
@@ -68,10 +78,12 @@
                                     <div><span style="color: var(--text-secondary);">Correo:</span> <strong style="float: right; font-size: 0.75rem;">{{ coordinador._correo }}</strong></div>
                                     <div><span style="color: var(--text-secondary);">Asignado:</span> <strong style="float: right;">{{ coordinador.fecha_asignacion_cargo }}</strong></div>
                                     <div style="margin-top: 5px;">
-                                        <span style="color: var(--text-secondary); display: block; margin-bottom: 4px;">Carreras Coordinadas:</span>
-                                        {% for carr in coordinador.carreras %}
-                                        <div class="badge badge-success" style="width: 100%; text-align: center; background: rgba(122,27,41,0.08); border-color: rgba(122,27,41,0.15); color: var(--primary); padding: 5px; font-size: 0.75rem;">{{ carr.nombre_carrera }}</div>
-                                        {% endfor %}
+                                        <span style="color: var(--text-secondary); display: block; margin-bottom: 4px;">Carrera:</span>
+                                        {% if coordinador.carrera %}
+                                        <div class="badge badge-success" style="width: 100%; text-align: center; background: rgba(122,27,41,0.08); border-color: rgba(122,27,41,0.15); color: var(--primary); padding: 5px; font-size: 0.75rem;">{{ coordinador.carrera.nombre_carrera }}</div>
+                                        {% else %}
+                                        <span style="color: var(--danger); font-size: 0.75rem;">Sin Carrera Asignada</span>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -144,6 +156,86 @@
                         </div>
                     </div>
 
+                    <!-- TAB: Gestión de Docentes -->
+                    <div id="tab-docentes" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Docentes Registrados</h3>
+                                <div style="display: flex; gap: 15px;">
+                                    <button onclick="openModal('modal-import-teachers')" class="btn btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Importar Docentes (Excel)
+                                    </button>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">
+                                Carga un archivo Excel con las columnas: <code>cedula</code>, <code>nombres</code>, <code>apellidos</code>, <code>correo</code>, <code>contrasenia</code>, <code>especialidad</code>.
+                            </p>
+                            
+                            <div class="card-body-content table-container">
+                                <table class="premium-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Cédula</th>
+                                            <th>Nombres</th>
+                                            <th>Apellidos</th>
+                                            <th>Correo</th>
+                                            <th>Especialidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for docente in docentes %}
+                                        <tr>
+                                            <td>{{ docente.cedula }}</td>
+                                            <td style="font-weight: 500;">{{ docente.nombres }}</td>
+                                            <td style="font-weight: 500;">{{ docente.apellidos }}</td>
+                                            <td>{{ docente._correo }}</td>
+                                            <td><span class="badge badge-success">{{ docente.especialidad }}</span></td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 20px;">
+                                                No hay docentes registrados. Importe desde Excel.
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-materias" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Malla Curricular de la Carrera</h3>
+                                <div style="display: flex; gap: 15px;">
+                                    <button onclick="openModal('modal-import-curriculum')" class="btn btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Importar Malla (Excel)
+                                    </button>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">
+                                Importa un archivo Excel (.xlsx) que contenga exactamente 5 materias para inicializar la malla curricular de tu carrera.
+                            </p>
+                            
+                            {% if materias %}
+                            <div class="grid-cols-2" style="gap: 15px;">
+                                {% for m in materias %}
+                                <div class="glass-card" style="padding: 15px; border-left: 4px solid var(--primary);">
+                                    <h4 style="margin: 0 0 5px 0; color: var(--text-main);">{{ m.nombre }}</h4>
+                                    <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">Código: {{ m.id }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div style="padding: 40px; text-align: center; border: 2px dashed var(--card-border); border-radius: 10px; background: rgba(0,0,0,0.02);">
+                                <h3 style="color: var(--text-secondary); margin-bottom: 10px;">Sin Malla Curricular</h3>
+                                <p style="font-size: 0.9rem; color: var(--text-secondary);">Actualmente no hay materias registradas. La gestión de secciones está bloqueada.</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
                     <!-- TAB 2: Gestión de Secciones -->
                     <div id="tab-secciones" class="tab-pane">
                         <div class="glass-card">
@@ -207,6 +299,11 @@
                                         {% endfor %}
                                     </tbody>
                                 </table>
+                            </div>
+                            <div style="padding: 15px 20px; border-top: 1px solid rgba(0,0,0,0.05); text-align: right;">
+                                <button onclick="openModal('modal-delete-students')" class="btn btn-primary" style="background: var(--danger); border-color: var(--danger); width: auto; padding: 10px 20px;">
+                                    ⚠️ Borrar Todos los Estudiantes
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -358,15 +455,16 @@
                         <label for="seccion_id">Seleccionar Sección</label>
                         <select id="seccion_id" name="seccion_id" class="form-control" style="background: var(--bg-primary);">
                             {% for sec in secciones %}
-                            <option value="{{ sec.id_seccion }}">{{ sec.id_seccion }} - {{ sec.materia }}</option>
+                            <option value="{{ sec.id_seccion }}" data-materia="{{ sec.materia }}">{{ sec.id_seccion }} - {{ sec.materia }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="docente_correo">Seleccionar Docente Disponible</label>
                         <select id="docente_correo" name="docente_correo" class="form-control" style="background: var(--bg-primary);">
+                            <option value="">Seleccione un docente...</option>
                             {% for doc in docentes %}
-                            <option value="{{ doc.correo }}">{{ doc.nombre }}</option>
+                            <option value="{{ doc._correo }}" data-especialidad="{{ doc.especialidad }}">{{ doc.obtener_nombre_completo() }} ({{ doc.especialidad }})</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -471,6 +569,91 @@
         </div>
     </div>
 
+    <!-- Modal: Importar Docentes -->
+    <div id="modal-import-teachers" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 500px;">
+            <div class="card-title-header">
+                <h3>Importar Docentes</h3>
+                <button onclick="closeModal('modal-import-teachers')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-import-teachers" enctype="multipart/form-data">
+                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 20px; border-left: 4px solid var(--primary); line-height: 1.4;">
+                        <strong>Requisitos del Archivo Excel:</strong>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Debe contener las siguientes columnas en minúsculas: <code>cedula</code>, <code>nombres</code>, <code>apellidos</code>, <code>correo</code>, <code>contrasenia</code>, <code>especialidad</code>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file-teachers">Seleccionar Archivo Excel (.xlsx)</label>
+                        <input type="file" id="file-teachers" name="file" class="form-control" accept=".xlsx, .xls" required>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Importar Docentes</button>
+                        <button type="button" onclick="closeModal('modal-import-teachers')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE IMPORTACIÓN DE MALLA CURRICULAR -->
+    <div id="modal-import-curriculum" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 500px;">
+            <div class="card-title-header">
+                <h3>Importar Malla Curricular</h3>
+                <button onclick="closeModal('modal-import-curriculum')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-import-curriculum" enctype="multipart/form-data">
+                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 20px; border-left: 4px solid var(--primary); line-height: 1.4;">
+                        <strong>Requisitos del Archivo Excel:</strong>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Debe contener exactamente 5 filas de datos (5 materias).</li>
+                            <li>Debe contener las siguientes columnas (minúsculas): <code>id_materia</code>, <code>nombre_materia</code>, <code>nota_minima</code>, <code>asistencia_minima</code>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="import-curriculum-file">Seleccionar Libro de Excel (.xlsx, .xls)</label>
+                        <input type="file" id="import-curriculum-file" name="file" class="form-control" accept=".xlsx, .xls" required>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Iniciar Importación</button>
+                        <button type="button" onclick="closeModal('modal-import-curriculum')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL PARA ELIMINAR ESTUDIANTES -->
+    <div id="modal-delete-students" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header" style="background: rgba(220, 53, 69, 0.1);">
+                <h3 style="color: var(--danger);">Borrar Todos los Estudiantes</h3>
+                <button onclick="closeModal('modal-delete-students')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+                    Esta acción eliminará a todos los estudiantes inscritos, vaciará las listas de las secciones y borrará los archivos JSON de los estudiantes de forma irreversible.
+                </p>
+                <form id="form-delete-students">
+                    <div class="form-group">
+                        <label for="delete-auth-password">Clave de Verificación (Contraseña del Coordinador)</label>
+                        <input type="password" id="delete-auth-password" name="auth_password" class="form-control" placeholder="Ingrese su contraseña para confirmar" required>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1; background: var(--danger); border-color: var(--danger);">Confirmar Eliminación</button>
+                        <button type="button" onclick="closeModal('modal-delete-students')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

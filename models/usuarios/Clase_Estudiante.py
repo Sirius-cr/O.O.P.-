@@ -5,12 +5,12 @@ from models.patrones_diseno.strategy.ReporteStrategy import Reporte
 class Estudiante(UsuarioAcademico, Observador):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_estudiante, nombre_periodo, tipo_matricula):
         super().__init__(cedula, nombres, apellidos, correo, contrasenia)
-
         self._id_estudiante = id_estudiante
         self.nombre_periodo = nombre_periodo
         self._tipo_matricula = tipo_matricula
         self.historial = HistorialAcademico(id_historial=id_estudiante, estudiante=self)  # Cada estudiante tiene un historial académico asociado
         self.secciones_asociadas = []
+        self._archivo_origen = "estudiantes.json"
         self.notificaciones = []
         self.esta_activo = 1
 

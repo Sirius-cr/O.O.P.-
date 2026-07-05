@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // PETICIÓN AJAX: FORMULARIOS DE NOTAS (DOCENTE)
     // =========================================================================
     window.saveGrades = function(studentId, sectionId) {
-        const row = document.getElementById(`row-${studentId}`);
+        const row = document.getElementById(`row-${studentId}-${sectionId}`);
         if (!row) return;
 
         const p1 = row.querySelector('.p1-input').value;
@@ -379,6 +379,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Filtrar docentes por especialidad según la sección seleccionada
+    const seccionSelect = document.getElementById('seccion_id');
+    const docenteSelect = document.getElementById('docente_correo');
+    
+    if (seccionSelect && docenteSelect) {
+        seccionSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const materia = selectedOption.getAttribute('data-materia');
+            
+            // Si no hay materia, mostramos todo (o nada)
+            if (!materia) return;
+            
+            // Restablecer el select de docente a la opción por defecto
+            docenteSelect.value = "";
+            
+            // Filtrar las opciones del select de docente
+            for (let i = 0; i < docenteSelect.options.length; i++) {
+                const opt = docenteSelect.options[i];
+                const especialidad = opt.getAttribute('data-especialidad');
+                
+                if (opt.value === "") {
+                    // Opción por defecto siempre visible
+                    opt.style.display = '';
+                } else if (especialidad && especialidad.toLowerCase().trim() === materia.toLowerCase().trim()) {
+                    opt.style.display = '';
+                } else {
+                    opt.style.display = 'none';
+                }
+            }
+        });
+        
+        // Trigger initial change event to filter on load
+        seccionSelect.dispatchEvent(new Event('change'));
+    }
+
     // Asignar Docente
     const assignTeacherForm = document.getElementById('form-assign-teacher');
     if (assignTeacherForm) {
@@ -534,6 +569,64 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(err => {
                 console.error("Error al importar estudiantes:", err);
+                showNotification("Error de conexión al importar.", "error");
+            });
+        });
+    }
+
+    const importTeachersForm = document.getElementById('form-import-teachers');
+    if (importTeachersForm) {
+        importTeachersForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            fetch('/coordinator/import_teachers', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification(data.message, 'success');
+                    closeModal('modal-import-teachers');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Error de conexión con el servidor', 'error');
+            });
+        });
+    }
+
+    const importCurriculumForm = document.getElementById('form-import-curriculum');
+    if (importCurriculumForm) {
+        importCurriculumForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            showNotification("Importando Malla Curricular...", "success");
+
+            fetch('/coordinator/import_curriculum', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification(data.message, 'success');
+                    closeModal('modal-import-curriculum');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                console.error("Error al importar malla curricular:", err);
                 showNotification("Error de conexión al importar.", "error");
             });
         });
@@ -990,5 +1083,78 @@ document.addEventListener('DOMContentLoaded', function() {
                 listContainer.style.display = 'block';
             });
         }
+    }
+
+    // Accordion Search Logic
+    const searchInputs = document.querySelectorAll('.student-search-input');
+    searchInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const sectionId = this.getAttribute('data-section');
+            const tableBody = document.querySelector(`#table-${sectionId} tbody`);
+            
+            if (tableBody) {
+                const rows = tableBody.querySelectorAll('tr[data-nombre]');
+                rows.forEach(row => {
+                    const nombre = row.getAttribute('data-nombre');
+                    const idEst = row.querySelector('td:first-child')?.textContent?.toLowerCase() || '';
+                    if (nombre.includes(searchTerm) || idEst.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+        });
+    });
+
+    // Accordion Toggle Icon Logic
+    const detailsElements = document.querySelectorAll('.accordion-section');
+    detailsElements.forEach(detail => {
+        detail.addEventListener('toggle', function() {
+            const icon = this.querySelector('.accordion-icon');
+            if (icon) {
+                if (this.open) {
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            }
+        });
+    });
+    
+    // Delete All Students Logic
+    const deleteStudentsForm = document.getElementById('form-delete-students');
+    if (deleteStudentsForm) {
+        deleteStudentsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            // Add a small confirmation to prevent accidental clicks
+            if (!confirm("¿Estás absolutamente seguro de querer eliminar todos los estudiantes de la base de datos?")) {
+                return;
+            }
+
+            fetch('/coordinator/delete_all_students', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification(data.message, 'success');
+                    closeModal('modal-delete-students');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showNotification("Ocurrió un error al procesar la solicitud", 'error');
+            });
+        });
     }
 });
