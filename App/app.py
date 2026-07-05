@@ -126,6 +126,7 @@ def load_db():
             nombre_periodo=e["nombre_periodo"],
             tipo_matricula=e["tipo_matricula"]
         )
+        est.esta_activo = e.get("esta_activo", 1)
         est.notificaciones = e.get("notificaciones", [])
         estudiantes[est._correo] = est
 
@@ -275,6 +276,7 @@ def save_db():
             "id_estudiante": e._id_estudiante,
             "nombre_periodo": e.nombre_periodo,
             "tipo_matricula": e._tipo_matricula,
+            "esta_activo": getattr(e, "esta_activo", 1),
             "notificaciones": getattr(e, "notificaciones", [])
         })
         
@@ -418,6 +420,9 @@ def login():
 
     usuario, rol = obtener_usuario_por_correo(correo)
     if usuario and verificar_contrasenia(usuario, contrasenia):
+        if rol == 'estudiante' and getattr(usuario, 'esta_activo', 1) == 0:
+            return jsonify({"status": "error", "message": "No registrado"})
+            
         session['usuario'] = correo
         session['rol'] = rol
         session['nombre'] = usuario.obtener_nombre_completo()
@@ -757,10 +762,11 @@ def dashboard_coordinador():
     materias_lista = [{"id": m.id_materia, "nombre": m.nombre_materia} for m in materias.values()]
 
     # Estadísticas
-    total_estudiantes = len(estudiantes)
-    total_aprobados = sum(1 for e in estudiantes.values() if e.esta_aprobado == EstadoDeAprobacionNivelacion.APROBADO)
-    total_reprobados = sum(1 for e in estudiantes.values() if e.esta_aprobado == EstadoDeAprobacionNivelacion.REPROBADO)
-    total_pendientes = sum(1 for e in estudiantes.values() if e.esta_aprobado == EstadoDeAprobacionNivelacion.PENDIENTE)
+    estudiantes_activos = [e for e in estudiantes.values() if getattr(e, 'esta_activo', 1) == 1]
+    total_estudiantes = len(estudiantes_activos)
+    total_aprobados = sum(1 for e in estudiantes_activos if e.esta_aprobado == EstadoDeAprobacionNivelacion.APROBADO)
+    total_reprobados = sum(1 for e in estudiantes_activos if e.esta_aprobado == EstadoDeAprobacionNivelacion.REPROBADO)
+    total_pendientes = sum(1 for e in estudiantes_activos if e.esta_aprobado == EstadoDeAprobacionNivelacion.PENDIENTE)
 
     return render_template(
         'dashboard_coordinador.html',
@@ -823,6 +829,7 @@ def coordinator_approve_withdrawal():
     if accion == 'aprobar':
         sol['estado'] = 'Aprobado'
         if est:
+            est.esta_activo = 0
             for sec in list(est.secciones_asociadas):
                 sec.liberar_cupo(est)
                 est.secciones_asociadas.remove(sec)
@@ -1017,6 +1024,7 @@ def coordinator_import_students():
                 est_obj.nombre_periodo = s_data['nombre_periodo']
                 est_obj._tipo_matricula = s_data['tipo_matricula']
                 
+            est_obj.esta_activo = 1
             sec.actualizar_estudiantes_inscritos(est_obj)
             if sec not in est_obj.secciones_asociadas:
                 est_obj.secciones_asociadas.append(sec)
@@ -1082,7 +1090,7 @@ def coordinator_generate_career_report():
         
     formato = request.form.get('formato', 'PDF')
     
-    carrera_software.estudiantes_inscritos = len(estudiantes)
+    carrera_software.estudiantes_inscritos = sum(1 for e in estudiantes.values() if getattr(e, 'esta_activo', 1) == 1)
     reporte = carrera_software.mostrar_datos_carrera(formato_documento=formato)
     reportes_generados.append(reporte)
     

@@ -250,7 +250,11 @@
                                                     <button onclick="manageWithdrawal({{ sol.id }}, 'rechazar')" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; width: auto; color: var(--danger);">Rechazar</button>
                                                 </div>
                                                 {% else %}
-                                                <button onclick="viewReportConsole(`{{ sol.reporte.imprimir_reporte() }}`)" class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;">Ver Acta</button>
+                                                    {% if sol.reporte %}
+                                                    <button onclick="viewReportConsole(`{{ sol.reporte.imprimir_reporte() }}`)" class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;">Ver Acta</button>
+                                                    {% else %}
+                                                    <span style="color: var(--text-secondary); font-size: 0.8rem;">Sin acta (Estudiante inactivo/eliminado)</span>
+                                                    {% endif %}
                                                 {% endif %}
                                             </td>
                                         </tr>

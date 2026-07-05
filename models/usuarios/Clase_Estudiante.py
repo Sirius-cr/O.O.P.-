@@ -12,6 +12,7 @@ class Estudiante(UsuarioAcademico, Observador):
         self.historial = HistorialAcademico(id_historial=id_estudiante, estudiante=self)  # Cada estudiante tiene un historial académico asociado
         self.secciones_asociadas = []
         self.notificaciones = []
+        self.esta_activo = 1
 
     def inscribir_seccion(self, secciones_asociadas):
         if secciones_asociadas not in self.secciones_asociadas:
