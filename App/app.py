@@ -199,7 +199,9 @@ def load_db():
             sec.agregar_horario(hor)
             
         for est_id in s.get("estudiantes_ids", []):
-            est_obj = next((e for e in estudiantes.values() if e._id_estudiante == est_id), None)
+            est_obj = next((e for e in estudiantes.values() if e._id_estudiante == est_id and (e._archivo_origen.startswith(f"estudiantes_{s['id_seccion']}_") or f"_{s['id_seccion']}_" in e._archivo_origen)), None)
+            if not est_obj:
+                est_obj = next((e for e in estudiantes.values() if e._id_estudiante == est_id), None)
             if est_obj:
                 sec.actualizar_estudiantes_inscritos(est_obj)
                 if sec not in est_obj.secciones_asociadas:
@@ -209,7 +211,9 @@ def load_db():
 
     # 8. Notas
     for n in load_json('notas.json'):
-        est_obj = next((e for e in estudiantes.values() if e._id_estudiante == n["estudiante_id"]), None)
+        est_obj = next((e for e in estudiantes.values() if e._id_estudiante == n["estudiante_id"] and any(sec.materia.id_materia == n["materia_id"] for sec in e.secciones_asociadas)), None)
+        if not est_obj:
+            est_obj = next((e for e in estudiantes.values() if e._id_estudiante == n["estudiante_id"]), None)
         m_obj = materias.get(n["materia_id"])
         if est_obj and m_obj:
             est_obj.historial.crear_nota_materia(
@@ -632,7 +636,12 @@ def teacher_student_info(student_id):
     if 'usuario' not in session or session['rol'] != 'docente':
         return jsonify({"status": "error", "message": "No autorizado"}), 403
         
-    est = next((e for e in estudiantes.values() if e._id_estudiante == student_id), None)
+    doc = docentes.get(session['usuario'])
+    est = None
+    if doc:
+        est = next((e for sec in doc.secciones for e in sec.estudiantes_inscritos if e._id_estudiante == student_id), None)
+    if not est:
+        est = next((e for e in estudiantes.values() if e._id_estudiante == student_id), None)
     if not est:
         return jsonify({"status": "error", "message": "Estudiante no encontrado"}), 404
         
@@ -679,8 +688,12 @@ def teacher_save_grades():
     except ValueError:
         return jsonify({"status": "error", "message": "Valores de calificaciones o asistencia inválidos."})
 
-    est = next((e for e in estudiantes.values() if e._id_estudiante == estudiante_id), None)
     sec = secciones.get(seccion_id)
+    est = None
+    if sec:
+        est = next((e for e in sec.estudiantes_inscritos if e._id_estudiante == estudiante_id), None)
+    if not est:
+        est = next((e for e in estudiantes.values() if e._id_estudiante == estudiante_id), None)
 
     if not est or not sec:
         return jsonify({"status": "error", "message": "Estudiante o Sección no encontrados."})
