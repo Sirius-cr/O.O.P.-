@@ -764,7 +764,9 @@ def dashboard_coordinador():
             "inscritos": len(sec.estudiantes_inscritos),
             "docente": docentes_nombres,
             "aula": sec.aula_virtual._enlace_plataforma if sec.aula_virtual else "No asignada",
-            "disponibilidad": "Disponible" if sec.disponibilidad else "Lleno"
+            "disponibilidad": "Disponible" if sec.disponibilidad else "Lleno",
+            "tiene_horario": len(sec.lista_horarios) > 0,
+            "horario_detalles": ", ".join(f"{h.turno} ({', '.join(h.dias)}: {h.hora_inicio}-{h.hora_fin})" for h in sec.lista_horarios) if sec.lista_horarios else "Sin Horario"
         })
 
     docentes_lista = list(docentes.values())
@@ -1037,11 +1039,11 @@ def coordinator_import_students():
                 
             excel_students.append(student_data)
             
-        # El número de estudiantes debe coincidir exactamente con la capacidad de la sección
-        if len(excel_students) != sec.capacidad_estudiantil:
+        # El número de estudiantes no debe exceder la capacidad de la sección
+        if len(excel_students) > sec.capacidad_estudiantil:
             return jsonify({
                 "status": "error", 
-                "message": f"El número de estudiantes en el archivo ({len(excel_students)}) no coincide con la capacidad de la sección ({sec.capacidad_estudiantil})."
+                "message": f"El número de estudiantes en el archivo ({len(excel_students)}) supera la capacidad de la sección ({sec.capacidad_estudiantil})."
             })
             
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -1263,6 +1265,32 @@ def coordinator_import_curriculum():
         import traceback
         traceback.print_exc()
         return jsonify({"status": "error", "message": f"Error al procesar el archivo Excel: {str(e)}"})
+
+@app.route('/coordinator/assign_schedule', methods=['POST'])
+def coordinator_assign_schedule():
+    if 'usuario' not in session or session['rol'] != 'coordinador':
+        return jsonify({"status": "error", "message": "No autorizado"})
+        
+    seccion_id = request.form.get('seccion_id')
+    hora_inicio = request.form.get('hora_inicio')
+    hora_fin = request.form.get('hora_fin')
+    
+    sec = secciones.get(seccion_id)
+    if not sec:
+        return jsonify({"status": "error", "message": "Sección no encontrada."})
+    
+    nuevo_horario = Horario("Asignado", hora_inicio, hora_fin, "Presencial")
+    
+    # Validar colisión con todos los horarios de todas las secciones
+    for otra_sec in secciones.values():
+        for horario in otra_sec.lista_horarios:
+            if nuevo_horario.deteccion_colision(horario):
+                return jsonify({"status": "error", "message": f"El horario choca con la sección {otra_sec.id_seccion} ({otra_sec.materia.nombre_materia})."})
+                
+    sec.agregar_horario(nuevo_horario)
+    
+    save_db() # Guardar base de datos
+    return jsonify({"status": "success", "message": f"Horario asignado con éxito a la sección {sec.id_seccion}."})
 
 @app.route('/coordinator/assign_teacher', methods=['POST'])
 def coordinator_assign_teacher():

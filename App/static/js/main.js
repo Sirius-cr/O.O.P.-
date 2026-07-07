@@ -414,6 +414,32 @@ document.addEventListener('DOMContentLoaded', function() {
         seccionSelect.dispatchEvent(new Event('change'));
     }
 
+    // Asignar Horario
+    const assignScheduleForm = document.getElementById('form-assign-schedule');
+    if (assignScheduleForm) {
+        assignScheduleForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/coordinator/assign_schedule', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification(data.message, 'success');
+                    closeModal('modal-assign-schedule');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            });
+        });
+    }
+
     // Asignar Docente
     const assignTeacherForm = document.getElementById('form-assign-teacher');
     if (assignTeacherForm) {

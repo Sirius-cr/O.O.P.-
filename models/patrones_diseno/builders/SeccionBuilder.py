@@ -63,13 +63,13 @@ class SeccionBuilder:
         return self
 
     def con_docentes(self, docentes):
-        """Asigna la lista inicial de docentes."""
-        self._docentes = list(docentes) if docentes is not None else []
+        """Asigna la lista inicial de docentes (máximo 1)."""
+        self._docentes = [docentes[0]] if docentes else []
         return self
 
     def agregar_docente(self, docente):
-        """Agrega un docente individual a la lista de docentes."""
-        self._docentes.append(docente)
+        """Agrega un docente individual a la lista de docentes, reemplazando el anterior."""
+        self._docentes = [docente]
         return self
 
     def con_entorno_asignado(self, entorno_asignado):

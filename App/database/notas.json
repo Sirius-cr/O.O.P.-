@@ -1,6 +1,6 @@
 [
     {
-        "estudiante_id": "EST-001",
+        "estudiante_id": "EST-1001",
         "materia_id": "PROG01",
         "parcial1": 0.0,
         "parcial2": 0.0,
@@ -8,1095 +8,231 @@
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-001",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-002",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-002",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-003",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-003",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-004",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-004",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-005",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-005",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-006",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-006",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-007",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-007",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-008",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-008",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-009",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-009",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-010",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-010",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-011",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-011",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-012",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-012",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-013",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-013",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-014",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-014",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-015",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-015",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-016",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-016",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-017",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-017",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-018",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-018",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-019",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-019",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-020",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-020",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-021",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-021",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-022",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-022",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-023",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-023",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-024",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-024",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-025",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-025",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-026",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-026",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-027",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-027",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-028",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-028",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-029",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-029",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-030",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-030",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-001",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-001",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-002",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-002",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-003",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-003",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-004",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-004",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-005",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-005",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-006",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-006",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-007",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-007",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-008",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-008",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-009",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-009",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-010",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-010",
-        "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-011",
-        "materia_id": "PROG02",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-011",
+        "estudiante_id": "EST-1002",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-012",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-012",
+        "estudiante_id": "EST-1003",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-013",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-013",
+        "estudiante_id": "EST-1004",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-014",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-014",
+        "estudiante_id": "EST-1005",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-015",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-015",
+        "estudiante_id": "EST-1006",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-016",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-016",
+        "estudiante_id": "EST-1007",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-017",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-017",
+        "estudiante_id": "EST-1008",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-018",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-018",
+        "estudiante_id": "EST-1009",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-020",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-020",
+        "estudiante_id": "EST-1010",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-021",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-021",
+        "estudiante_id": "EST-1011",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-022",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-022",
+        "estudiante_id": "EST-1012",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-023",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-023",
+        "estudiante_id": "EST-1013",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-024",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-024",
+        "estudiante_id": "EST-1014",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-025",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-025",
+        "estudiante_id": "EST-1015",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-026",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-026",
+        "estudiante_id": "EST-1016",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-027",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-027",
+        "estudiante_id": "EST-1017",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-028",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-028",
+        "estudiante_id": "EST-1018",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-029",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-029",
+        "estudiante_id": "EST-1019",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-030",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-030",
+        "estudiante_id": "EST-1020",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-031",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-031",
+        "estudiante_id": "EST-1021",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-032",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-032",
+        "estudiante_id": "EST-1022",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-033",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-033",
+        "estudiante_id": "EST-1023",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-034",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-034",
+        "estudiante_id": "EST-1024",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-035",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-035",
+        "estudiante_id": "EST-1025",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-036",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-036",
+        "estudiante_id": "EST-1026",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-037",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-037",
+        "estudiante_id": "EST-1027",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-038",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-038",
+        "estudiante_id": "EST-1028",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-039",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-039",
+        "estudiante_id": "EST-1029",
         "materia_id": "PROG01",
-        "parcial1": 0.0,
-        "parcial2": 0.0,
-        "asistencia": 0,
-        "periodo_cerrado": false
-    },
-    {
-        "estudiante_id": "EST-040",
-        "materia_id": "PROG02",
         "parcial1": 0.0,
         "parcial2": 0.0,
         "asistencia": 0,
         "periodo_cerrado": false
     },
     {
-        "estudiante_id": "EST-040",
+        "estudiante_id": "EST-1030",
         "materia_id": "PROG01",
         "parcial1": 0.0,
         "parcial2": 0.0,

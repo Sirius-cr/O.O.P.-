@@ -245,6 +245,9 @@
                                     <button onclick="openModal('modal-create-section')" class="btn btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
                                         Crear Sección (Builder)
                                     </button>
+                                    <button onclick="openModal('modal-assign-schedule')" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Asignar Horario
+                                    </button>
                                     <button onclick="openModal('modal-assign-teacher')" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
                                         Asignar Docente
                                     </button>
@@ -256,6 +259,7 @@
                                         <tr>
                                             <th>Código Sección</th>
                                             <th>Materia</th>
+                                            <th>Horario</th>
                                             <th>Docente Asignado</th>
                                             <th style="text-align: center;">Inscritos</th>
                                             <th style="text-align: center;">Capacidad Máx.</th>
@@ -269,6 +273,14 @@
                                         <tr>
                                             <td style="font-weight: 600; color: #000000;">{{ sec.id_seccion }}</td>
                                             <td>{{ sec.materia }}</td>
+                                            <td>
+                                                {% if sec.tiene_horario %}
+                                                    <span class="badge badge-success" title="{{ sec.horario_detalles }}" style="cursor: help;">Asignado</span>
+                                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ sec.horario_detalles }}">{{ sec.horario_detalles }}</div>
+                                                {% else %}
+                                                    <span class="badge badge-danger">Sin Horario</span>
+                                                {% endif %}
+                                            </td>
                                             <td style="font-weight: 500; color: var(--accent);">{{ sec.docente }}</td>
                                             <td style="text-align: center;">{{ sec.inscritos }}</td>
                                             <td style="text-align: center;">{{ sec.capacidad }}</td>
@@ -294,7 +306,7 @@
                                         </tr>
                                         {% else %}
                                         <tr>
-                                            <td colspan="8" style="text-align: center; color: var(--text-secondary);">No hay secciones creadas en este periodo académico.</td>
+                                            <td colspan="9" style="text-align: center; color: var(--text-secondary);">No hay secciones creadas en este periodo académico.</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -477,6 +489,40 @@
         </div>
     </div>
 
+    <!-- MODAL DE ASIGNACIÓN DE HORARIO -->
+    <div id="modal-assign-schedule" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header">
+                <h3>Asignar Horario a Sección</h3>
+                <button onclick="closeModal('modal-assign-schedule')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-assign-schedule">
+                    <div class="form-group">
+                        <label for="horario_seccion_id">Seleccionar Sección</label>
+                        <select id="horario_seccion_id" name="seccion_id" class="form-control" style="background: var(--bg-primary);" required>
+                            {% for sec in secciones %}
+                            <option value="{{ sec.id_seccion }}">{{ sec.id_seccion }} - {{ sec.materia }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hora_inicio">Hora de inicio</label>
+                        <input type="time" id="hora_inicio" name="hora_inicio" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hora_fin">Hora de fin</label>
+                        <input type="time" id="hora_fin" name="hora_fin" class="form-control" required>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar Horario</button>
+                        <button type="button" onclick="closeModal('modal-assign-schedule')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL PARA VER CONSOLA DE REPORTE -->
     <div id="modal-view-report" class="modal-overlay">
         <div class="glass-card modal-box" style="max-width: 700px;">
@@ -544,13 +590,13 @@
                     
                     <div style="margin-bottom: 20px; font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary);">
                         Sección Destino: <strong id="import-students-seccion-display" style="color: var(--primary);"></strong><br>
-                        Capacidad Requerida: <strong id="import-students-capacidad-display" style="color: var(--primary);"></strong> estudiantes.
+                        Capacidad Máxima: <strong id="import-students-capacidad-display" style="color: var(--primary);"></strong> estudiantes.
                     </div>
 
                     <div style="background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 20px; border-left: 4px solid var(--primary); line-height: 1.4;">
                         <strong>Requisitos del Archivo Excel:</strong>
                         <ul style="margin-left: 20px; margin-top: 5px;">
-                            <li>Debe contener exactamente el número de filas correspondiente a la capacidad de la sección.</li>
+                            <li>No debe superar la capacidad máxima de estudiantes de la sección.</li>
                             <li>Debe contener las siguientes columnas (minúsculas): <code>cedula</code>, <code>nombres</code>, <code>apellidos</code>, <code>correo</code>, <code>contrasenia</code>, <code>id_estudiante</code>, <code>nombre_periodo</code>, <code>tipo_matricula</code>.</li>
                         </ul>
                     </div>

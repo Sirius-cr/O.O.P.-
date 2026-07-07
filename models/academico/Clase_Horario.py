@@ -9,8 +9,23 @@ class Horario:
     
     
     def deteccion_colision(self, otro_horario):
-        if self.turno == otro_horario.turno:
-            return True #"Error. El horario se choca con otra seccion"
+        def a_minutos(hora_str):
+            try:
+                h, m = map(int, hora_str.split(':'))
+                return h * 60 + m
+            except:
+                return 0
+
+        inicio1 = a_minutos(self.hora_inicio)
+        fin1 = a_minutos(self.hora_fin)
+        inicio2 = a_minutos(otro_horario.hora_inicio)
+        fin2 = a_minutos(otro_horario.hora_fin)
+
+        dias_en_comun = set(self.dias).intersection(set(otro_horario.dias))
+        
+        if dias_en_comun:
+            if max(inicio1, inicio2) < min(fin1, fin2):
+                return True
         return False
 
     def resumen_de_seccion(self, Seccion: Seccion):
