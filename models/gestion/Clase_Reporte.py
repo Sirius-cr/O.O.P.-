@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import json
+import csv
 
 # 1. LA INTERFAZ (Strategy)
 # Define el contrato estricto que cualquier formato de reporte debe cumplir.
@@ -12,6 +13,14 @@ class IEstrategiaReporte(ABC):
 # 2. ESTRATEGIA CONCRETA: Texto / Consola
 # Mantiene el diseño visual que tenías originalmente.
 class ReporteConsola(IEstrategiaReporte):
+    #Solo voy agregar Atributos para un test luego lo puede eliminar si no es necesario
+    def __init__(self, titulo, formato, subtitulo, contenido):
+        # Asignamos los parámetros recibidos a atributos del objeto
+        self.titulo = titulo
+        self.formato = formato
+        self.subtitulo = subtitulo
+        self.contenido = contenido
+    #==================================================
     def generar(self, emisor: str, datos: dict) -> str:
         borde = "=" * 50
         
@@ -56,3 +65,36 @@ class GestorReportes:
 
     def emitir_reporte(self, emisor: str, datos: dict):
         return self.estrategia.generar(emisor, datos)
+    
+# Importacion de Clase_AulaVirtual-
+
+    #EXPORTAR ESTUDIANTES A CSV (SOLO CONECTADOS)
+    #Recibe el objeto de aula Virtual para acceder a Estudiantes_conectados
+    def exportar_lista_estudiantes_excel(self,AulaVirtual,seccion, nombre_archivo=None):
+        #Exporta SOLO los estudiantes que ingresaron al aula virtual a un archivo CSV compatible con Excel.
+        if nombre_archivo is None:
+            nombre_archivo = f"ingresos_aula_{seccion.id_seccion}.csv"
+        if AulaVirtual.estudiantes_conectados:
+            return "Error: La lista de estudiantes no ha sido inicializada."
+        
+        with open(nombre_archivo, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+
+            # Encabezados
+            writer.writerow([
+                "Estudiante",
+                "Seccion",
+                "Materia",
+                "Fecha Exportacion"
+            ])
+
+            # Solo estudiantes que realmente ingresaron
+            for estudiante in self.estudiantes_conectados:
+                writer.writerow([
+                    estudiante,
+                    seccion.id_seccion,
+                    seccion.materia.nombre_materia if seccion.materia else "Sin materia",
+                    datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                ])
+
+        return f"Archivo generado correctamente: {nombre_archivo}"

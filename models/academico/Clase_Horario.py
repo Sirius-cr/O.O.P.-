@@ -9,18 +9,18 @@ class Horario:
 
     def deteccion_colision(self, otro_horario):
         # Mejora: validación por rango de horas
-        if self.turno == otro_horario.turno:
-            return True
-
-        if self.hora_inicio < otro_horario.hora_fin and self.hora_fin > otro_horario.hora_inicio:
-            return True
-
+        if self.turno == otro_horario.turno: #Verifica si los turnos son iguales
+            #Verifica que las horas no se sobreponga entre si
+            if self.hora_inicio < otro_horario.hora_fin and self.hora_fin > otro_horario.hora_inicio:
+                return True
         return False
 
     def resumen_de_seccion(self, Seccion: Seccion):
-        docentes_nombres = ", ".join(
-            d.obtener_nombre_completo() for d in Seccion.docentes
-        ) if Seccion.docentes else "Sin docente asignado"
+        if Seccion.docentes:
+            docentes_nombres =Seccion.docentes
+        else:
+            print("Sin docentes asignado")
+            docentes_nombres=None
 
         return {
             "Turno": self.turno,

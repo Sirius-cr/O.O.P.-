@@ -1,3 +1,4 @@
+from models.academico.Clase_AulaVirtual import AulaVirtual
 class Seccion:
     def __init__(self, id_seccion, capacidad_estudiantil, materia=None, coordinador=None):
         self.id_seccion = id_seccion
@@ -35,7 +36,8 @@ class Seccion:
     def agregar_docente(self, docente):
         if docente not in self.docentes:
             self.docentes.append(docente)
-            docente.asignar_seccion(self)
+            if hasattr(docente, 'asignar_seccion'):
+                docente.asignar_seccion(self)
         return "Docente asignado"
 
     def asignar_entorno(self, entorno):
@@ -61,7 +63,7 @@ class Seccion:
             return "Ya inscrito"
         return "Sin cupos"
 
-    def crear_entorno_academico(self, entorno):
+    def crear_entorno_academico(self, entorno:AulaVirtual):
         self.entorno_asignado = entorno
         return True
 
