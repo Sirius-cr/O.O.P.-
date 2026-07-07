@@ -16,7 +16,7 @@ class Docente(UsuarioAcademico):
         print(f"ESPECIALIDAD : {self.especialidad}")
 
     def colocar_calificacion(self):
-        print("Calificando actividad...")
+        pass #Llama al metodo registrarNotaEstudiante() que se encuentra en seccion, luego se le mostrarán todos los estudiantes que se encuentren en esa seccion, y podra seleccionar al estudiante al que desea colocar la calificacion
 
     def tomar_asistencia(self):
         return 

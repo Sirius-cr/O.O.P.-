@@ -1,4 +1,4 @@
-dependiendo de la cantidad de estudiantes ingresados en una carrera por el coordinador al momento de crear una materia, se crearán secciones dividiendo los estudiantes segun la capacidadEstudiantil de cada seccion.
+dependiendo de la cantidad de estudiantes ingresados en una carrera por el coordinador al momento de crear una materia, se crearán secciones dividiendo los estudiantes segun la capacidadEstudiantil de cada seccion, la cantidad de estudiantes que el coordinador pueda ingresar debe ser par, y poder dividirse de manera uniforme en varias secciones (100 / 4 = 4 secciones de 25 estudiantes)
 
 seccion se haria con un builder, y quedaria en None el docenteAsignado, el entornoAsignado, la listaHorarios, estudiantesInscritos.
 
