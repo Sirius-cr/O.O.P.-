@@ -24,7 +24,6 @@ class TestUsuariosParametrizado(unittest.TestCase):
             contrasenia="admin1234",
             id_estudiante="EST-001",
             nombre_periodo="Nivelacion 2026",
-            estado_matricula="Matriculado",
             tipo_matricula="Ordinaria"
         )
         self.docente_base = Docente(
@@ -32,7 +31,8 @@ class TestUsuariosParametrizado(unittest.TestCase):
             nombres="María",
             apellidos="Rodríguez",
             correo="maria.rodriguez@uleam.edu.ec",
-            contrasenia="docente2026"
+            contrasenia="docente2026",
+            especialidad="Sistemas"
         )
 
     def test_cambiar_contrasenia_parametros(self):
@@ -79,7 +79,7 @@ class TestUsuariosParametrizado(unittest.TestCase):
 
         for correo, telefono, esperado in casos_de_prueba:
             with self.subTest(correo=correo, telefono=telefono, esperado=esperado):
-                resultado = self.docente_base.actualizar_datos_contacto(correo, telefono)
+                resultado = self.docente_base.actualizar_datos_contacto(correo)
                 self.assertEqual(
                     resultado, 
                     esperado, 

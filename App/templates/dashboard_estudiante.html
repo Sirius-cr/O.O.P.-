@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Estudiantil - ULEAM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Barra Lateral Izquierda (Sidebar) -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo">ULEAM</div>
+                <div class="brand-subtitle">Portal Estudiantil</div>
+            </div>
+            <div class="sidebar-menu">
+                <button class="nav-tab-btn active" data-tab="tab-calificaciones">Mis Calificaciones</button>
+                <button class="nav-tab-btn" data-tab="tab-horario">Mi Horario</button>
+                <button class="nav-tab-btn" data-tab="tab-tramites">Trámites y Certificados</button>
+                <button class="nav-tab-btn" data-tab="tab-reportes">Historial de Reportes</button>
+            </div>
+            <div class="sidebar-footer">
+                <strong>Soporte Técnico</strong><br>
+                Universidad Laica Eloy Alfaro de Manabí
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <!-- Barra de Navegación Principal -->
+            <nav class="main-navbar">
+                <div class="nav-brand">Portal Estudiantil</div>
+                <div class="nav-user">
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;">Cerrar Sesión</a>
+                </div>
+            </nav>
+
+            <!-- Contenido Principal -->
+            <main class="main-content">
+                <!-- Encabezado del Dashboard -->
+                <div class="dashboard-header">
+                    <div class="dashboard-title">
+                        <h2>Bienvenido, {{ estudiante.nombres }}</h2>
+                        <p>Periodo Lectivo: {{ periodo }} ({{ estado_periodo }})</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <!-- Dropdown de Notificaciones -->
+                        <div class="user-dropdown-container" style="position: relative;">
+                            <button class="btn btn-secondary" id="btn-notificaciones" style="padding: 10px 18px; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; position: relative;">
+                                🔔 Notificaciones
+                                {% set no_leidas = estudiante.notificaciones | rejectattr('leido') | list | length %}
+                                {% if no_leidas > 0 %}
+                                    <span class="notification-badge" style="background-color: var(--danger); color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; font-weight: bold; margin-left: 5px;">
+                                        {{ no_leidas }}
+                                    </span>
+                                {% endif %}
+                            </button>
+                            <div class="user-dropdown-menu" id="notif-dropdown-menu" style="width: 350px; max-height: 400px; overflow-y: auto; padding: 15px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <h4 style="font-size: 0.95rem; margin: 0; font-family: 'Merriweather', serif; color: var(--text-primary);">Notificaciones</h4>
+                                    {% if no_leidas > 0 %}
+                                        <button onclick="marcarLeidas()" style="background: none; border: none; color: var(--primary); font-size: 0.75rem; cursor: pointer; text-decoration: underline; padding: 0;">Marcar como leídas</button>
+                                    {% endif %}
+                                </div>
+                                <hr style="border: 0; border-top: 1px solid var(--card-border); margin: 8px 0 12px 0;">
+                                <div style="display: flex; flex-direction: column; gap: 10px;" id="notif-list">
+                                    {% for notif in estudiante.notificaciones | reverse %}
+                                        <div style="padding: 10px; border-radius: var(--radius-sm); border-left: 3px solid {% if notif.leido %} var(--card-border) {% else %} var(--primary) {% endif %}; background: {% if notif.leido %} rgba(0,0,0,0.02) {% else %} rgba(122, 27, 41, 0.05) {% endif %}; font-size: 0.85rem; line-height: 1.4; text-align: left;">
+                                            <p style="margin: 0 0 5px 0; color: {% if notif.leido %} var(--text-secondary) {% else %} var(--text-primary) {% endif %}; font-weight: {% if notif.leido %} normal {% else %} 600 {% endif %};">{{ notif.mensaje }}</p>
+                                            <span style="font-size: 0.7rem; color: var(--text-muted);">{{ notif.fecha }}</span>
+                                        </div>
+                                    {% else %}
+                                        <div style="text-align: center; color: var(--text-secondary); padding: 15px 0; font-size: 0.85rem;">
+                                            No tienes notificaciones.
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dropdown de Usuario -->
+                        <div class="user-dropdown-container">
+                            <button class="btn btn-secondary" id="btn-usuario" style="padding: 10px 18px; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                                Usuario
+                            </button>
+                            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                                <div style="text-align: center; margin-bottom: 15px;">
+                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: #ffffff; border: 2px solid rgba(0,0,0,0.05);">
+                                        {{ estudiante.nombres[0] }}{{ estudiante.apellidos[0] }}
+                                    </div>
+                                    <h4 style="font-size: 1.1rem; margin-bottom: 2px; font-family: 'Merriweather', serif;">{{ estudiante.obtener_nombre_completo() }}</h4>
+                                    <span style="font-size: 0.75rem; color: var(--text-secondary);">ID: {{ estudiante._id_estudiante }}</span>
+                                </div>
+                                <hr style="border: 0; border-top: 1px solid var(--card-border); margin: 12px 0;">
+                                <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;">
+                                    <div><span style="color: var(--text-secondary);">Cédula:</span> <strong style="float: right;">{{ estudiante.cedula }}</strong></div>
+                                    <div><span style="color: var(--text-secondary);">Correo:</span> <strong style="float: right; font-size: 0.75rem;">{{ estudiante._correo }}</strong></div>
+                                    <div><span style="color: var(--text-secondary);">Tipo:</span> <strong style="float: right;">{{ estudiante._tipo_matricula }}</strong></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Veredicto Final en Card Flotante -->
+                        <div class="glass-card" style="padding: 15px 25px; text-align: center; border-left: 4px solid 
+                            {% if 'Aprobada' in veredicto %} var(--success) 
+                            {% elif 'Reprobada' in veredicto %} var(--danger) 
+                            {% else %} var(--warning) {% endif %};">
+                            <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">Estado de Nivelación</span>
+                            <div style="font-size: 1.1rem; font-weight: 700; margin-top: 5px;" class="badge {{ veredicto_badge }}">
+                                {{ veredicto }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Contenido Principal -->
+            <div class="main-tabs-content">
+
+                    <!-- Pestaña 1: Calificaciones -->
+                    <div id="tab-calificaciones" class="tab-pane active">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Registro de Calificaciones de Nivelación</h3>
+                                <span class="user-badge">Promedio General: <strong>{{ "%.2f"|format(promedio) }}</strong></span>
+                            </div>
+                            <div class="card-body-content table-container">
+                                <table class="premium-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Materia</th>
+                                            <th style="text-align: center;">Parcial 1</th>
+                                            <th style="text-align: center;">Parcial 2</th>
+                                            <th style="text-align: center;">Nota Final</th>
+                                            <th style="text-align: center;">Asistencia</th>
+                                            <th style="text-align: center;">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for nota in notas %}
+                                        <tr>
+                                            <td>{{ nota.codigo }}</td>
+                                            <td style="font-weight: 500;">{{ nota.materia }}</td>
+                                            <td style="text-align: center;">{{ "%.2f"|format(nota.parcial1) }}</td>
+                                            <td style="text-align: center;">{{ "%.2f"|format(nota.parcial2) }}</td>
+                                            <td style="text-align: center; font-weight: 600; color: #ffffff;">{{ "%.2f"|format(nota.nota_final) }}</td>
+                                            <td style="text-align: center;">{{ nota.asistencia }}%</td>
+                                            <td style="text-align: center;">
+                                                <span class="badge {{ nota.badge_class }}">{{ nota.estado }}</span>
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="7" style="text-align: center; color: var(--text-secondary);">No se han registrado calificaciones para este periodo.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña 2: Horarios -->
+                    <div id="tab-horario" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                                <h3>Mi Distribución de Horarios</h3>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-secondary active-view-btn" id="btn-view-graphic" style="padding: 6px 12px; font-size: 0.8rem;">📅 Vista Gráfica</button>
+                                    <button class="btn btn-secondary" id="btn-view-list" style="padding: 6px 12px; font-size: 0.8rem;">📋 Vista de Lista</button>
+                                </div>
+                            </div>
+                            <div class="card-body-content">
+                                <!-- Vista Gráfica -->
+                                <div id="schedule-graphic-container">
+                                    <div class="schedule-calendar-wrapper">
+                                        <div class="schedule-calendar-grid" id="calendar-grid-body">
+                                            <div class="calendar-header-cell">Hora</div>
+                                            <div class="calendar-header-cell">Lunes</div>
+                                            <div class="calendar-header-cell">Martes</div>
+                                            <div class="calendar-header-cell">Miércoles</div>
+                                            <div class="calendar-header-cell">Jueves</div>
+                                            <div class="calendar-header-cell">Viernes</div>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-legend" style="margin-top: 15px; display: flex; gap: 20px; justify-content: center; font-size: 0.85rem; flex-wrap: wrap;">
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <span style="display: inline-block; width: 12px; height: 12px; border-radius: 2px; background: rgba(122, 27, 41, 0.05); border: 1px solid var(--primary); border-left: 4px solid var(--primary);"></span>
+                                            <span style="font-weight: 500; color: var(--text-secondary);">Presencial</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <span style="display: inline-block; width: 12px; height: 12px; border-radius: 2px; background: rgba(15, 118, 110, 0.05); border: 1px solid var(--accent); border-left: 4px solid var(--accent);"></span>
+                                            <span style="font-weight: 500; color: var(--text-secondary);">Virtual</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vista de Lista (Alternativa) -->
+                                <div id="schedule-list-container" class="table-container" style="display: none;">
+                                    <table class="premium-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Materia</th>
+                                                <th>Sección</th>
+                                                <th>Turno</th>
+                                                <th>Entrada</th>
+                                                <th>Salida</th>
+                                                <th>Modalidad</th>
+                                                <th>Docente Asignado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for hor in horarios %}
+                                            <tr>
+                                                <td style="font-weight: 500;">{{ hor.materia }}</td>
+                                                <td>{{ hor.seccion }}</td>
+                                                <td>{{ hor.turno }}</td>
+                                                <td>{{ hor.inicio }}</td>
+                                                <td>{{ hor.fin }}</td>
+                                                <td>
+                                                    <span class="badge badge-success" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.3); color: var(--primary);">
+                                                        {{ hor.modalidad }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ hor.docente }}</td>
+                                            </tr>
+                                            {% else %}
+                                            <tr>
+                                                <td colspan="7" style="text-align: center; color: var(--text-secondary);">No se encontraron secciones matriculadas con horarios vigentes.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Datos serializados de horarios -->
+                    <script id="horarios-data" type="application/json">
+                        {{ horarios | tojson }}
+                    </script>
+
+                    <!-- Pestaña 3: Trámites -->
+                    <div id="tab-tramites" class="tab-pane">
+                        <div class="glass-card" style="margin-bottom: 25px;">
+                            <div class="card-title-header">
+                                <h3>Solicitar Certificado de Estudios</h3>
+                            </div>
+                            <div class="card-body-content">
+                                <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+                                    Permite generar un reporte impreso oficial con el detalle de tus materias inscritas y estado de matrícula para el periodo lectivo en curso.
+                                </p>
+                                <form id="form-request-certificate">
+                                    <div class="form-group" style="max-width: 300px; display: inline-block; margin-right: 15px; margin-bottom: 0;">
+                                        <label for="formato-certificado">Formato del Documento</label>
+                                        <select id="formato-certificado" name="formato" class="form-control" style="background: var(--bg-primary);">
+                                            <option value="PDF">PDF Oficial</option>
+                                            <option value="Consola">Vista Rápida en Consola</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="width: auto; vertical-align: bottom;">
+                                        Generar Certificado
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Solicitud de Retiro de Ciclo</h3>
+                            </div>
+                            <div class="card-body-content">
+                                <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+                                    Si por motivos de fuerza mayor necesitas retirarte de este periodo de nivelación, puedes llenar una solicitud formal que será enviada directamente al Coordinador Académico para su revisión.
+                                </p>
+                                <button onclick="openModal('modal-withdraw')" class="btn btn-danger" style="width: auto;">
+                                    Iniciar Trámite de Retiro
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña 4: Historial de Reportes -->
+                    <div id="tab-reportes" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Reportes Generados en el Sistema</h3>
+                            </div>
+                            <div class="card-body-content table-container">
+                                <table class="premium-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo de Reporte</th>
+                                            <th>Formato</th>
+                                            <th>Emisor</th>
+                                            <th style="text-align: right;">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for rep in reportes %}
+                                        <tr>
+                                            <td style="font-weight: 500;">{{ rep.tipo_de_reporte }}</td>
+                                            <td><span class="badge badge-success">{{ rep.formato_documento }}</span></td>
+                                            <td>{{ rep.emisor }}</td>
+                                            <td style="text-align: right;">
+                                                <button onclick="viewReportConsole(`{{ rep.imprimir_reporte() }}`)" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                                                    Imprimir / Ver Consola
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="4" style="text-align: center; color: var(--text-secondary);">Aún no has solicitado o generado reportes en este período.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Soporte y Contacto al fondo de la pagina -->
+                    <div class="glass-card info-card" style="margin-top: 30px;">
+                        <div class="info-card-header">Soporte y Contacto</div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 5px;">
+                            Si encuentras inconsistencias en tus calificaciones o faltas, comunícate inmediatamente con el docente de la asignatura o con el coordinador de la carrera.
+                        </p>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Universidad Laica Eloy Alfaro de Manabí</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL DE SOLICITUD DE RETIRO -->
+    <div id="modal-withdraw" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header">
+                <h3>Formulario de Retiro de Asignaturas</h3>
+                <button onclick="closeModal('modal-withdraw')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-request-withdrawal">
+                    <div class="form-group">
+                        <label for="motivo-retiro">Justificación del Retiro</label>
+                        <textarea id="motivo-retiro" name="motivo" class="form-control" rows="4" placeholder="Escriba de forma detallada los motivos médicos, laborales o familiares que justifican su retiro de la nivelación..." required></textarea>
+                    </div>
+                    <div class="form-group" style="max-width: 250px;">
+                        <label for="formato-retiro">Formato de Solicitud</label>
+                        <select id="formato-retiro" name="formato" class="form-control" style="background: var(--bg-primary);">
+                            <option value="Consola">Consola Standard</option>
+                            <option value="PDF">PDF</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-danger" style="flex: 1;">Enviar Solicitud</button>
+                        <button type="button" onclick="closeModal('modal-withdraw')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA VER CONSOLA DE REPORTE -->
+    <div id="modal-view-report" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 700px;">
+            <div class="card-title-header">
+                <h3>Visualizador de Consola (Vista de Reporte)</h3>
+                <button onclick="closeModal('modal-view-report')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">El reporte ha sido generado por las clases de la aplicación con la estructura de reportes POO de la universidad:</p>
+                <div id="report-console-content" class="console-box"></div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button onclick="closeModal('modal-view-report')" class="btn btn-primary" style="width: auto;">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA DETALLE DE CLASE INDIVIDUAL -->
+    <div id="modal-class-detail" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 480px; padding: 30px;">
+            <div class="card-title-header">
+                <h3>Detalle de la Asignatura</h3>
+                <button onclick="closeModal('modal-class-detail')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content" id="class-detail-content" style="margin-top: 15px;">
+                <!-- Contenido dinámico inyectado por JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

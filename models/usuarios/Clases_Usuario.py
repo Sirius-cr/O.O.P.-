@@ -10,6 +10,18 @@ class Usuario(ABC):
     @property
     def cedula(self): 
         return self._cedula
+        
+    @cedula.setter
+    def cedula(self, nueva_cedula):
+        self._cedula = nueva_cedula
+        
+    @property
+    def contrasenia(self):
+        return self.__contrasenia
+        
+    @contrasenia.setter
+    def contrasenia(self, nueva_contrasenia):
+        self.__contrasenia = nueva_contrasenia
     
     #Métodos Encapsulado
     def cambiar_contrasenia(self, contrasenia_actual, nueva_contrasenia):

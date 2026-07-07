@@ -8,6 +8,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from models.academico.Clase_Materia import Materia
 from models.gestion.Clase_NotaMateria import NotaMateria
 from models.enums.Estado_Aprobacion import EstadoDeAprobacionMateria
+from models.academico.Clase_Periodo import Periodo
+from models.enums.Estado_Periodo import EstadoPeriodo
 
 class TestGestionParametrizado(unittest.TestCase):
     """
@@ -23,6 +25,13 @@ class TestGestionParametrizado(unittest.TestCase):
             nota_minima=7.0,
             asistencia_minima=70
         )
+        self.periodo = Periodo(
+            nombre_periodo="Periodo Prueba",
+            fecha_inicio="2026-01-01",
+            fecha_final="2026-06-30"
+        )
+        # Establecemos el estado a FINALIZADO para que las pruebas de aprobación funcionen
+        self.periodo._estado_periodo = EstadoPeriodo.FINALIZADO
 
     def test_nota_final_calculo_parametros(self):
         """
@@ -42,7 +51,7 @@ class TestGestionParametrizado(unittest.TestCase):
 
         for parcial1, parcial2, esperado in casos_de_prueba:
             with self.subTest(parcial1=parcial1, parcial2=parcial2, esperado=esperado):
-                nota_materia = NotaMateria(materia=self.materia, parcial1=parcial1, parcial2=parcial2)
+                nota_materia = NotaMateria(materia=self.materia, periodo=self.periodo, parcial1=parcial1, parcial2=parcial2)
                 resultado = nota_materia.nota_final
                 self.assertEqual(
                     resultado, 
@@ -69,6 +78,7 @@ class TestGestionParametrizado(unittest.TestCase):
             with self.subTest(parcial1=parcial1, parcial2=parcial2, asistencia=asistencia, esperado=esperado):
                 nota_materia = NotaMateria(
                     materia=self.materia, 
+                    periodo=self.periodo,
                     parcial1=parcial1, 
                     parcial2=parcial2, 
                     asistencia=asistencia

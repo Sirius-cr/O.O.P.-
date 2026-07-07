@@ -34,6 +34,14 @@ class Seccion:
         return self.lista_horarios
 
     def agregar_docente(self, docente):
+        # Desasociar el docente anterior si existía y es diferente
+        if self.docentes:
+            if self.docentes[0] != docente:
+                docente_anterior = self.docentes[0]
+                self.docentes.clear()
+                if self in docente_anterior.secciones:
+                    docente_anterior.secciones.remove(self)
+                    
         if docente not in self.docentes:
             self.docentes.append(docente)
             if hasattr(docente, 'asignar_seccion'):
