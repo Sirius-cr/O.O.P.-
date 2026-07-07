@@ -108,3 +108,7 @@ if __name__ == "__main__":
 
     print(f"Nuevo estado en {nota_prog.materia.nombre_materia}: {nota_prog.esta_aprobado.value}")
     print(f"VERDICTO FINAL DE NIVELACIÓN: -> {alumno.esta_aprobado.value} <-")
+
+
+
+

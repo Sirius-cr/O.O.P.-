@@ -18,13 +18,4 @@ Realizar pruebas de feature 2 una vez que se termine de programar el nuevo UML
 Crear interfaz grafica
 Agregar un patron estructural al sistema
 
-27-06-2026
--Revisar el archivo AulaVirtual.py para ver comprobar si funcionan todos sus metodos
-
--En la clase horario no se entiende bien la validación de deteccion de colision, y en resumen_de_seccion, existe un metodo que no esta implementado
-
--Modificar malla curricular y carrera, dentro de carrera debe existir un atributo llamado malla curricular, el cual termina creando un objeto de malla curricular y lo almacena
-
--Materia esta bien
-
--Periodo: Revisar los metodos que tengan algo relacionado con oferta academica, ya que esa clase hay que eliminarla, revisar metodo cambiar_estado, ya que existen otros metodos que parecen hacer lo mismo
+La funcion filtrar por docentes agregarla 

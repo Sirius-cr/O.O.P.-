@@ -11,7 +11,7 @@ class Usuario(ABC):
     def cedula(self): 
         return self._cedula
     
-    #Métodos 
+    #Métodos Encapsulado
     def cambiar_contrasenia(self, contrasenia_actual, nueva_contrasenia):
         if contrasenia_actual != self.__contrasenia:
             return False

@@ -6,4 +6,3 @@ class UsuarioAdministrativo(Usuario):
         estado_actual = periodo.estado_periodo
         #f"El sistema se encuentra en estado: {estado_actual}"
         return estado_actual #En la interfaz se colocará el mensaje
-    
