@@ -1,0 +1,107 @@
+/* Reusable Header/Navbar Styles for SINEV */
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: rgba(159, 13, 25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Soporte para Safari */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+}
+
+#boton-home-header {
+    height: 100%;
+    width: 100px;
+    border: none;
+    border-bottom: 2px solid #ffffff; /* Borde inferior blanco para cubrir la línea del header */
+    outline: none;
+    background-color: #f5f5f5;
+    color: rgb(159, 13, 25);
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#boton-home-header:hover {
+    background-color: #e8e8e8;
+}
+
+.logo-header {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    box-sizing: border-box;
+}
+
+.header-logo-group {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 15px;
+}
+
+.header-home {
+    width: 95%;
+    height: 66px;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.header-title {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+
+.header-nav {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-item {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+    padding: 4px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ffffff;
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover {
+    color: #ffffff;
+}
+
+.nav-item:hover::after {
+    width: 100%;
+}

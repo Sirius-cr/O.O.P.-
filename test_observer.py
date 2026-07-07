@@ -3,7 +3,7 @@ from models.enums.Estado_Periodo import EstadoPeriodo
 from models.enums.Estado_Aprobacion import EstadoDeAprobacionMateria, EstadoDeAprobacionNivelacion
 from models.academico.Clase_Materia import Materia
 from models.academico.Clase_Periodo import Periodo  # Tu clase periodo original
-from models.gestion.Clase_HistorialAcademico import HistorialAcademico
+from models.usuarios.Clase_Estudiante import Estudiante
 
 if __name__ == "__main__":
     print("=== INICIANDO PRUEBA DEL PATRÓN OBSERVER CON TU CLASE PERIODO ===\n")
@@ -16,8 +16,18 @@ if __name__ == "__main__":
     materia_poo = Materia(id_materia="POO-01", nombre_materia="Programación Orientada a Objetos")
     materia_calculo = Materia(id_materia="CAL-02", nombre_materia="Cálculo Diferencial")
 
-    # 3. Inicializamos el Historial Académico del Estudiante (No requiere periodo en su __init__)
-    historial = HistorialAcademico(id_historial="HIST-JULEAN")
+    # 3. Inicializamos el Estudiante completo (quien a su vez creará su Historial Académico y se registrará como observador)
+    estudiante = Estudiante(
+        cedula="131555", 
+        nombres="Julean", 
+        apellidos="Pérez", 
+        correo="julean@univ.com", 
+        contrasenia="1234", 
+        id_estudiante="HIST-JULEAN", 
+        nombre_periodo="Nivelación Intensiva 2026", 
+        tipo_matricula="Ordinaria"
+    )
+    historial = estudiante.historial
 
     # 4. PASO DE MATRÍCULA: El sistema registra las materias asociándoles el periodo correspondiente
     print("--- Proceso de Matrícula (El sistema genera los registros vacíos) ---")

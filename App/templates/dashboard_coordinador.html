@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal del Coordinador - ULEAM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Barra Lateral Izquierda (Sidebar) -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo">ULEAM</div>
+                <div class="brand-subtitle">Coordinación</div>
+            </div>
+            <div class="sidebar-menu">
+                <button class="nav-tab-btn active" data-tab="tab-periodo">Período Académico</button>
+                
+                <button class="nav-tab-btn" data-tab="tab-docentes">Gestión de Docentes</button>
+                
+                <button class="nav-tab-btn" data-tab="tab-materias">Gestión de Materias</button>
+                
+                {% if not materias %}
+                <button class="nav-tab-btn" data-tab="tab-secciones" style="opacity: 0.5; cursor: not-allowed;" onclick="alert('Debe importar la Malla Curricular en la sección \'Gestión de Materias\' primero.'); return false;">Gestión de Secciones (Bloqueado)</button>
+                {% else %}
+                <button class="nav-tab-btn" data-tab="tab-secciones">Gestión de Secciones</button>
+                {% endif %}
+                
+                <button class="nav-tab-btn" data-tab="tab-retiros">
+                    Solicitudes de Retiro 
+                    {% if solicitudes|selectattr('estado', 'equalto', 'Pendiente')|list|length > 0 %}
+                    <span style="background: var(--danger); color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; margin-left: 5px;">{{ solicitudes|selectattr('estado', 'equalto', 'Pendiente')|list|length }}</span>
+                    {% endif %}
+                </button>
+                <button class="nav-tab-btn" data-tab="tab-reportes">Reportes de Carrera</button>
+            </div>
+            <div class="sidebar-footer">
+                <strong>Soporte Técnico</strong><br>
+                Universidad Laica Eloy Alfaro de Manabí
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <!-- Barra de Navegación Principal -->
+            <nav class="main-navbar">
+                <div class="nav-brand">Portal Coordinación Académica</div>
+                <div class="nav-user">
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;">Cerrar Sesión</a>
+                </div>
+            </nav>
+
+            <!-- Contenido Principal -->
+            <main class="main-content">
+                <!-- Encabezado del Dashboard -->
+                <div class="dashboard-header">
+                    <div class="dashboard-title">
+                        <h2>Bienvenido, Coordinador {{ coordinador.nombres }} {{ coordinador.apellidos }}</h2>
+                        <p>Periodo Actual: <strong>{{ periodo.nombre_periodo }}</strong> (Desde {{ periodo.fecha_inicio }} hasta {{ periodo.fecha_final }})</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <!-- Dropdown de Usuario -->
+                        <div class="user-dropdown-container">
+                            <button class="btn btn-secondary" id="btn-usuario" style="padding: 10px 18px; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                                Usuario
+                            </button>
+                            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                                <div style="text-align: center; margin-bottom: 15px;">
+                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: #ffffff; border: 2px solid rgba(0,0,0,0.05);">
+                                        {{ coordinador.nombres[0] }}{{ coordinador.apellidos[0] }}
+                                    </div>
+                                    <h4 style="font-size: 1.1rem; margin-bottom: 2px; font-family: 'Merriweather', serif;">{{ coordinador.obtener_nombre_completo() }}</h4>
+                                    <span style="font-size: 0.75rem; color: var(--text-secondary);">ID: {{ coordinador.id_coordinador }}</span>
+                                </div>
+                                <hr style="border: 0; border-top: 1px solid var(--card-border); margin: 12px 0;">
+                                <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;">
+                                    <div><span style="color: var(--text-secondary);">Cédula:</span> <strong style="float: right;">{{ coordinador.cedula }}</strong></div>
+                                    <div><span style="color: var(--text-secondary);">Correo:</span> <strong style="float: right; font-size: 0.75rem;">{{ coordinador._correo }}</strong></div>
+                                    <div><span style="color: var(--text-secondary);">Asignado:</span> <strong style="float: right;">{{ coordinador.fecha_asignacion_cargo }}</strong></div>
+                                    <div style="margin-top: 5px;">
+                                        <span style="color: var(--text-secondary); display: block; margin-bottom: 4px;">Carrera:</span>
+                                        {% if coordinador.carrera %}
+                                        <div class="badge badge-success" style="width: 100%; text-align: center; background: rgba(122,27,41,0.08); border-color: rgba(122,27,41,0.15); color: var(--primary); padding: 5px; font-size: 0.75rem;">{{ coordinador.carrera.nombre_carrera }}</div>
+                                        {% else %}
+                                        <span style="color: var(--danger); font-size: 0.75rem;">Sin Carrera Asignada</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Indicador de Estado del Sistema -->
+                        <div class="glass-card" style="padding: 10px 20px; border-left: 4px solid 
+                            {% if periodo.estado_periodo == 'En curso' %} var(--success) 
+                            {% elif periodo.estado_periodo == 'Finalizado' %} var(--danger) 
+                            {% else %} var(--warning) {% endif %};">
+                            <span style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Estado del Periodo</span>
+                            <div style="font-size: 1rem; font-weight: 700; margin-top: 3px;">
+                                {{ periodo.estado_periodo }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Panel de Estadísticas Rápidas -->
+            <div class="grid-cols-3">
+                <div class="glass-card info-card" style="border-bottom: 3px solid var(--primary);">
+                    <div class="info-card-header">Estudiantes Inscritos</div>
+                    <div class="info-card-value">{{ stats.total }}</div>
+                    <div class="info-card-footer">Total registrados en la carrera</div>
+                </div>
+                <div class="glass-card info-card" style="border-bottom: 3px solid var(--success);">
+                    <div class="info-card-header">Aprobados (Proyectados)</div>
+                    <div class="info-card-value" style="color: var(--success);">{{ stats.aprobados }}</div>
+                    <div class="info-card-footer">Cumplen con nota (>= 7.0) y asistencia (>= 70%)</div>
+                </div>
+                <div class="glass-card info-card" style="border-bottom: 3px solid var(--warning);">
+                    <div class="info-card-header">Pendientes o Reprobados</div>
+                    <div class="info-card-value" style="color: var(--warning);">{{ stats.pendientes + stats.reprobados }}</div>
+                    <div class="info-card-footer">Materias en curso o sin cumplir mínimos</div>
+                </div>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="main-tabs-content">
+                    
+                    <!-- TAB 1: Período Académico -->
+                    <div id="tab-periodo" class="tab-pane active">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Control de Ciclo y Matrícula</h3>
+                            </div>
+                            <div class="card-body-content">
+                                <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 25px;">
+                                    Como Coordinador, controlas el estado del periodo lectivo de nivelación. 
+                                    Al <strong>Iniciar</strong> el período, habilitas el ingreso de notas y la matriculación. 
+                                    Al <strong>Finalizar</strong>, cierras formalmente el ciclo de nivelación, consolidando las calificaciones y fijando el estado de aprobación final de todos los estudiantes de manera irreversible.
+                                </p>
+                                
+                                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                                    {% if periodo.estado_periodo == 'Planificación' %}
+                                    <button onclick="togglePeriod('iniciar')" class="btn btn-primary" style="width: auto;">
+                                        🚀 Iniciar Periodo Académico
+                                    </button>
+                                    {% elif periodo.estado_periodo == 'En curso' %}
+                                    <button onclick="togglePeriod('finalizar')" class="btn btn-danger" style="width: auto;">
+                                        🔒 Finalizar/Cerrar Ciclo Académico
+                                    </button>
+                                    {% else %}
+                                    <div class="badge badge-danger" style="padding: 12px 20px; font-size: 0.85rem; border-radius: 6px; text-transform: none;">
+                                        🔒 El periodo académico ha concluido. Todos los procesos de esta nivelación han finalizado.
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: Gestión de Docentes -->
+                    <div id="tab-docentes" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Docentes Registrados</h3>
+                                <div style="display: flex; gap: 15px;">
+                                    <button onclick="openModal('modal-import-teachers')" class="btn btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Importar Docentes (Excel)
+                                    </button>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">
+                                Carga un archivo Excel con las columnas: <code>cedula</code>, <code>nombres</code>, <code>apellidos</code>, <code>correo</code>, <code>contrasenia</code>, <code>especialidad</code>.
+                            </p>
+                            
+                            <div class="card-body-content table-container">
+                                <table class="premium-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Cédula</th>
+                                            <th>Nombres</th>
+                                            <th>Apellidos</th>
+                                            <th>Correo</th>
+                                            <th>Especialidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for docente in docentes %}
+                                        <tr>
+                                            <td>{{ docente.cedula }}</td>
+                                            <td style="font-weight: 500;">{{ docente.nombres }}</td>
+                                            <td style="font-weight: 500;">{{ docente.apellidos }}</td>
+                                            <td>{{ docente._correo }}</td>
+                                            <td><span class="badge badge-success">{{ docente.especialidad }}</span></td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 20px;">
+                                                No hay docentes registrados. Importe desde Excel.
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-materias" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Malla Curricular de la Carrera</h3>
+                                <div style="display: flex; gap: 15px;">
+                                    <button onclick="openModal('modal-import-curriculum')" class="btn btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Importar Malla (Excel)
+                                    </button>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">
+                                Importa un archivo Excel (.xlsx) que contenga exactamente 5 materias para inicializar la malla curricular de tu carrera.
+                            </p>
+                            
+                            {% if materias %}
+                            <div class="grid-cols-2" style="gap: 15px;">
+                                {% for m in materias %}
+                                <div class="glass-card" style="padding: 15px; border-left: 4px solid var(--primary);">
+                                    <h4 style="margin: 0 0 5px 0; color: var(--text-main);">{{ m.nombre }}</h4>
+                                    <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">Código: {{ m.id }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div style="padding: 40px; text-align: center; border: 2px dashed var(--card-border); border-radius: 10px; background: rgba(0,0,0,0.02);">
+                                <h3 style="color: var(--text-secondary); margin-bottom: 10px;">Sin Malla Curricular</h3>
+                                <p style="font-size: 0.9rem; color: var(--text-secondary);">Actualmente no hay materias registradas. La gestión de secciones está bloqueada.</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: Gestión de Secciones -->
+                    <div id="tab-secciones" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Secciones y Docentes de Nivelación</h3>
+                                <div style="display: flex; gap: 15px;">
+                                    <button onclick="openModal('modal-create-section')" class="btn btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Crear Sección (Builder)
+                                    </button>
+                                    <button onclick="openModal('modal-assign-schedule')" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Asignar Horario
+                                    </button>
+                                    <button onclick="openModal('modal-assign-teacher')" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 0.85rem;">
+                                        Asignar Docente
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body-content table-container">
+                                <table class="premium-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Código Sección</th>
+                                            <th>Materia</th>
+                                            <th>Horario</th>
+                                            <th>Docente Asignado</th>
+                                            <th style="text-align: center;">Inscritos</th>
+                                            <th style="text-align: center;">Capacidad Máx.</th>
+                                            <th>Aula Virtual/Entorno</th>
+                                            <th>Estado</th>
+                                            <th style="text-align: center;">Estudiantes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for sec in secciones %}
+                                        <tr>
+                                            <td style="font-weight: 600; color: #000000;">{{ sec.id_seccion }}</td>
+                                            <td>{{ sec.materia }}</td>
+                                            <td>
+                                                {% if sec.tiene_horario %}
+                                                    <span class="badge badge-success" title="{{ sec.horario_detalles }}" style="cursor: help;">Asignado</span>
+                                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ sec.horario_detalles }}">{{ sec.horario_detalles }}</div>
+                                                {% else %}
+                                                    <span class="badge badge-danger">Sin Horario</span>
+                                                {% endif %}
+                                            </td>
+                                            <td style="font-weight: 500; color: var(--accent);">{{ sec.docente }}</td>
+                                            <td style="text-align: center;">{{ sec.inscritos }}</td>
+                                            <td style="text-align: center;">{{ sec.capacidad }}</td>
+                                            <td>
+                                                {% if sec.aula == "No asignada" %}
+                                                    <span style="color: var(--text-muted); font-style: italic; font-size: 0.82rem;">No asignada</span>
+                                                    <button onclick="openEditAulaModal('{{ sec.id_seccion }}', '')" class="btn btn-secondary" style="padding: 2px 6px; font-size: 0.72rem; margin-left: 8px; display: inline-flex; align-items: center;" title="Asignar Aula">➕</button>
+                                                {% else %}
+                                                    <div style="display: flex; align-items: center; gap: 6px; max-width: 200px;">
+                                                        <a href="{{ sec.aula }}" target="_blank" style="color: var(--accent); text-decoration: underline; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;" title="{{ sec.aula }}">{{ sec.aula }}</a>
+                                                        <button onclick="openEditAulaModal('{{ sec.id_seccion }}', '{{ sec.aula }}')" class="btn btn-secondary" style="padding: 2px 6px; font-size: 0.72rem; display: inline-flex; align-items: center; flex-shrink: 0;" title="Modificar Enlace">✏️</button>
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <span class="badge {% if sec.disponibilidad == 'Disponible' %} badge-success {% else %} badge-danger {% endif %}">
+                                                    {{ sec.disponibilidad }}
+                                                </span>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <button onclick="openImportStudentsModal('{{ sec.id_seccion }}', {{ sec.capacidad }})" class="btn btn-primary" style="padding: 4px 10px; font-size: 0.72rem; width: auto; background: var(--accent); border-color: var(--accent);">📥 Importar Excel</button>
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="9" style="text-align: center; color: var(--text-secondary);">No hay secciones creadas en este periodo académico.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="padding: 15px 20px; border-top: 1px solid rgba(0,0,0,0.05); text-align: right;">
+                                <button onclick="openModal('modal-delete-students')" class="btn btn-primary" style="background: var(--danger); border-color: var(--danger); width: auto; padding: 10px 20px;">
+                                    ⚠️ Borrar Todos los Estudiantes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Solicitudes de Retiro -->
+                    <div id="tab-retiros" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Solicitudes de Retiro Pendientes</h3>
+                            </div>
+                            <div class="card-body-content table-container">
+                                <table class="premium-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Estudiante</th>
+                                            <th>ID</th>
+                                            <th>Fecha</th>
+                                            <th>Motivo</th>
+                                            <th>Estado</th>
+                                            <th style="text-align: right;">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for sol in solicitudes %}
+                                        <tr>
+                                            <td style="font-weight: 500;">{{ sol.nombre }}</td>
+                                            <td>{{ sol.estudiante_id }}</td>
+                                            <td style="font-size: 0.8rem; color: var(--text-secondary);">{{ sol.fecha }}</td>
+                                            <td style="max-width: 220px; font-size: 0.85rem; color: var(--text-secondary); word-wrap: break-word;" title="{{ sol.motivo }}">
+                                                {{ sol.motivo }}
+                                            </td>
+                                            <td>
+                                                <span class="badge {% if sol.estado == 'Aprobado' %} badge-success {% elif sol.estado == 'Rechazado' %} badge-danger {% else %} badge-warning {% endif %}">
+                                                    {{ sol.estado }}
+                                                </span>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                {% if sol.estado == 'Pendiente' %}
+                                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                                    <button onclick="manageWithdrawal({{ sol.id }}, 'aprobar')" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem; width: auto; background: var(--success); box-shadow: none;">Aprobar</button>
+                                                    <button onclick="manageWithdrawal({{ sol.id }}, 'rechazar')" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; width: auto; color: var(--danger);">Rechazar</button>
+                                                </div>
+                                                {% else %}
+                                                    {% if sol.reporte %}
+                                                    <button onclick="viewReportConsole(`{{ sol.reporte.imprimir_reporte() }}`)" class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;">Ver Acta</button>
+                                                    {% else %}
+                                                    <span style="color: var(--text-secondary); font-size: 0.8rem;">Sin acta (Estudiante inactivo/eliminado)</span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="6" style="text-align: center; color: var(--text-secondary);">No se registran solicitudes de retiro de asignaturas.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Reportes de Carrera -->
+                    <div id="tab-reportes" class="tab-pane">
+                        <div class="glass-card">
+                            <div class="card-title-header">
+                                <h3>Reporte Físico de Carrera (Modelo POO)</h3>
+                            </div>
+                            <div class="card-body-content">
+                                <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+                                    Genera un reporte del estado de la carrera de Ingeniería en Software, incluyendo capacidad de alumnos y total de matriculados actualmente en base a la composición de clases del backend.
+                                </p>
+                                <form id="form-career-report">
+                                    <div class="form-group" style="max-width: 300px; display: inline-block; margin-right: 15px; margin-bottom: 0;">
+                                        <label for="formato-carrera">Formato de Reporte</label>
+                                        <select id="formato-carrera" name="formato" class="form-control" style="background: var(--bg-primary);">
+                                            <option value="PDF">PDF de Carrera</option>
+                                            <option value="TXT">Archivo Plano TXT</option>
+                                            <option value="EXCEL">Matriz Excel</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="width: auto; vertical-align: bottom;">
+                                        Generar Reporte de Carrera
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL DE CREACIÓN DE SECCIÓN -->
+    <div id="modal-create-section" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header">
+                <h3>Crear Nueva Sección de Asignatura</h3>
+                <button onclick="closeModal('modal-create-section')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-create-section">
+                    <div class="form-group">
+                        <label for="id_seccion">Código Único de Sección</label>
+                        <input type="text" id="id_seccion" name="id_seccion" class="form-control" placeholder="Ej: SEC-PROG-B" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="materia_id">Asignar Materia Base</label>
+                        <select id="materia_id" name="materia_id" class="form-control" style="background: var(--bg-primary);">
+                            {% for mat in materias %}
+                            <option value="{{ mat.id }}">{{ mat.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="capacidad">Capacidad de Estudiantes</label>
+                        <input type="number" id="capacidad" name="capacidad" class="form-control" min="5" max="100" value="30" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="aula_link">Enlace de Aula Virtual (Opcional)</label>
+                        <input type="url" id="aula_link" name="aula_link" class="form-control" placeholder="Ej: https://teams.microsoft.com/meet/...">
+                    </div>
+                    <div class="form-group">
+                        <label for="aula_plataforma">Plataforma (Si se asigna enlace)</label>
+                        <select id="aula_plataforma" name="aula_plataforma" class="form-control" style="background: var(--bg-primary);">
+                            <option value="TEAMS">Microsoft Teams</option>
+                            <option value="ZOOM">Zoom Meetings</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Crear con Builder</button>
+                        <button type="button" onclick="closeModal('modal-create-section')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE ASIGNACIÓN DE DOCENTE -->
+    <div id="modal-assign-teacher" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header">
+                <h3>Asignar Docente a Sección</h3>
+                <button onclick="closeModal('modal-assign-teacher')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-assign-teacher">
+                    <div class="form-group">
+                        <label for="seccion_id">Seleccionar Sección</label>
+                        <select id="seccion_id" name="seccion_id" class="form-control" style="background: var(--bg-primary);">
+                            {% for sec in secciones %}
+                            <option value="{{ sec.id_seccion }}" data-materia="{{ sec.materia }}">{{ sec.id_seccion }} - {{ sec.materia }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="docente_correo">Seleccionar Docente Disponible</label>
+                        <select id="docente_correo" name="docente_correo" class="form-control" style="background: var(--bg-primary);">
+                            <option value="">Seleccione un docente...</option>
+                            {% for doc in docentes %}
+                            <option value="{{ doc._correo }}" data-especialidad="{{ doc.especialidad }}">{{ doc.obtener_nombre_completo() }} ({{ doc.especialidad }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar Asignación</button>
+                        <button type="button" onclick="closeModal('modal-assign-teacher')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE ASIGNACIÓN DE HORARIO -->
+    <div id="modal-assign-schedule" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header">
+                <h3>Asignar Horario a Sección</h3>
+                <button onclick="closeModal('modal-assign-schedule')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-assign-schedule">
+                    <div class="form-group">
+                        <label for="horario_seccion_id">Seleccionar Sección</label>
+                        <select id="horario_seccion_id" name="seccion_id" class="form-control" style="background: var(--bg-primary);" required>
+                            {% for sec in secciones %}
+                            <option value="{{ sec.id_seccion }}">{{ sec.id_seccion }} - {{ sec.materia }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="turno">Turno</label>
+                        <select id="turno" name="turno" class="form-control" style="background: var(--bg-primary);">
+                            <option value="Matutino">Matutino</option>
+                            <option value="Vespertino">Vespertino</option>
+                            <option value="Nocturno">Nocturno</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalidad">Modalidad</label>
+                        <select id="modalidad" name="modalidad" class="form-control" style="background: var(--bg-primary);">
+                            <option value="PRESENCIAL">Presencial</option>
+                            <option value="VIRTUAL">Virtual</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Días de la Semana</label>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 5px; background: rgba(0,0,0,0.02); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--card-border);">
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Lunes" checked> Lunes
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Martes"> Martes
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Miércoles" checked> Miércoles
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Jueves"> Jueves
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Viernes" checked> Viernes
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Sábado"> Sábado
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="hora_inicio">Hora de inicio</label>
+                        <input type="time" id="hora_inicio" name="hora_inicio" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hora_fin">Hora de fin</label>
+                        <input type="time" id="hora_fin" name="hora_fin" class="form-control" required>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar Horario</button>
+                        <button type="button" onclick="closeModal('modal-assign-schedule')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA VER CONSOLA DE REPORTE -->
+    <div id="modal-view-report" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 700px;">
+            <div class="card-title-header">
+                <h3>Visualizador de Consola (Vista de Reporte)</h3>
+                <button onclick="closeModal('modal-view-report')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">El reporte ha sido generado por las clases de la aplicación con la estructura de reportes POO de la universidad:</p>
+                <div id="report-console-content" class="console-box"></div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button onclick="closeModal('modal-view-report')" class="btn btn-primary" style="width: auto;">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE EDICIÓN DE AULA VIRTUAL (COORDINADOR) -->
+    <div id="modal-edit-aula" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 450px;">
+            <div class="card-title-header">
+                <h3>Gestionar Aula Virtual</h3>
+                <button onclick="closeModal('modal-edit-aula')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-edit-aula">
+                    <input type="hidden" id="edit-aula-seccion-id" name="seccion_id">
+                    
+                    <div style="margin-bottom: 15px; font-size: 0.9rem; color: var(--text-secondary);">
+                        Sección: <strong id="edit-aula-seccion-display" style="color: var(--primary);"></strong>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-aula-link">Enlace del Aula Virtual (Dejar vacío para desasignar)</label>
+                        <input type="url" id="edit-aula-link" name="enlace" class="form-control" placeholder="Ej: https://teams.microsoft.com/meet/...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-aula-plataforma">Plataforma</label>
+                        <select id="edit-aula-plataforma" name="plataforma" class="form-control" style="background: var(--bg-primary);">
+                            <option value="TEAMS">Microsoft Teams</option>
+                            <option value="ZOOM">Zoom Meetings</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar Cambios</button>
+                        <button type="button" onclick="closeModal('modal-edit-aula')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE IMPORTACIÓN DE ESTUDIANTES DESDE EXCEL (COORDINADOR) -->
+    <div id="modal-import-students" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 500px;">
+            <div class="card-title-header">
+                <h3>Importar Estudiantes desde Excel</h3>
+                <button onclick="closeModal('modal-import-students')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-import-students" enctype="multipart/form-data">
+                    <input type="hidden" id="import-students-seccion-id" name="seccion_id">
+                    
+                    <div style="margin-bottom: 20px; font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary);">
+                        Sección Destino: <strong id="import-students-seccion-display" style="color: var(--primary);"></strong><br>
+                        Capacidad Máxima: <strong id="import-students-capacidad-display" style="color: var(--primary);"></strong> estudiantes.
+                    </div>
+
+                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 20px; border-left: 4px solid var(--primary); line-height: 1.4;">
+                        <strong>Requisitos del Archivo Excel:</strong>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>No debe superar la capacidad máxima de estudiantes de la sección.</li>
+                            <li>Debe contener las siguientes columnas (minúsculas): <code>cedula</code>, <code>nombres</code>, <code>apellidos</code>, <code>correo</code>, <code>contrasenia</code>, <code>id_estudiante</code>, <code>nombre_periodo</code>, <code>tipo_matricula</code>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="import-file">Seleccionar Libro de Excel (.xlsx, .xls)</label>
+                        <input type="file" id="import-file" name="file" class="form-control" accept=".xlsx, .xls" required>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Iniciar Importación</button>
+                        <button type="button" onclick="closeModal('modal-import-students')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Importar Docentes -->
+    <div id="modal-import-teachers" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 500px;">
+            <div class="card-title-header">
+                <h3>Importar Docentes</h3>
+                <button onclick="closeModal('modal-import-teachers')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-import-teachers" enctype="multipart/form-data">
+                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 20px; border-left: 4px solid var(--primary); line-height: 1.4;">
+                        <strong>Requisitos del Archivo Excel:</strong>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Debe contener las siguientes columnas en minúsculas: <code>cedula</code>, <code>nombres</code>, <code>apellidos</code>, <code>correo</code>, <code>contrasenia</code>, <code>especialidad</code>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file-teachers">Seleccionar Archivo Excel (.xlsx)</label>
+                        <input type="file" id="file-teachers" name="file" class="form-control" accept=".xlsx, .xls" required>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Importar Docentes</button>
+                        <button type="button" onclick="closeModal('modal-import-teachers')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE IMPORTACIÓN DE MALLA CURRICULAR -->
+    <div id="modal-import-curriculum" class="modal-overlay">
+        <div class="glass-card modal-box" style="max-width: 500px;">
+            <div class="card-title-header">
+                <h3>Importar Malla Curricular</h3>
+                <button onclick="closeModal('modal-import-curriculum')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <form id="form-import-curriculum" enctype="multipart/form-data">
+                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 20px; border-left: 4px solid var(--primary); line-height: 1.4;">
+                        <strong>Requisitos del Archivo Excel:</strong>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Debe contener exactamente 5 filas de datos (5 materias).</li>
+                            <li>Debe contener las siguientes columnas (minúsculas): <code>id_materia</code>, <code>nombre_materia</code>, <code>nota_minima</code>, <code>asistencia_minima</code>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="import-curriculum-file">Seleccionar Libro de Excel (.xlsx, .xls)</label>
+                        <input type="file" id="import-curriculum-file" name="file" class="form-control" accept=".xlsx, .xls" required>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Iniciar Importación</button>
+                        <button type="button" onclick="closeModal('modal-import-curriculum')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL PARA ELIMINAR ESTUDIANTES -->
+    <div id="modal-delete-students" class="modal-overlay">
+        <div class="glass-card modal-box">
+            <div class="card-title-header" style="background: rgba(220, 53, 69, 0.1);">
+                <h3 style="color: var(--danger);">Borrar Todos los Estudiantes</h3>
+                <button onclick="closeModal('modal-delete-students')" class="btn btn-secondary" style="padding: 6px 10px;">✕</button>
+            </div>
+            <div class="card-body-content">
+                <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+                    Esta acción eliminará a todos los estudiantes inscritos, vaciará las listas de las secciones y borrará los archivos JSON de los estudiantes de forma irreversible.
+                </p>
+                <form id="form-delete-students">
+                    <div class="form-group">
+                        <label for="delete-auth-password">Clave de Verificación (Contraseña del Coordinador)</label>
+                        <input type="password" id="delete-auth-password" name="auth_password" class="form-control" placeholder="Ingrese su contraseña para confirmar" required>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1; background: var(--danger); border-color: var(--danger);">Confirmar Eliminación</button>
+                        <button type="button" onclick="closeModal('modal-delete-students')" class="btn btn-secondary" style="flex: 1;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

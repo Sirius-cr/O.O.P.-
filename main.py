@@ -34,7 +34,6 @@ if __name__ == "__main__":
         contrasenia="1234", 
         id_estudiante="EST-99", 
         nombre_periodo="Nivelación 2026", 
-        estado_matricula="Matriculado", 
         tipo_matricula="Ordinaria"
     )
     # Al ser públicos nombres y apellidos, ya no arrojará AttributeError
@@ -44,9 +43,12 @@ if __name__ == "__main__":
     # =========================================================================
     # PASO 3: Asignación de Notas vinculadas a las Materias (Composición)
     # =========================================================================
+    from models.academico.Clase_Periodo import Periodo
+    periodo_actual = Periodo(nombre_periodo="Nivelación 2026", fecha_inicio="2026-01-01", fecha_final="2026-06-30")
+
     # El historial crea internamente las calificaciones por composición
-    nota_prog = alumno.historial.crear_nota_materia(materia=materia_prog)
-    nota_mate = alumno.historial.crear_nota_materia(materia=materia_mate)
+    nota_prog = alumno.historial.crear_nota_materia(materia=materia_prog, periodo=periodo_actual)
+    nota_mate = alumno.historial.crear_nota_materia(materia=materia_mate, periodo=periodo_actual)
 
     # Añadimos una propiedad dinámica en ejecución para emular el cierre del Coordinador
     nota_prog.periodo_cerrado = False

@@ -1,4 +1,5 @@
 from models.usuarios.Clase_UsuarioAcademico import UsuarioAcademico
+from models.patrones_diseno.strategy.ReporteStrategy import Reporte
 
 class Docente(UsuarioAcademico):
     def __init__(self, cedula, nombres, apellidos, correo, contrasenia):
@@ -26,12 +27,12 @@ class Docente(UsuarioAcademico):
             self.secciones.append(seccion)
             seccion.agregar_docente(self)
 
-    def agregar_especialidad(self, especialidad):
-        if especialidad not in self.especialidades:
-            self.especialidades.append(especialidad)
-            return True
-        return False
+    def realizaReporte(self, tipo_de_reporte, formato_documento, contenido):
+        return Reporte(
+            tipo_de_reporte=tipo_de_reporte,
+            formato_documento=formato_documento,
+            emisor=self.obtener_nombre_completo(),
+            contenido=contenido
+        )
 
-        
-    def obtener_especialidades(self):
-        return self.especialidades
+            

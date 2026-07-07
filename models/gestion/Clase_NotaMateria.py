@@ -9,15 +9,20 @@ class Sujeto(ABC):
     def __init__(self):
         self._observadores = []
 
-    def adjuntar(self, observador):
+    def anexar(self, observador):
         if observador not in self._observadores:
             self._observadores.append(observador)
 
-    def notificar(self):
-        for observador in self._observadores:
-            observador.actualizar()
+    def remover(self, observador):
+        if observador in self._observadores:
+            self._observadores.remove(observador)
 
-# Tu clase modificada
+    def notificar(self, cambio=None, valor=None, nota=None):
+        autor = getattr(self, 'ultimo_modificador', 'Un docente')
+        for observador in self._observadores:
+            observador.actualizar(cambio, valor, nota, autor=autor)
+
+
 class NotaMateria(Sujeto):
     def __init__(self, materia: Materia, periodo: Periodo, parcial1 = 0.0 , parcial2 = 0.0, asistencia = 0, historial = None):
         super().__init__()
@@ -33,7 +38,9 @@ class NotaMateria(Sujeto):
                 self.materia.notas_materia.append(self)
                 
         if self.historial:
-            self.adjuntar(self.historial)
+            self.anexar(self.historial)
+            if hasattr(self.historial, 'estudiante') and self.historial.estudiante:
+                self.anexar(self.historial.estudiante)
 
     # Interceptamos los cambios de notas usando propiedades
     @property
@@ -41,21 +48,21 @@ class NotaMateria(Sujeto):
     @parcial1.setter
     def parcial1(self, valor):
         self._parcial1 = valor
-        self.notificar()  # Avisa automáticamente al historial
+        self.notificar("parcial1", valor, self)  # Avisa automáticamente a todos los observadores
 
     @property
     def parcial2(self): return self._parcial2
     @parcial2.setter
     def parcial2(self, valor):
         self._parcial2 = valor
-        self.notificar()
+        self.notificar("parcial2", valor, self)
 
     @property
     def asistencia(self): return self._asistencia
     @asistencia.setter
     def asistencia(self, valor):
         self._asistencia = valor
-        self.notificar()
+        self.notificar("asistencia", valor, self)
 
     @property
     def nota_final(self):

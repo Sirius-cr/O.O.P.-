@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso al Sistema Académico - ULEAM</title>
+    <!-- CSS original de la App -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- CSS del nuevo diseño -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=TikTok+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Estilos específicos para el ayudante de credenciales */
+        .credentials-helper-card {
+            margin-top: 20px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-secondary);
+            border: 1px solid var(--card-border);
+            padding: 12px;
+            font-size: 0.8rem;
+        }
+        .credentials-helper-card summary {
+            cursor: pointer;
+            color: var(--primary);
+            font-weight: 700;
+            user-select: none;
+            outline: none;
+            font-family: 'TikTok Sans', sans-serif;
+        }
+        .credentials-list {
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            color: var(--text-secondary);
+        }
+        .cred-item {
+            background: #ffffff;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--card-border);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        .cred-item:hover {
+            background: var(--bg-primary);
+            border-color: var(--primary);
+        }
+        .cred-item strong {
+            color: var(--text-primary);
+        }
+        
+        /* Asegurar centrado del login original en la sección izquierda del nuevo diseño */
+        .seccion-izquierda {
+            align-items: center !important;
+            padding: 20px !important;
+            display: flex;
+            justify-content: center;
+        }
+        
+        /* Ajuste de scrollbar para evitar barras molestas */
+        html, body {
+            overflow: hidden;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header del nuevo diseño -->
+    <header>
+        <div class="header-home">
+            <div class="header-left">
+                <img src="{{ url_for('static', filename='images/uleam-only-simon-transparent.webp') }}" alt="Logo ULEAM" class="logo-header">
+            </div>
+            <nav class="header-center">
+                <a href="https://tics.uleam.edu.ec/cronogramas-de-matriculas/" class="nav-item" target="_blank">Ver Cronograma matrícula</a>
+                <a href="https://uleam.sharepoint.com/sites/04d985d62ce6/Documentos%20compartidos/Forms/AllItems.aspx?id=%2Fsites%2F04d985d62ce6%2FDocumentos%20compartidos%2FP%C3%BAblicos%2FMATRICULAS%2FAranceles%2D2024%2D1%2Epdf&parent=%2Fsites%2F04d985d62ce6%2FDocumentos%20compartidos%2FP%C3%BAblicos%2FMATRICULAS&p=true&ga=1" class="nav-item" target="_blank">Ver carreras por campos y aranceles</a>
+                <a href="https://support.microsoft.com/es-es/office/configurar-el-correo-electr%C3%B3nico-y-las-aplicaciones-de-office-en-un-dispositivo-m%C3%B3vil-7dabb6cb-0046-40b6-81fe-767e0b1f014f" class="nav-item" target="_blank">Configuración del correo institucional</a>
+                <a href="#" class="nav-item">Contacto</a>
+            </nav>
+            <div class="header-right-empty"></div>
+        </div>
+    </header>
+
+    <main>
+        <div class="division-body">
+            <!-- Sección Izquierda: Tarjeta de Login Original de la App -->
+            <div class="seccion-izquierda">
+                <div class="glass-card login-box" style="margin-bottom: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.15); background: rgba(255,255,255,0.95);">
+                    <div class="brand-header">
+                        <h1 class="brand-logo" style="font-family: 'TikTok Sans', sans-serif;">ULEAM</h1>
+                        <p class="brand-tagline">Sistema de Gestión de Nivelación Académica</p>
+                    </div>
+
+                    <!-- Alerta de Error de Credenciales -->
+                    <div id="error-alert" class="alert-message">
+                        Credenciales incorrectas. Intente nuevamente.
+                    </div>
+
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="correo">Correo Electrónico</label>
+                            <input type="email" id="correo" name="correo" class="form-control" placeholder="ejemplo@uleam.edu.ec" required autocomplete="username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contrasenia">Contraseña</label>
+                            <input type="password" id="contrasenia" name="contrasenia" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="margin-top: 15px; width: 100%;">
+                            Ingresar al Portal
+                        </button>
+                    </form>
+
+                    <!-- Ayudante de Credenciales -->
+                    <details class="credentials-helper-card">
+                        <summary>Credenciales Rápidas de Prueba</summary>
+                        <div class="credentials-list">
+                            <p style="margin-bottom: 5px;">Haz clic para autocompletar una cuenta de prueba:</p>
+                            <div class="cred-item" onclick="fillCreds('coordinador@uleam.edu.ec', 'claveCoordinador')">
+                                <span>Rol: <strong>Coordinador</strong></span>
+                                <span>Correo: <code>coordinador@uleam.edu.ec</code></span>
+                            </div>
+                            <div class="cred-item" onclick="fillCreds('maria.rodriguez@uleam.edu.ec', 'docente2026')">
+                                <span>Rol: <strong>Docente</strong></span>
+                                <span>Correo: <code>maria.rodriguez@uleam.edu.ec</code></span>
+                            </div>
+                            <div class="cred-item" onclick="fillCreds('carlos.mendoza@live.uleam.edu.ec', 'admin1234')">
+                                <span>Rol: <strong>Estudiante</strong></span>
+                                <span>Correo: <code>carlos.mendoza@live.uleam.edu.ec</code></span>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- Sección Derecha: Fondo e Información Institucional del Nuevo Login -->
+            <div class="seccion-derecha">
+                <img src="{{ url_for('static', filename='images/fondo-uleam-fcvt.jpg') }}" alt="Fondo representativo" class="imagen-fondo">
+                <img src="{{ url_for('static', filename='images/uleam-full-logo-box-transparent.webp') }}" alt="Logo ULEAM" class="imagen-logo-flotante">
+                
+                <!-- 3 Cuadros de texto con opacidad (Horizontal Grid) -->
+                <div class="cuadros-texto-login">
+                    <div class="tarjeta-flotante">
+                        <div class="tarjeta-header">
+                            <h3>Misión</h3>
+                        </div>
+                        <div class="tarjeta-body">
+                            <p>Formar profesionales competentes y emprendedores a través de la articulación de las funciones sustantivas, acreditando oferta académica de grado, postgrado, técnicas y tecnológicas, para contribuir al desarrollo integral de los territorios.</p>
+                        </div>
+                    </div>
+                    <div class="tarjeta-flotante">
+                        <div class="tarjeta-header">
+                            <h3>Visión</h3>
+                        </div>
+                        <div class="tarjeta-body">
+                            <p>Ser una Universidad acreditada nacional e internacionalmente, con calidad y pertinencia al contexto regional y nacional.</p>
+                        </div>
+                    </div>
+                    <div class="tarjeta-flotante">
+                        <div class="tarjeta-header">
+                            <h3>¿Quiénes Somos?</h3>
+                        </div>
+                        <div class="tarjeta-body">
+                            <p>Somos una universidad de carácter humanista, con una clara concepción laica en materia educativa que procura la más exigente libertad de enseñanza y cátedra, entendiendo al estudiante como el gran actor de su proceso de formación y al docente como el gran facilitador del futuro profesional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer></footer>
+
+    <script>
+        function fillCreds(email, password) {
+            document.getElementById('correo').value = email;
+            document.getElementById('contrasenia').value = password;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            const errorAlert = document.getElementById('error-alert');
+
+            // Enviar login asíncronamente
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                errorAlert.style.display = 'none';
+
+                const formData = new FormData(loginForm);
+
+                fetch('/login', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Animación de salida y redirección
+                        document.querySelector('.login-box').style.transform = 'scale(0.95)';
+                        document.querySelector('.login-box').style.opacity = '0.5';
+                        setTimeout(() => {
+                            window.location.href = data.redirect;
+                        }, 250);
+                    } else {
+                        // Mostrar mensaje de error con animación de sacudida
+                        errorAlert.textContent = data.message;
+                        errorAlert.style.display = 'block';
+                        errorAlert.style.animation = 'none';
+                        // Forzar reflujo para reiniciar animación
+                        errorAlert.offsetHeight;
+                        errorAlert.style.animation = 'shake 0.3s ease';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error de red:', err);
+                    errorAlert.textContent = 'Error de red o conexión al servidor local.';
+                    errorAlert.style.display = 'block';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
