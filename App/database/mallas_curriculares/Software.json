@@ -1,0 +1,32 @@
+[
+  {
+    "id_materia": "PROG01",
+    "nombre_materia": "Programación Orientada a Objetos",
+    "nota_minima": 7,
+    "asistencia_minima": 75
+  },
+  {
+    "id_materia": "PROG02",
+    "nombre_materia": "Estructuras de Datos",
+    "nota_minima": 7,
+    "asistencia_minima": 75
+  },
+  {
+    "id_materia": "PROG03",
+    "nombre_materia": "Base de Datos",
+    "nota_minima": 7,
+    "asistencia_minima": 75
+  },
+  {
+    "id_materia": "PROG04",
+    "nombre_materia": "Ingeniería de Software",
+    "nota_minima": 7,
+    "asistencia_minima": 75
+  },
+  {
+    "id_materia": "PROG05",
+    "nombre_materia": "Desarrollo Web",
+    "nota_minima": 7,
+    "asistencia_minima": 75
+  }
+]

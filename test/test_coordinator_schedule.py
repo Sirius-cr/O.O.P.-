@@ -135,5 +135,55 @@ class TestCoordinatorSchedule(unittest.TestCase):
             self.assertEqual(h._modalidad, 'PRESENCIAL')
             self.assertEqual(h.dias, ['Lunes', 'Viernes'])
 
+    def test_student_dashboard_auto_healing_missing_grades(self):
+        """Prueba que el dashboard del estudiante repare la falta de NotaMateria para secciones inscritas."""
+        from models.usuarios.Clase_Estudiante import Estudiante
+        from App.app import estudiantes
+        
+        # Guardar estudiantes originales
+        self.original_estudiantes = dict(estudiantes)
+        
+        try:
+            # Crear estudiante de prueba sin notas
+            est_username = "student_test@live.uleam.edu.ec"
+            est_obj = Estudiante(
+                cedula="1301234567",
+                nombres="Estudiante",
+                apellidos="Prueba",
+                correo=est_username,
+                contrasenia="password123",
+                id_estudiante="EST-TEST-99",
+                nombre_periodo="Periodo",
+                tipo_matricula="Ordinaria"
+            )
+            estudiantes[est_username] = est_obj
+            
+            # Asociar sección sin crear nota materia
+            self.sec1.estudiantes_inscritos.append(est_obj)
+            est_obj.secciones_asociadas.append(self.sec1)
+            
+            # Verificar que al inicio no hay notas
+            self.assertEqual(len(est_obj.historial.lista_nota_materia), 0)
+            
+            # Simular sesión de estudiante
+            with self.client.session_transaction() as sess:
+                sess['usuario'] = est_username
+                sess['rol'] = 'estudiante'
+                
+            response = self.client.get('/student')
+            self.assertEqual(response.status_code, 200)
+            
+            # Verificar que se auto-creó la NotaMateria en el historial
+            self.assertEqual(len(est_obj.historial.lista_nota_materia), 1)
+            self.assertEqual(est_obj.historial.lista_nota_materia[0].materia.id_materia, "PROG-TEST")
+            
+            html_content = response.data.decode('utf-8')
+            # Debe mostrar la materia en el panel de calificaciones
+            self.assertIn("Materia de Prueba", html_content)
+            
+        finally:
+            estudiantes.clear()
+            estudiantes.update(self.original_estudiantes)
+
 if __name__ == '__main__':
     unittest.main()

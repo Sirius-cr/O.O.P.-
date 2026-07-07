@@ -203,9 +203,11 @@ def load_db():
             if not est_obj:
                 est_obj = next((e for e in estudiantes.values() if e._id_estudiante == est_id), None)
             if est_obj:
-                sec.actualizar_estudiantes_inscritos(est_obj)
-                if sec not in est_obj.secciones_asociadas:
-                    est_obj.secciones_asociadas.append(sec)
+                ya_tiene_materia = any(seccion.materia.id_materia == sec.materia.id_materia for seccion in est_obj.secciones_asociadas)
+                if not ya_tiene_materia:
+                    sec.actualizar_estudiantes_inscritos(est_obj)
+                    if sec not in est_obj.secciones_asociadas:
+                        est_obj.secciones_asociadas.append(sec)
                     
         secciones[sec.id_seccion] = sec
 
@@ -225,6 +227,20 @@ def load_db():
             )
             nota_obj = est_obj.historial.lista_nota_materia[-1]
             nota_obj.periodo_cerrado = n.get("periodo_cerrado", False)
+
+    # Auto-sanación: asegurar que cada estudiante tenga un NotaMateria para cada sección asociada
+    for est_obj in estudiantes.values():
+        for sec in est_obj.secciones_asociadas:
+            if sec.materia:
+                nota_obj = next((n for n in est_obj.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
+                if not nota_obj:
+                    est_obj.historial.crear_nota_materia(
+                        materia=sec.materia,
+                        periodo=periodo_actual,
+                        parcial1=0.0,
+                        parcial2=0.0,
+                        asistencia=0
+                    )
 
     # 9. Retiros
     solicitudes_retiro.clear()
@@ -479,6 +495,19 @@ def dashboard_estudiante():
     
     # Calificaciones
     notas_info = []
+    # Asegurar que cada sección asociada tenga su objeto NotaMateria
+    for sec in est.secciones_asociadas:
+        if sec.materia:
+            nota_obj = next((n for n in est.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
+            if not nota_obj:
+                est.historial.crear_nota_materia(
+                    materia=sec.materia,
+                    periodo=periodo_actual,
+                    parcial1=0.0,
+                    parcial2=0.0,
+                    asistencia=0
+                )
+
     for nota in est.historial.lista_nota_materia:
         estado_m = nota.esta_aprobado
         notas_info.append({
@@ -702,8 +731,8 @@ def teacher_save_grades():
     if 'usuario' not in session or session['rol'] != 'docente':
         return jsonify({"status": "error", "message": "No autorizado"})
     
-    if periodo_actual.estado_periodo == "Finalizado":
-        return jsonify({"status": "error", "message": "No se pueden modificar calificaciones. El período académico ya está cerrado."})
+    if periodo_actual.estado_periodo != "En curso":
+        return jsonify({"status": "error", "message": "No se pueden modificar calificaciones. El período académico no está en curso."})
         
     estudiante_id = request.form.get('estudiante_id')
     seccion_id = request.form.get('seccion_id')
@@ -1102,9 +1131,11 @@ def coordinator_import_students():
                 est_obj._tipo_matricula = s_data['tipo_matricula']
                 
             est_obj.esta_activo = 1
-            sec.actualizar_estudiantes_inscritos(est_obj)
-            if sec not in est_obj.secciones_asociadas:
-                est_obj.secciones_asociadas.append(sec)
+            ya_tiene_materia = any(seccion.materia.id_materia == sec.materia.id_materia for seccion in est_obj.secciones_asociadas)
+            if not ya_tiene_materia:
+                sec.actualizar_estudiantes_inscritos(est_obj)
+                if sec not in est_obj.secciones_asociadas:
+                    est_obj.secciones_asociadas.append(sec)
                 
             nota_obj = next((x for x in est_obj.historial.lista_nota_materia if x.materia.id_materia == sec.materia.id_materia), None)
             if not nota_obj:

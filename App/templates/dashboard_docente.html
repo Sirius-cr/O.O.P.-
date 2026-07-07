@@ -113,8 +113,8 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre Completo</th>
-                                        <th style="text-align: center; width: 100px;">Parcial 1 (5.0)</th>
-                                        <th style="text-align: center; width: 100px;">Parcial 2 (5.0)</th>
+                                        <th style="text-align: center; width: 100px;">Parcial 1 (10.0)</th>
+                                        <th style="text-align: center; width: 100px;">Parcial 2 (10.0)</th>
                                         <th style="text-align: center; width: 100px;">Nota Final</th>
                                         <th style="text-align: center; width: 100px;">Asistencia (%)</th>
                                         <th style="text-align: center;">Estado</th>
@@ -133,16 +133,16 @@
                                             </a>
                                         </td>
                                         <td style="text-align: center;">
-                                            <input type="number" step="0.1" min="0" max="5.0" class="grade-input-field p1-input" value="{{ al.parcial1 }}" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
+                                            <input type="number" step="0.1" min="0" max="10.0" class="grade-input-field p1-input" value="{{ al.parcial1 }}" {% if estado_periodo != 'En curso' %} disabled {% endif %}>
                                         </td>
                                         <td style="text-align: center;">
-                                            <input type="number" step="0.1" min="0" max="5.0" class="grade-input-field p2-input" value="{{ al.parcial2 }}" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
+                                            <input type="number" step="0.1" min="0" max="10.0" class="grade-input-field p2-input" value="{{ al.parcial2 }}" {% if estado_periodo != 'En curso' %} disabled {% endif %}>
                                         </td>
                                         <td style="text-align: center; font-weight: 700; color: var(--primary);" class="final-grade-cell">
                                             {{ "%.2f"|format(al.nota_final) }}
                                         </td>
                                         <td style="text-align: center;">
-                                            <input type="number" min="0" max="100" class="grade-input-field asistencia-input" value="{{ al.asistencia }}" style="width: 70px;" {% if estado_periodo == 'Finalizado' %} disabled {% endif %}>
+                                            <input type="number" min="0" max="100" class="grade-input-field asistencia-input" value="{{ al.asistencia }}" style="width: 70px;" {% if estado_periodo != 'En curso' %} disabled {% endif %}>
                                         </td>
                                         <td style="text-align: center;">
                                             <span class="badge {% if 'aprobada' in al.estado_aprobacion.lower() %} badge-success {% elif 'reprobada' in al.estado_aprobacion.lower() %} badge-danger {% else %} badge-warning {% endif %}">
