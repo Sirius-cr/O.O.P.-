@@ -507,6 +507,44 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="turno">Turno</label>
+                        <select id="turno" name="turno" class="form-control" style="background: var(--bg-primary);">
+                            <option value="Matutino">Matutino</option>
+                            <option value="Vespertino">Vespertino</option>
+                            <option value="Nocturno">Nocturno</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalidad">Modalidad</label>
+                        <select id="modalidad" name="modalidad" class="form-control" style="background: var(--bg-primary);">
+                            <option value="PRESENCIAL">Presencial</option>
+                            <option value="VIRTUAL">Virtual</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Días de la Semana</label>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 5px; background: rgba(0,0,0,0.02); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--card-border);">
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Lunes" checked> Lunes
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Martes"> Martes
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Miércoles" checked> Miércoles
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Jueves"> Jueves
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Viernes" checked> Viernes
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: normal; font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                                <input type="checkbox" name="dias" value="Sábado"> Sábado
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="hora_inicio">Hora de inicio</label>
                         <input type="time" id="hora_inicio" name="hora_inicio" class="form-control" required>
                     </div>

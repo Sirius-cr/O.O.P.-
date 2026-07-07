@@ -227,7 +227,17 @@ def load_db():
             nota_obj.periodo_cerrado = n.get("periodo_cerrado", False)
 
     # 9. Retiros
-    solicitudes_retiro[:] = load_json('retiros.json')
+    solicitudes_retiro.clear()
+    for sol in load_json('retiros.json'):
+        if sol.get("reporte") and isinstance(sol["reporte"], dict):
+            rep_data = sol["reporte"]
+            sol["reporte"] = Reporte(
+                tipo_de_reporte=rep_data.get("tipo_de_reporte"),
+                formato_documento=rep_data.get("formato_documento"),
+                emisor=rep_data.get("emisor"),
+                contenido=rep_data.get("contenido")
+            )
+        solicitudes_retiro.append(sol)
 
 
 def save_db():
@@ -356,7 +366,24 @@ def save_db():
     save_json('notas.json', notas_list)
 
     # 8. Retiros
-    save_json('retiros.json', solicitudes_retiro)
+    retiros_list = []
+    for sol in solicitudes_retiro:
+        rep_dict = None
+        if sol.get("reporte"):
+            if isinstance(sol["reporte"], Reporte):
+                rep_dict = {
+                    "tipo_de_reporte": sol["reporte"].tipo_de_reporte,
+                    "formato_documento": sol["reporte"].formato_documento,
+                    "emisor": sol["reporte"].emisor,
+                    "contenido": sol["reporte"].contenido
+                }
+            else:
+                rep_dict = sol["reporte"]
+        
+        sol_copy = dict(sol)
+        sol_copy["reporte"] = rep_dict
+        retiros_list.append(sol_copy)
+    save_json('retiros.json', retiros_list)
 
 
 def obtener_usuario_por_correo(correo):
@@ -904,7 +931,6 @@ def coordinator_create_section():
                     .con_entorno_asignado(aula_obj)
                     .build())
         
-        nueva_sec.agregar_horario(Horario("Matutino", "07:00", "09:00", "Presencial"))
         secciones[id_seccion] = nueva_sec
         
         save_db() # Guardar base de datos
@@ -1274,18 +1300,30 @@ def coordinator_assign_schedule():
     seccion_id = request.form.get('seccion_id')
     hora_inicio = request.form.get('hora_inicio')
     hora_fin = request.form.get('hora_fin')
+    turno = request.form.get('turno', 'Asignado')
+    modalidad = request.form.get('modalidad', 'PRESENCIAL').upper()
+    dias = request.form.getlist('dias')
     
+    if not seccion_id or not hora_inicio or not hora_fin:
+        return jsonify({"status": "error", "message": "Todos los campos de la hora son obligatorios."})
+        
+    if not dias:
+        return jsonify({"status": "error", "message": "Debe seleccionar al menos un día de la semana."})
+        
     sec = secciones.get(seccion_id)
     if not sec:
         return jsonify({"status": "error", "message": "Sección no encontrada."})
-    
-    nuevo_horario = Horario("Asignado", hora_inicio, hora_fin, "Presencial")
+        
+    if hora_inicio >= hora_fin:
+        return jsonify({"status": "error", "message": "La hora de fin debe ser posterior a la hora de inicio."})
+
+    nuevo_horario = Horario(turno, hora_inicio, hora_fin, modalidad, dias)
     
     # Validar colisión con todos los horarios de todas las secciones
     for otra_sec in secciones.values():
         for horario in otra_sec.lista_horarios:
             if nuevo_horario.deteccion_colision(horario):
-                return jsonify({"status": "error", "message": f"El horario choca con la sección {otra_sec.id_seccion} ({otra_sec.materia.nombre_materia})."})
+                return jsonify({"status": "error", "message": f"El horario choca con la sección {otra_sec.id_seccion} ({otra_sec.materia.nombre_materia}) en el horario {horario.hora_inicio}-{horario.hora_fin} los días {', '.join(horario.dias)}."})
                 
     sec.agregar_horario(nuevo_horario)
     
