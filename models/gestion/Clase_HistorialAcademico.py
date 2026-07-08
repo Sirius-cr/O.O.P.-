@@ -35,6 +35,12 @@ class HistorialAcademico(Observador):
         suma_notas = sum(nota.nota_final for nota in self.lista_nota_materia)
         return suma_notas / len(self.lista_nota_materia)
 
+    def obtener_peor_nota(self):
+        if not self.lista_nota_materia:
+            return 0.0
+        peor = min(self.lista_nota_materia, key=lambda n: n.nota_final)
+        return peor.nota_final
+
     def verificar_aprobacion_nivelacion(self):
         if not self.lista_nota_materia:
             return EstadoDeAprobacionNivelacion.PENDIENTE

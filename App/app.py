@@ -525,21 +525,7 @@ def dashboard_estudiante():
     veredicto_badge = "badge-success" if veredicto == EstadoDeAprobacionNivelacion.APROBADO else ("badge-danger" if veredicto == EstadoDeAprobacionNivelacion.REPROBADO else "badge-warning")
 
     # Horarios
-    horarios_info = []
-    for sec in est.secciones_asociadas:
-        for hor in sec.lista_horarios:
-            resumen = hor.resumen_de_seccion(sec)
-            horarios_info.append({
-                "materia": sec.materia.nombre_materia,
-                "seccion": sec.id_seccion,
-                "turno": resumen["Turno de clase"],
-                "inicio": resumen["Inicializacion"],
-                "fin": resumen["Terminacion"],
-                "modalidad": resumen["Modalidad"],
-                "docente": resumen["Docente"],
-                "dias": hor.dias,
-                "aula": sec.aula_virtual._enlace_plataforma if sec.aula_virtual else None
-            })
+    horarios_info = est.ver_horario()
 
     mis_reportes = [r for r in reportes_generados if r.emisor == est.obtener_nombre_completo()]
 
@@ -653,29 +639,10 @@ def dashboard_docente():
     mis_reportes = [r for r in reportes_generados if r.emisor == doc.obtener_nombre_completo()]
     
     # Calcular promedio
-    todas_notas = []
-    for sec in doc.secciones:
-        for al in sec.estudiantes_inscritos:
-            nota_obj = next((n for n in al.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
-            if nota_obj:
-                todas_notas.append(nota_obj.nota_final)
-    promedio_doc = sum(todas_notas) / len(todas_notas) if todas_notas else 0.0
+    promedio_doc = doc.ver_rendimiento()
 
     # Calcular horarios
-    horarios_info = []
-    for sec in doc.secciones:
-        for hor in sec.lista_horarios:
-            resumen = hor.resumen_de_seccion(sec)
-            horarios_info.append({
-                "materia": sec.materia.nombre_materia,
-                "seccion": sec.id_seccion,
-                "turno": resumen["Turno de clase"],
-                "inicio": resumen["Inicializacion"],
-                "fin": resumen["Terminacion"],
-                "modalidad": resumen["Modalidad"],
-                "dias": hor.dias,
-                "aula": sec.aula_virtual._enlace_plataforma if sec.aula_virtual else None
-            })
+    horarios_info = doc.ver_horario()
 
     return render_template(
         'dashboard_docente.html',
@@ -755,7 +722,8 @@ def teacher_save_grades():
         return jsonify({"status": "error", "message": "Estudiante o Sección no encontrados."})
 
     docente_obj = docentes.get(session['usuario'])
-    docente_nombre = docente_obj.obtener_nombre_completo() if docente_obj else "Un docente"
+    if not docente_obj:
+        return jsonify({"status": "error", "message": "Docente no encontrado."})
 
     nota_obj = next((n for n in est.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
     if not nota_obj:
@@ -767,10 +735,9 @@ def teacher_save_grades():
             asistencia=0
         )
     
-    nota_obj.ultimo_modificador = docente_nombre
-    nota_obj.parcial1 = parcial1
-    nota_obj.parcial2 = parcial2
-    nota_obj.asistencia = asistencia
+    docente_obj.colocar_calificacion(nota_obj, 1, parcial1)
+    docente_obj.colocar_calificacion(nota_obj, 2, parcial2)
+    docente_obj.tomar_asistencia(nota_obj, asistencia)
 
     save_db() # Guardar base de datos
     return jsonify({"status": "success", "message": f"Notas de {est.obtener_nombre_completo()} guardadas con éxito."})
@@ -863,11 +830,7 @@ def coordinator_toggle_period():
         coord.abrir_periodo_matricula(periodo_actual)
         msg = "El periodo académico ha sido INICIADO. Los estudiantes pueden inscribirse y los docentes colocar notas."
     elif accion == "finalizar":
-        coord.cerrar_periodo_matricula(periodo_actual)
-        for est in estudiantes.values():
-            for nota in est.historial.lista_nota_materia:
-                nota.periodo_cerrado = True
-            est.historial.actualizar()
+        coord.cerrar_periodo_matricula(periodo_actual, estudiantes.values())
         msg = "El periodo académico ha sido FINALIZADO. Se han consolidado todas las notas finales y actas."
     else:
         return jsonify({"status": "error", "message": "Acción no válida"})
@@ -891,18 +854,13 @@ def coordinator_approve_withdrawal():
     if not sol:
         return jsonify({"status": "error", "message": "Solicitud no encontrada."})
 
+    coord = coordinadores[session['usuario']]
     est = estudiantes.get(sol['correo'])
     
-    if accion == 'aprobar':
-        sol['estado'] = 'Aprobado'
-        if est:
-            est.esta_activo = 0
-            for sec in list(est.secciones_asociadas):
-                sec.liberar_cupo(est)
-                est.secciones_asociadas.remove(sec)
+    aprobado = coord.aprobar_retiro(est, sol, accion)
+    if aprobado:
         msg = f"Retiro aprobado. {sol['nombre']} ha sido desvinculado de todas las asignaturas."
     else:
-        sol['estado'] = 'Rechazado'
         msg = f"Solicitud de retiro para {sol['nombre']} rechazada."
 
     save_db() # Guardar base de datos
@@ -1131,11 +1089,7 @@ def coordinator_import_students():
                 est_obj._tipo_matricula = s_data['tipo_matricula']
                 
             est_obj.esta_activo = 1
-            ya_tiene_materia = any(seccion.materia.id_materia == sec.materia.id_materia for seccion in est_obj.secciones_asociadas)
-            if not ya_tiene_materia:
-                sec.actualizar_estudiantes_inscritos(est_obj)
-                if sec not in est_obj.secciones_asociadas:
-                    est_obj.secciones_asociadas.append(sec)
+            est_obj.inscribir_seccion(sec)
                 
             nota_obj = next((x for x in est_obj.historial.lista_nota_materia if x.materia.id_materia == sec.materia.id_materia), None)
             if not nota_obj:
@@ -1348,15 +1302,13 @@ def coordinator_assign_schedule():
     if hora_inicio >= hora_fin:
         return jsonify({"status": "error", "message": "La hora de fin debe ser posterior a la hora de inicio."})
 
+    coord = coordinadores[session['usuario']]
     nuevo_horario = Horario(turno, hora_inicio, hora_fin, modalidad, dias)
     
-    # Validar colisión con todos los horarios de todas las secciones
-    for otra_sec in secciones.values():
-        for horario in otra_sec.lista_horarios:
-            if nuevo_horario.deteccion_colision(horario):
-                return jsonify({"status": "error", "message": f"El horario choca con la sección {otra_sec.id_seccion} ({otra_sec.materia.nombre_materia}) en el horario {horario.hora_inicio}-{horario.hora_fin} los días {', '.join(horario.dias)}."})
-                
-    sec.agregar_horario(nuevo_horario)
+    try:
+        coord.asignar_horario_a_seccion(sec, nuevo_horario, secciones.values())
+    except ValueError as e:
+        return jsonify({"status": "error", "message": str(e)})
     
     save_db() # Guardar base de datos
     return jsonify({"status": "success", "message": f"Horario asignado con éxito a la sección {sec.id_seccion}."})
@@ -1375,10 +1327,11 @@ def coordinator_assign_teacher():
     if not sec or not doc:
         return jsonify({"status": "error", "message": "Sección o Docente no encontrados."})
         
-    if doc.especialidad.lower() != sec.materia.nombre_materia.lower():
-        return jsonify({"status": "error", "message": f"La especialidad del docente ({doc.especialidad}) no coincide con la materia ({sec.materia.nombre_materia})."})
-        
-    sec.asignar_docente(doc)
+    coord = coordinadores[session['usuario']]
+    try:
+        coord.asignar_docente_a_seccion(doc, sec)
+    except ValueError as e:
+        return jsonify({"status": "error", "message": str(e)})
     
     save_db() # Guardar base de datos
     return jsonify({"status": "success", "message": f"Docente {doc.obtener_nombre_completo()} asignado con éxito a la sección {sec.id_seccion}."})

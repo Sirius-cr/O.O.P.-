@@ -8,7 +8,13 @@ class Docente(UsuarioAcademico):
         self.secciones = []
 
     def ver_rendimiento(self):
-        return "Mostrando rendimiento de los estudiantes en la sección" #aqui se implementará la lógica para mostrar el rendimiento de los estudiantes en la sección que el docente imparte
+        todas_notas = []
+        for sec in self.secciones:
+            for est in sec.estudiantes_inscritos:
+                nota_obj = next((n for n in est.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
+                if nota_obj:
+                    todas_notas.append(nota_obj.nota_final)
+        return sum(todas_notas) / len(todas_notas) if todas_notas else 0.0
 
     def ver_perfil(self):
         print(f"NOMBRE : {self.nombres}")
@@ -16,11 +22,18 @@ class Docente(UsuarioAcademico):
         print(f"CORREO : {self.correo}")
         print(f"ESPECIALIDAD : {self.especialidad}")
 
-    def colocar_calificacion(self):
-        print("Calificando actividad...")
+    def colocar_calificacion(self, nota, parcial, valor):
+        if parcial == 1:
+            nota.parcial1 = valor
+        elif parcial == 2:
+            nota.parcial2 = valor
+        nota.ultimo_modificador = self.obtener_nombre_completo()
+        return True
 
-    def tomar_asistencia(self):
-        return 
+    def tomar_asistencia(self, nota, valor):
+        nota.asistencia = valor
+        nota.ultimo_modificador = self.obtener_nombre_completo()
+        return True
 
     def asignar_seccion(self, seccion):
         if seccion not in self.secciones:

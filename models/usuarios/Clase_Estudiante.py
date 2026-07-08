@@ -14,10 +14,32 @@ class Estudiante(UsuarioAcademico, Observador):
         self.notificaciones = []
         self.esta_activo = 1
 
-    def inscribir_seccion(self, secciones_asociadas):
-        if secciones_asociadas not in self.secciones_asociadas:
-            self.secciones_asociadas.append(secciones_asociadas)
-            secciones_asociadas.actualizar_estudiantes_inscritos(self)
+    def inscribir_seccion(self, seccion):
+        ya_tiene_materia = any(sec.materia.id_materia == seccion.materia.id_materia for sec in self.secciones_asociadas)
+        if not ya_tiene_materia:
+            msg = seccion.actualizar_estudiantes_inscritos(self)
+            if seccion not in self.secciones_asociadas and "correctamente" in msg:
+                self.secciones_asociadas.append(seccion)
+            return msg
+        return "El estudiante ya está inscrito en una sección de esta materia."
+
+    def ver_horario(self):
+        horarios_info = []
+        for sec in self.secciones_asociadas:
+            for hor in sec.lista_horarios:
+                resumen = hor.resumen_de_seccion(sec)
+                horarios_info.append({
+                    "materia": sec.materia.nombre_materia,
+                    "seccion": sec.id_seccion,
+                    "turno": resumen.get("Turno de clase"),
+                    "inicio": resumen.get("Inicializacion"),
+                    "fin": resumen.get("Terminacion"),
+                    "modalidad": resumen.get("Modalidad"),
+                    "docente": resumen.get("Docente"),
+                    "dias": hor.dias,
+                    "aula": sec.aula_virtual._enlace_plataforma if sec.aula_virtual else None
+                })
+        return horarios_info
 
     @property
     def esta_aprobado(self):
@@ -60,7 +82,7 @@ class Estudiante(UsuarioAcademico, Observador):
         )
 
     def obtener_historial_academico(self):
-        return []
+        return self.historial.lista_nota_materia
 
     def solicitar_retiro(self, motivo, formato_documento="Consola"):
         contenido = (

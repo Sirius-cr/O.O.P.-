@@ -24,13 +24,39 @@ class Coordinador(UsuarioAdministrativo):
         periodo.iniciar_periodo()
         return True
 
-    def cerrar_periodo_matricula(self, periodo: Periodo):
+    def cerrar_periodo_matricula(self, periodo: Periodo, lista_estudiantes=None):
         periodo.finalizar_periodo()
+        if lista_estudiantes:
+            for est in lista_estudiantes:
+                for nota in est.historial.lista_nota_materia:
+                    nota.periodo_cerrado = True
+                est.historial.actualizar()
         return True
 
-    def aprobar_retiro(self):
+    def aprobar_retiro(self, estudiante, solicitud, accion):
+        if accion == 'aprobar':
+            solicitud['estado'] = 'Aprobado'
+            if estudiante:
+                estudiante.esta_activo = 0
+                for sec in list(estudiante.secciones_asociadas):
+                    sec.liberar_cupo(estudiante)
+                    estudiante.secciones_asociadas.remove(sec)
+            return True
+        else:
+            solicitud['estado'] = 'Rechazado'
+            return False
+
+    def asignar_docente_a_seccion(self, docente, seccion):
+        if docente.especialidad.lower() != seccion.materia.nombre_materia.lower():
+            raise ValueError(f"La especialidad del docente ({docente.especialidad}) no coincide con la materia ({seccion.materia.nombre_materia}).")
+        seccion.asignar_docente(docente)
         return True
 
-    def asignar_docente_a_seccion(self):
+    def asignar_horario_a_seccion(self, seccion, nuevo_horario, todas_secciones):
+        for otra_sec in todas_secciones:
+            for horario in otra_sec.lista_horarios:
+                if nuevo_horario.deteccion_colision(horario):
+                    raise ValueError(f"El horario choca con la sección {otra_sec.id_seccion} ({otra_sec.materia.nombre_materia}) en el horario {horario.hora_inicio}-{horario.hora_fin} los días {', '.join(horario.dias)}.")
+        seccion.agregar_horario(nuevo_horario)
         return True
-        #Se terminará de programar despues de que seccion se realice correctamente con un builder
+

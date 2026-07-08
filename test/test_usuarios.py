@@ -86,5 +86,80 @@ class TestUsuariosParametrizado(unittest.TestCase):
                     f"Falló actualizar_datos_contacto con correo='{correo}', telefono='{telefono}'. Esperaba {esperado} pero obtuve {resultado}."
                 )
 
+    def test_new_delegated_methods(self):
+        # 1. Coordinador
+        from models.usuarios.Clase_Coordinador import Coordinador
+        from models.academico.Clase_Periodo import Periodo
+        from models.academico.Clase_Seccion import Seccion
+        from models.academico.Clase_Materia import Materia
+        from models.academico.Clase_Horario import Horario
+        
+        periodo = Periodo("Nivelacion 2026", "2026-01-01", "2026-06-01")
+        coordinador = Coordinador(
+            cedula="1311111111",
+            nombres="Pedro",
+            apellidos="Pérez",
+            correo="pedro.perez@uleam.edu.ec",
+            contrasenia="coord123",
+            id_coordinador="COORD-02",
+            fecha_asignacion_cargo="2026-01-01"
+        )
+        
+        # Test abrir/cerrar periodo
+        self.assertTrue(coordinador.abrir_periodo_matricula(periodo))
+        self.assertEqual(periodo.estado_periodo, "En curso")
+        
+        materia = Materia("MAT-002", "Física")
+        seccion = Seccion("SEC-B", 30, materia)
+        
+        # Test asignar_docente_a_seccion with matching specialty
+        docente = Docente("1311111112", "Doc", "Prueba", "doc@uleam.edu.ec", "123", "Física")
+        self.assertTrue(coordinador.asignar_docente_a_seccion(docente, seccion))
+        self.assertIn(docente, seccion.docentes)
+        
+        # Test asignar_docente_a_seccion mismatch
+        docente_mismatch = Docente("1311111113", "Doc2", "Prueba", "doc2@uleam.edu.ec", "123", "Química")
+        with self.assertRaises(ValueError):
+            coordinador.asignar_docente_a_seccion(docente_mismatch, seccion)
+            
+        # Test asignar_horario_a_seccion (no collision)
+        hor1 = Horario("Matutino", "08:00", "10:00", "PRESENCIAL", ["Lunes"])
+        self.assertTrue(coordinador.asignar_horario_a_seccion(seccion, hor1, [seccion]))
+        self.assertIn(hor1, seccion.lista_horarios)
+        
+        # Test collision
+        hor2 = Horario("Matutino", "09:00", "11:00", "PRESENCIAL", ["Lunes"])
+        seccion2 = Seccion("SEC-C", 30, materia)
+        with self.assertRaises(ValueError):
+            coordinador.asignar_horario_a_seccion(seccion2, hor2, [seccion])
+            
+        # Test student enrollment & ver_horario
+        self.estudiante_base.inscribir_seccion(seccion)
+        self.estudiante_base.historial.crear_nota_materia(materia, periodo)
+        self.assertIn(seccion, self.estudiante_base.secciones_asociadas)
+        
+        horarios = self.estudiante_base.ver_horario()
+        self.assertEqual(len(horarios), 1)
+        self.assertEqual(horarios[0]["materia"], "Física")
+        
+        # Test docente colocar_calificacion & tomar_asistencia
+        nota_obj = self.estudiante_base.historial.lista_nota_materia[-1]
+        docente.colocar_calificacion(nota_obj, 1, 9.5)
+        docente.colocar_calificacion(nota_obj, 2, 8.5)
+        docente.tomar_asistencia(nota_obj, 90)
+        
+        self.assertEqual(nota_obj.parcial1, 9.5)
+        self.assertEqual(nota_obj.parcial2, 8.5)
+        self.assertEqual(nota_obj.asistencia, 90)
+        self.assertEqual(nota_obj.ultimo_modificador, docente.obtener_nombre_completo())
+        
+        # Test ver_rendimiento of student
+        peor_nota = self.estudiante_base.ver_rendimiento()
+        self.assertEqual(peor_nota, 9.0) # Promedio final de (9.5+8.5)/2 = 9.0
+        
+        # Test ver_rendimiento of teacher
+        rendimiento_doc = docente.ver_rendimiento()
+        self.assertEqual(rendimiento_doc, 9.0)
+
 if __name__ == '__main__':
     unittest.main()
