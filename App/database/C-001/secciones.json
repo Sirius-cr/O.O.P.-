@@ -1,1 +1,112 @@
-[]
+[
+    {
+        "id_seccion": "POO-233",
+        "capacidad_estudiantil": 30,
+        "materia_id": "PROG01",
+        "coordinador_correo": "coordinador@uleam.edu.ec",
+        "docentes_correos": [
+            "linus@uleam.edu.ec"
+        ],
+        "estudiantes_ids": [
+            "EST-001",
+            "EST-002",
+            "EST-003",
+            "EST-004",
+            "EST-005",
+            "EST-006",
+            "EST-007",
+            "EST-008",
+            "EST-009",
+            "EST-010",
+            "EST-011",
+            "EST-012",
+            "EST-013",
+            "EST-014",
+            "EST-015",
+            "EST-016",
+            "EST-017",
+            "EST-018",
+            "EST-019",
+            "EST-020",
+            "EST-021",
+            "EST-022",
+            "EST-023",
+            "EST-024",
+            "EST-025",
+            "EST-026",
+            "EST-027",
+            "EST-028",
+            "EST-029",
+            "EST-030"
+        ],
+        "horarios": [
+            {
+                "turno": "Matutino",
+                "hora_inicio": "08:00",
+                "hora_fin": "10:00",
+                "modalidad": "VIRTUAL",
+                "dias": [
+                    "Lunes",
+                    "Miércoles",
+                    "Viernes"
+                ]
+            }
+        ],
+        "aula_virtual": null
+    },
+    {
+        "id_seccion": "EST-555",
+        "capacidad_estudiantil": 30,
+        "materia_id": "PROG02",
+        "coordinador_correo": "coordinador@uleam.edu.ec",
+        "docentes_correos": [
+            "ada@uleam.edu.ec"
+        ],
+        "estudiantes_ids": [
+            "EST-001",
+            "EST-002",
+            "EST-003",
+            "EST-004",
+            "EST-005",
+            "EST-006",
+            "EST-007",
+            "EST-008",
+            "EST-009",
+            "EST-010",
+            "EST-011",
+            "EST-012",
+            "EST-013",
+            "EST-014",
+            "EST-015",
+            "EST-016",
+            "EST-017",
+            "EST-018",
+            "EST-019",
+            "EST-020",
+            "EST-021",
+            "EST-022",
+            "EST-023",
+            "EST-024",
+            "EST-025",
+            "EST-026",
+            "EST-027",
+            "EST-028",
+            "EST-029",
+            "EST-030"
+        ],
+        "horarios": [
+            {
+                "turno": "Matutino",
+                "hora_inicio": "10:00",
+                "hora_fin": "13:00",
+                "modalidad": "PRESENCIAL",
+                "dias": [
+                    "Lunes",
+                    "Miércoles",
+                    "Jueves"
+                ]
+            }
+        ],
+        "aula_virtual": null
+    }
+]

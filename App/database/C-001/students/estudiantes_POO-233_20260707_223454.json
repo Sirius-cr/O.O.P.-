@@ -1,0 +1,1680 @@
+[
+    {
+        "cedula": "0847612652",
+        "nombres": "Elena Beatriz",
+        "apellidos": "Álava Vargas",
+        "correo": "elena.alava@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-001",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:40",
+                "leido": true
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:40",
+                "leido": true
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:40",
+                "leido": true
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:40",
+                "leido": true
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:40",
+                "leido": true
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:40",
+                "leido": true
+            },
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 7.0.",
+                "fecha": "2026-07-07 22:37:40",
+                "leido": true
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 7.0.",
+                "fecha": "2026-07-07 22:37:40",
+                "leido": true
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 70.",
+                "fecha": "2026-07-07 22:37:40",
+                "leido": true
+            }
+        ]
+    },
+    {
+        "cedula": "1231508787",
+        "nombres": "María Belén",
+        "apellidos": "Reyes Castillo",
+        "correo": "maria.reyes@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-002",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:41",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:41",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:41",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 6.9.",
+                "fecha": "2026-07-07 22:37:40",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 7.1.",
+                "fecha": "2026-07-07 22:37:40",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 70.",
+                "fecha": "2026-07-07 22:37:40",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 6.9.",
+                "fecha": "2026-07-07 22:38:01",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 7.1.",
+                "fecha": "2026-07-07 22:38:01",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 70.",
+                "fecha": "2026-07-07 22:38:01",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1704852514",
+        "nombres": "Daniel Sebastián",
+        "apellidos": "Torres Muñoz",
+        "correo": "daniel.torres@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-003",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:41",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:41",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:41",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 6.9.",
+                "fecha": "2026-07-07 22:37:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 7.1.",
+                "fecha": "2026-07-07 22:37:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 69.",
+                "fecha": "2026-07-07 22:37:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 6.9.",
+                "fecha": "2026-07-07 22:37:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 7.1.",
+                "fecha": "2026-07-07 22:37:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 69.",
+                "fecha": "2026-07-07 22:37:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 6.9.",
+                "fecha": "2026-07-07 22:38:01",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 7.1.",
+                "fecha": "2026-07-07 22:38:01",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 69.",
+                "fecha": "2026-07-07 22:38:01",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "0940562127",
+        "nombres": "Ruth Noemí",
+        "apellidos": "Pérez Castro",
+        "correo": "ruth.perez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-004",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:42",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:42",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:42",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 10.0.",
+                "fecha": "2026-07-07 22:38:00",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 10.0.",
+                "fecha": "2026-07-07 22:38:00",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 100.",
+                "fecha": "2026-07-07 22:38:00",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 10.0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 10.0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 100.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 10.0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 10.0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 100.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1750814376",
+        "nombres": "Carlos Javier",
+        "apellidos": "Chávez Reyes",
+        "correo": "carlos.chavez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-005",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:42",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:42",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:42",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 0.0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 0.0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 0.0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 0.0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 0.",
+                "fecha": "2026-07-07 22:38:02",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "0826021610",
+        "nombres": "Valeria Sofía",
+        "apellidos": "Ramos Chávez",
+        "correo": "valeria.ramos@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-006",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:43",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:43",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:43",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:43",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:43",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:43",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:08",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:08",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:37:08",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:08",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:08",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:37:08",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:08",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:08",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:37:08",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:09",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:09",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:37:09",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:09",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:37:09",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:37:09",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Estructuras de Datos' a 0.0.",
+                "fecha": "2026-07-07 22:38:03",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de parcial2 en 'Estructuras de Datos' a 0.0.",
+                "fecha": "2026-07-07 22:38:03",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Ada Lovelace ha modificado tu calificación de asistencia en 'Estructuras de Datos' a 0.",
+                "fecha": "2026-07-07 22:38:03",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "0953273034",
+        "nombres": "René Marcelo",
+        "apellidos": "Silva García",
+        "correo": "rene.silva@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-007",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1748706254",
+        "nombres": "Yolanda Beatriz",
+        "apellidos": "Zambrano Espinoza",
+        "correo": "yolanda.zambrano@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-008",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:44",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1743159491",
+        "nombres": "Sandra Milena",
+        "apellidos": "Sánchez Álava",
+        "correo": "sandra.sanchez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-009",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1346585043",
+        "nombres": "Álvaro Vinicio",
+        "apellidos": "Martínez Rodríguez",
+        "correo": "alvaro.martinez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-010",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 10.0.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 100.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1338745308",
+        "nombres": "Ana Lucía",
+        "apellidos": "Vargas Cevallos",
+        "correo": "ana.vargas@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-011",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:45",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "0846909976",
+        "nombres": "Iván Darío",
+        "apellidos": "Castillo Rodríguez",
+        "correo": "ivan.castillo@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-012",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a -0.0.",
+                "fecha": "2026-07-07 22:36:15",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:15",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:15",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:46",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:46",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:46",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:46",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:46",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:46",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:46",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:46",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:46",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "0945728574",
+        "nombres": "Estela Rosa",
+        "apellidos": "Torres Mendoza",
+        "correo": "estela.torres@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-013",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:06",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1350477079",
+        "nombres": "Juan José",
+        "apellidos": "Benítez Gómez",
+        "correo": "juan.benitez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-014",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1710462084",
+        "nombres": "Marcelo Fabián",
+        "apellidos": "Vélez Guzmán",
+        "correo": "marcelo.velez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-015",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:50",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1336156441",
+        "nombres": "Mateo Alejandro",
+        "apellidos": "Salazar Reyes",
+        "correo": "mateo.salazar@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-016",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:51",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "0921695565",
+        "nombres": "Gloria Mercedes",
+        "apellidos": "Rojas Intriago",
+        "correo": "gloria.rojas@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-017",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:52",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:53",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:54",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1708585797",
+        "nombres": "Gabriela Alejandra",
+        "apellidos": "Intriago Palma",
+        "correo": "gabriela.intriago@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-018",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": []
+    },
+    {
+        "cedula": "1333297727",
+        "nombres": "Marco Antonio",
+        "apellidos": "Barberán Solórzano",
+        "correo": "marco.barberan@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-019",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:55",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:57",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:57",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:57",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1350924658",
+        "nombres": "César Augusto",
+        "apellidos": "Espinoza Gómez",
+        "correo": "cesar.espinoza@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-020",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "esta_activo": 1,
+        "notificaciones": []
+    },
+    {
+        "cedula": "0934214495",
+        "nombres": "Walter Vinicio",
+        "apellidos": "Moreira Saltos",
+        "correo": "walter.moreira@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-021",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:58",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:58",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:58",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1307352094",
+        "nombres": "Jorge Andrés",
+        "apellidos": "Saltos Medina",
+        "correo": "jorge.saltos@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-022",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:56",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:56",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:56",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1314119254",
+        "nombres": "Paola Andrea",
+        "apellidos": "Flores Álava",
+        "correo": "paola.flores@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-023",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:56",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:56",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:56",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:56",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:56",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:56",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:57",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:57",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:57",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:59",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:59",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:59",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:00",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:00",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:00",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1344837859",
+        "nombres": "Carmen Elena",
+        "apellidos": "López Salazar",
+        "correo": "carmen.lopez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-024",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Especial",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:00",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:00",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:00",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1332147170",
+        "nombres": "Sofía Valentina",
+        "apellidos": "Silva Pérez",
+        "correo": "sofia.silva@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-025",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Especial",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1324302650",
+        "nombres": "Santiago David",
+        "apellidos": "Cedeño Guzmán",
+        "correo": "santiago.cedeno@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-026",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:59",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:36:59",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:36:59",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1300696117",
+        "nombres": "Camila Nicole",
+        "apellidos": "Acosta Flores",
+        "correo": "camila.acosta@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-027",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "0929759074",
+        "nombres": "Isabella Marie",
+        "apellidos": "Loor Reyes",
+        "correo": "isabella.loor@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-028",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Ordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:02",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "0821359999",
+        "nombres": "Liliana María",
+        "apellidos": "Intriago Macías",
+        "correo": "liliana.intriago@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-029",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:01",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:01",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:01",
+                "leido": false
+            }
+        ]
+    },
+    {
+        "cedula": "1214506188",
+        "nombres": "Roberto Carlos",
+        "apellidos": "Benítez Gómez",
+        "correo": "roberto.benitez@live.uleam.edu.ec",
+        "contrasenia": "admin1234",
+        "id_estudiante": "EST-030",
+        "nombre_periodo": "Nivelación 2026",
+        "tipo_matricula": "Extraordinaria",
+        "esta_activo": 1,
+        "notificaciones": [
+            {
+                "mensaje": "El docente Un docente ha modificado tu calificación de parcial1 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:01",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de parcial2 en 'Programación Orientada a Objetos' a 0.0.",
+                "fecha": "2026-07-07 22:37:01",
+                "leido": false
+            },
+            {
+                "mensaje": "El docente Linus Torvalds ha modificado tu calificación de asistencia en 'Programación Orientada a Objetos' a 0.",
+                "fecha": "2026-07-07 22:37:01",
+                "leido": false
+            }
+        ]
+    }
+]
