@@ -4,8 +4,19 @@
         "nombres": "Alejandro",
         "apellidos": "Véliz",
         "correo": "coordinador@uleam.edu.ec",
-        "contrasenia": "claveCoordinador",
+        "contrasenia": "coo123",
         "id_coordinador": "COORD-01",
-        "fecha_asignacion_cargo": "2024-05-10"
+        "fecha_asignacion_cargo": "2024-05-10",
+        "id_carrera": "C-001"
+    },
+    {
+        "cedula": "1307654784",
+        "nombres": "Joseph",
+        "apellidos": "Coello",
+        "correo": "coordinador2@uleam.edu.ec",
+        "contrasenia": "coo123",
+        "id_coordinador": "COORD-02",
+        "fecha_asignacion_cargo": "2024-05-11",
+        "id_carrera": "C-002"
     }
 ]

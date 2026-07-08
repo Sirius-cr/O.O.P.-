@@ -105,6 +105,22 @@ class TestUsuariosParametrizado(unittest.TestCase):
             fecha_asignacion_cargo="2026-01-01"
         )
         
+        # Test constructor career association
+        from models.institucion.Clase_Carrera import Carrera
+        carrera_test = Carrera("C-TEST", "Carrera de Test", 100)
+        coordinador_con_carrera = Coordinador(
+            cedula="1311111115",
+            nombres="Carlos",
+            apellidos="Alvarado",
+            correo="carlos.alvarado@uleam.edu.ec",
+            contrasenia="carlos123",
+            id_coordinador="COORD-05",
+            fecha_asignacion_cargo="2026-01-01",
+            carrera=carrera_test
+        )
+        self.assertEqual(coordinador_con_carrera.carrera, carrera_test)
+        self.assertEqual(carrera_test.coordinador, coordinador_con_carrera)
+        
         # Test abrir/cerrar periodo
         self.assertTrue(coordinador.abrir_periodo_matricula(periodo))
         self.assertEqual(periodo.estado_periodo, "En curso")

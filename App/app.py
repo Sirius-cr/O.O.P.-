@@ -35,6 +35,7 @@ DB_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), 'database', 'd
 periodo_actual = None
 materias = {}
 carrera_software = None
+carreras = {}
 estudiantes = {}
 docentes = {}
 coordinadores = {}
@@ -46,7 +47,7 @@ reportes_generados = []
 # CARGA Y GUARDADO DE LA BASE DE DATOS JSON A OBJETOS POO
 # =========================================================================
 def load_db():
-    global periodo_actual, materias, carrera_software, estudiantes, docentes, coordinadores, secciones, solicitudes_retiro, reportes_generados
+    global periodo_actual, materias, carrera_software, carreras, estudiantes, docentes, coordinadores, secciones, solicitudes_retiro, reportes_generados
     
     db_dir = os.path.join(os.path.dirname(__file__), 'database')
     
@@ -93,15 +94,19 @@ def load_db():
 
     # 3. Carreras
     c_data_list = load_json('carreras.json')
+    carreras = {}
     if c_data_list:
-        c_data = c_data_list[0]
-        carrera_software = Carrera(
-            id_carrera=c_data["id_carrera"],
-            nombre_carrera=c_data["nombre_carrera"],
-            capacidad_estudiantil=c_data["capacidad_estudiantil"]
-        )
+        for c_data in c_data_list:
+            c_obj = Carrera(
+                id_carrera=c_data["id_carrera"],
+                nombre_carrera=c_data["nombre_carrera"],
+                capacidad_estudiantil=c_data["capacidad_estudiantil"]
+            )
+            carreras[c_obj.id_carrera] = c_obj
+        carrera_software = list(carreras.values())[0] if carreras else Carrera("C-001", "Software", 500)
     else:
         carrera_software = Carrera("C-001", "Software", 500)
+        carreras[carrera_software.id_carrera] = carrera_software
 
     # 4. Coordinadores
     coordinadores = {}
@@ -115,7 +120,11 @@ def load_db():
             id_coordinador=c["id_coordinador"],
             fecha_asignacion_cargo=c["fecha_asignacion_cargo"]
         )
-        coord.asociar_carrera(carrera_software)
+        id_carrera = c.get("id_carrera")
+        if id_carrera and id_carrera in carreras:
+            coord.asociar_carrera(carreras[id_carrera])
+        else:
+            coord.asociar_carrera(carrera_software)
         coordinadores[coord._correo] = coord
 
     # 5. Docentes
@@ -166,7 +175,8 @@ def load_db():
     secciones = {}
     for s in load_json('secciones.json'):
         m_obj = materias.get(s["materia_id"])
-        coord_obj = list(coordinadores.values())[0] if coordinadores else None
+        coord_correo = s.get("coordinador_correo")
+        coord_obj = coordinadores.get(coord_correo) if coord_correo else (list(coordinadores.values())[0] if coordinadores else None)
         
         sec = (SeccionBuilder()
                .con_id_seccion(s["id_seccion"])
@@ -273,11 +283,13 @@ def save_db():
     save_json('periodos.json', p_data)
 
     # 2. Carreras
-    c_data = [{
-        "id_carrera": carrera_software.id_carrera,
-        "nombre_carrera": carrera_software.nombre_carrera,
-        "capacidad_estudiantil": carrera_software.capacidad_estudiantil
-    }] if carrera_software else []
+    c_data = []
+    for c_obj in carreras.values():
+        c_data.append({
+            "id_carrera": c_obj.id_carrera,
+            "nombre_carrera": c_obj.nombre_carrera,
+            "capacidad_estudiantil": c_obj.capacidad_estudiantil
+        })
     save_json('carreras.json', c_data)
 
     # 3. Coordinadores
@@ -290,7 +302,8 @@ def save_db():
             "correo": c._correo,
             "contrasenia": c.contrasenia,
             "id_coordinador": c.id_coordinador,
-            "fecha_asignacion_cargo": c.fecha_asignacion_cargo
+            "fecha_asignacion_cargo": c.fecha_asignacion_cargo,
+            "id_carrera": c.carrera.id_carrera if c.carrera else None
         })
     save_json('coordinadores.json', coord_list)
 
@@ -360,6 +373,7 @@ def save_db():
             "id_seccion": s.id_seccion,
             "capacidad_estudiantil": s.capacidad_estudiantil,
             "materia_id": s.materia.id_materia if s.materia else "",
+            "coordinador_correo": s.coordinador._correo if s.coordinador else None,
             "docentes_correos": doc_emails,
             "estudiantes_ids": est_ids,
             "horarios": horarios_list,

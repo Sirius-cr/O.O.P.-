@@ -3,12 +3,14 @@ from models.academico.Clase_Periodo import Periodo
 from models.patrones_diseno.strategy.ReporteStrategy import Reporte
 
 class Coordinador(UsuarioAdministrativo):
-    def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_coordinador, fecha_asignacion_cargo):
+    def __init__(self, cedula, nombres, apellidos, correo, contrasenia, id_coordinador, fecha_asignacion_cargo, carrera=None):
         super().__init__(cedula, nombres, apellidos, correo, contrasenia)
         self.id_coordinador = id_coordinador
         self.fecha_asignacion_cargo = fecha_asignacion_cargo
         self.carrera = None
         self.secciones_coordinadas = []
+        if carrera is not None:
+            self.asociar_carrera(carrera)
 
     def asociar_carrera(self, carrera):
         if self.carrera != carrera:

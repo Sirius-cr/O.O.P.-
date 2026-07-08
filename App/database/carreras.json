@@ -3,5 +3,10 @@
         "id_carrera": "C-001",
         "nombre_carrera": "Software",
         "capacidad_estudiantil": 500
+    },
+    {
+        "id_carrera": "C-002",
+        "nombre_carrera": "Biología",
+        "capacidad_estudiantil": 500
     }
 ]
