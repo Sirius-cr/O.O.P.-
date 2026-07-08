@@ -30,6 +30,17 @@ class Coordinador(UsuarioAdministrativo):
         periodo.finalizar_periodo()
         if lista_estudiantes:
             for est in lista_estudiantes:
+                for sec in est.secciones_asociadas:
+                    if sec.materia:
+                        nota_obj = next((n for n in est.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
+                        if not nota_obj:
+                            est.historial.crear_nota_materia(
+                                materia=sec.materia,
+                                periodo=periodo,
+                                parcial1=0.0,
+                                parcial2=0.0,
+                                asistencia=0
+                            )
                 for nota in est.historial.lista_nota_materia:
                     nota.periodo_cerrado = True
                 est.historial.actualizar()

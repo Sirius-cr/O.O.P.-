@@ -10,13 +10,23 @@
         "id_carrera": "C-001"
     },
     {
-        "cedula": "1307654784",
-        "nombres": "Joseph",
-        "apellidos": "Coello",
+        "cedula": "0953920848",
+        "nombres": "Jostin",
+        "apellidos": "Julean",
         "correo": "coordinador2@uleam.edu.ec",
         "contrasenia": "coo123",
         "id_coordinador": "COORD-02",
         "fecha_asignacion_cargo": "2024-05-11",
         "id_carrera": "C-002"
+    },
+    {
+        "cedula": "0953924516",
+        "nombres": "Miguel",
+        "apellidos": "Ohara",
+        "correo": "coordinador3@uleam.edu.ec",
+        "contrasenia": "coo123",
+        "id_coordinador": "COORD-03",
+        "fecha_asignacion_cargo": "2024-05-11",
+        "id_carrera": "C-003"
     }
 ]

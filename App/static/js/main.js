@@ -216,6 +216,66 @@ document.addEventListener('DOMContentLoaded', function() {
             showNotification('Error de conexión al guardar calificaciones.', 'error');
         });
     };
+    window.saveAllGrades = function() {
+        const rows = document.querySelectorAll('tbody tr[id^="row-"]');
+        if (rows.length === 0) return;
+        
+        let gradesData = [];
+        let valid = true;
+        
+        rows.forEach(row => {
+            const p1Input = row.querySelector('.p1-input');
+            if (p1Input && p1Input.disabled) return;
+            
+            const ids = row.id.replace('row-', '').split('-');
+            const studentId = ids[0];
+            const sectionId = ids[1];
+            
+            const p1 = p1Input.value;
+            const p2 = row.querySelector('.p2-input').value;
+            const asistencia = row.querySelector('.asistencia-input').value;
+            
+            gradesData.push({
+                estudiante_id: studentId,
+                seccion_id: sectionId,
+                parcial1: p1,
+                parcial2: p2,
+                asistencia: asistencia
+            });
+        });
+        
+        if (gradesData.length === 0) return;
+        
+        fetch('/teacher/save_all_grades', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(gradesData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showNotification(data.message, 'success');
+                // Calculate and update final grades locally for all valid rows
+                rows.forEach(row => {
+                    const p1Input = row.querySelector('.p1-input');
+                    if (p1Input && p1Input.disabled) return;
+                    const p1 = parseFloat(p1Input.value) || 0;
+                    const p2 = parseFloat(row.querySelector('.p2-input').value) || 0;
+                    const finalGrade = (p1 + p2) / 2;
+                    row.querySelector('.final-grade-cell').textContent = finalGrade.toFixed(2);
+                });
+                setTimeout(() => window.location.reload(), 1000);
+            } else {
+                showNotification(data.message, 'error');
+            }
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            showNotification('Error de red al guardar las calificaciones.', 'error');
+        });
+    };
 
     // =========================================================================
     // PETICIÓN AJAX: GENERAR REPORTES (ESTUDIANTE Y DOCENTE)

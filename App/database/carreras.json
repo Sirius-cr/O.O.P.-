@@ -7,6 +7,11 @@
     {
         "id_carrera": "C-002",
         "nombre_carrera": "Biología",
-        "capacidad_estudiantil": 500
+        "capacidad_estudiantil": 300
+    },
+    {
+        "id_carrera": "C-003",
+        "nombre_carrera": "T.I",
+        "capacidad_estudiantil": 300
     }
 ]

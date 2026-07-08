@@ -38,4 +38,12 @@ class Usuario():
             
         self.__contrasenia = nueva_contrasenia
         return True
+
+    def __eq__(self, otro):
+        if not isinstance(otro, Usuario):
+            return False
+        return self._cedula == otro._cedula or self._correo == otro._correo
+
+    def __str__(self):
+        return f"{self.obtener_nombre_completo()} ({self._correo})"
     

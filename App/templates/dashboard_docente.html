@@ -76,9 +76,16 @@
 
             <!-- TAB 1: Gestión de Secciones (ACORDEÓN) -->
             <div id="tab-secciones" class="tab-pane active">
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: var(--text-main); font-family: 'Merriweather', serif; font-size: 1.5rem;">Mis Secciones Asignadas</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.95rem;">Haz clic en una sección para desplegar o colapsar el listado de estudiantes correspondientes.</p>
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <h3 style="color: var(--text-main); font-family: 'Merriweather', serif; font-size: 1.5rem;">Mis Secciones Asignadas</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Haz clic en una sección para desplegar o colapsar el listado de estudiantes correspondientes.</p>
+                    </div>
+                    {% if estado_periodo == 'En curso' and secciones %}
+                    <button onclick="saveAllGrades()" class="btn btn-primary" style="padding: 10px 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; width: auto; height: fit-content; box-shadow: 0 4px 15px rgba(122, 27, 41, 0.2);">
+                        💾 Guardar Todo
+                    </button>
+                    {% endif %}
                 </div>
                 
                 <div class="accordion-container" style="display: flex; flex-direction: column; gap: 15px;">

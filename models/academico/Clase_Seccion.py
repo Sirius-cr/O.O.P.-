@@ -89,3 +89,13 @@ class Seccion:
         
         self.disponibilidad = False
         return "No existen cupos disponibles."
+
+    def __len__(self):
+        return len(self.estudiantes_inscritos)
+
+    def __bool__(self):
+        return True
+
+    def __str__(self):
+        materia_name = self.materia.nombre_materia if self.materia else "Sin Materia"
+        return f"Sección {self.id_seccion} ({materia_name})"

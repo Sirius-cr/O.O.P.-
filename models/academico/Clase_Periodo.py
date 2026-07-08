@@ -26,7 +26,7 @@ class Periodo:
             print(f"No se puede iniciar. El periodo ya se encuentra en estado: {self._estado_periodo.value}")
 
     def finalizar_periodo(self):
-        if self._estado_periodo == EstadoPeriodo.EN_CURSO:
+        if self._estado_periodo in (EstadoPeriodo.EN_CURSO, EstadoPeriodo.PLANIFICACION):
             self._estado_periodo = EstadoPeriodo.FINALIZADO
             print(f"[{self.nombre_periodo}] El periodo académico ha sido FINALIZADO oficialmente.")
         else:

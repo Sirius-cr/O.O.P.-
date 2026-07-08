@@ -48,4 +48,20 @@ class Docente(UsuarioAcademico):
             contenido=contenido
         )
 
+    def ver_horario(self):
+        horarios_list = []
+        for sec in self.secciones:
+            for h in sec.lista_horarios:
+                horarios_list.append({
+                    "materia": sec.materia.nombre_materia if sec.materia else "",
+                    "seccion": sec.id_seccion,
+                    "modalidad": h._modalidad,
+                    "dias": h.dias,
+                    "turno": h.turno,
+                    "inicio": h.hora_inicio,
+                    "fin": h.hora_fin,
+                    "aula": sec.aula_virtual._enlace_plataforma if sec.aula_virtual else None
+                })
+        return horarios_list
+
             

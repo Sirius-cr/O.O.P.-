@@ -36,6 +36,7 @@ periodo_actual = None
 materias = {}
 carrera_software = None
 carreras = {}
+periodos = {}
 estudiantes = {}
 docentes = {}
 coordinadores = {}
@@ -46,54 +47,51 @@ reportes_generados = []
 # =========================================================================
 # CARGA Y GUARDADO DE LA BASE DE DATOS JSON A OBJETOS POO
 # =========================================================================
+def init_career_db(db_dir, id_carrera, nombre_carrera):
+    career_dir = os.path.join(db_dir, id_carrera)
+    if not os.path.exists(career_dir):
+        os.makedirs(career_dir)
+        print(f"[Sistema] Creando carpeta de base de datos para la carrera {nombre_carrera} ({id_carrera})...")
+        
+    for sub in ['students', 'mallas_curriculares']:
+        s_path = os.path.join(career_dir, sub)
+        if not os.path.exists(s_path):
+            os.makedirs(s_path)
+            
+    defaults = {
+        'periodos.json': [{
+            "nombre_periodo": f"Nivelacion {nombre_carrera}",
+            "fecha_inicio": "2026-01-01",
+            "fecha_final": "2026-06-01",
+            "estado_periodo": "Planificación"
+        }],
+        'docentes.json': [],
+        'secciones.json': [],
+        'retiros.json': [],
+        'notas.json': []
+    }
+    
+    for filename, content in defaults.items():
+        file_path = os.path.join(career_dir, filename)
+        if not os.path.exists(file_path):
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(content, f, indent=4, ensure_ascii=False)
+
+
 def load_db():
-    global periodo_actual, materias, carrera_software, carreras, estudiantes, docentes, coordinadores, secciones, solicitudes_retiro, reportes_generados
+    global periodo_actual, materias, carrera_software, carreras, periodos, estudiantes, docentes, coordinadores, secciones, solicitudes_retiro, reportes_generados
     
     db_dir = os.path.join(os.path.dirname(__file__), 'database')
     
-    def load_json(filename):
+    def load_json_root(filename):
         path = os.path.join(db_dir, filename)
         if os.path.exists(path):
             with open(path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         return []
 
-    # 1. Periodos
-    p_data_list = load_json('periodos.json')
-    if p_data_list:
-        p_data = p_data_list[0]
-        periodo_actual = Periodo(
-            nombre_periodo=p_data["nombre_periodo"],
-            fecha_inicio=p_data["fecha_inicio"],
-            fecha_final=p_data["fecha_final"]
-        )
-        from models.enums.Estado_Periodo import EstadoPeriodo
-        for state_enum in EstadoPeriodo:
-            if state_enum.value == p_data.get("estado_periodo"):
-                periodo_actual._estado_periodo = state_enum
-                break
-    else:
-        # Default fallback
-        periodo_actual = Periodo("Periodo", "2024", "2024")
-
-    # 2. Materias
-    materias = {}
-    mallas_dir = os.path.join(db_dir, 'mallas_curriculares')
-    import glob
-    if os.path.exists(mallas_dir):
-        for m_file in glob.glob(os.path.join(mallas_dir, '*.json')):
-            with open(m_file, 'r', encoding='utf-8') as f:
-                m_list = json.load(f)
-                for m in m_list:
-                    materias[m["id_materia"]] = Materia(
-                        id_materia=m["id_materia"],
-                        nombre_materia=m["nombre_materia"],
-                        nota_minima=m["nota_minima"],
-                        asistencia_minima=m["asistencia_minima"]
-                    )
-
-    # 3. Carreras
-    c_data_list = load_json('carreras.json')
+    # 1. Carreras (root)
+    c_data_list = load_json_root('carreras.json')
     carreras = {}
     if c_data_list:
         for c_data in c_data_list:
@@ -108,9 +106,40 @@ def load_db():
         carrera_software = Carrera("C-001", "Software", 500)
         carreras[carrera_software.id_carrera] = carrera_software
 
-    # 4. Coordinadores
+    # 2. Inicialización/migración
+    # Si existe periodos.json en raíz, realizamos la migración a C-001 (Software)
+    root_periodos_file = os.path.join(db_dir, 'periodos.json')
+    if os.path.exists(root_periodos_file):
+        print("[Sistema] Detectados datos en el directorio raíz. Ejecutando migración a C-001...")
+        target_dir = os.path.join(db_dir, 'C-001')
+        os.makedirs(target_dir, exist_ok=True)
+        import shutil
+        for f in ['periodos.json', 'docentes.json', 'secciones.json', 'retiros.json', 'notas.json']:
+            src = os.path.join(db_dir, f)
+            if os.path.exists(src):
+                shutil.copy(src, os.path.join(target_dir, f))
+                os.remove(src)
+        for d in ['students', 'mallas_curriculares']:
+            src_dir = os.path.join(db_dir, d)
+            dst_dir = os.path.join(target_dir, d)
+            if os.path.exists(src_dir):
+                if os.path.exists(dst_dir):
+                    shutil.rmtree(dst_dir)
+                shutil.copytree(src_dir, dst_dir)
+                shutil.rmtree(src_dir)
+        # Limpiar otros archivos viejos que ya se migraron
+        for f in ['notas.json', 'retiros.json', 'secciones.json', 'docentes.json']:
+            src = os.path.join(db_dir, f)
+            if os.path.exists(src):
+                os.remove(src)
+                
+    # Inicializar directorios de carrera para todas las carreras registradas
+    for c_id, c_obj in carreras.items():
+        init_career_db(db_dir, c_id, c_obj.nombre_carrera)
+
+    # 3. Coordinadores (loaded from root)
     coordinadores = {}
-    for c in load_json('coordinadores.json'):
+    for c in load_json_root('coordinadores.json'):
         coord = Coordinador(
             cedula=c["cedula"],
             nombres=c["nombres"],
@@ -127,162 +156,206 @@ def load_db():
             coord.asociar_carrera(carrera_software)
         coordinadores[coord._correo] = coord
 
-    # 5. Docentes
+    # Limpiar variables globales planas
+    periodos = {}
+    materias = {}
     docentes = {}
-    for d in load_json('docentes.json'):
-        doc = Docente(
-            cedula=d["cedula"],
-            nombres=d["nombres"],
-            apellidos=d["apellidos"],
-            correo=d["correo"],
-            contrasenia=d["contrasenia"],
-            especialidad=d.get("especialidad", "")
-        )
-        docentes[doc._correo] = doc
-
-    # 6. Estudiantes
     estudiantes = {}
-    import glob
-    students_dir = os.path.join(db_dir, 'students')
-    est_files = glob.glob(os.path.join(students_dir, '*.json'))
-    
-    est_list = []
-    for file_path in est_files:
-        filename = os.path.basename(file_path)
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            for e in data:
-                e['_archivo_origen'] = filename
-                est_list.append(e)
-            
-    for e in est_list:
-        est = Estudiante(
-            cedula=e["cedula"],
-            nombres=e["nombres"],
-            apellidos=e["apellidos"],
-            correo=e["correo"],
-            contrasenia=e["contrasenia"],
-            id_estudiante=e["id_estudiante"],
-            nombre_periodo=e["nombre_periodo"],
-            tipo_matricula=e["tipo_matricula"]
-        )
-        est.esta_activo = e.get("esta_activo", 1)
-        est.notificaciones = e.get("notificaciones", [])
-        est._archivo_origen = e.get("_archivo_origen", "estudiantes.json")
-        estudiantes[est._correo] = est
-
-    # 7. Secciones
     secciones = {}
-    for s in load_json('secciones.json'):
-        m_obj = materias.get(s["materia_id"])
-        coord_correo = s.get("coordinador_correo")
-        coord_obj = coordinadores.get(coord_correo) if coord_correo else (list(coordinadores.values())[0] if coordinadores else None)
+    solicitudes_retiro = []
+
+    # 4. Cargar datos específicos por carrera
+    for c_id in carreras.keys():
+        career_dir = os.path.join(db_dir, c_id)
         
-        sec = (SeccionBuilder()
-               .con_id_seccion(s["id_seccion"])
-               .con_capacidad_estudiantil(s["capacidad_estudiantil"])
-               .con_materia(m_obj)
-               .con_coordinador(coord_obj)
-               .build())
-               
-        if s.get("aula_virtual"):
-            av = s["aula_virtual"]
-            sec.aula_virtual = AulaVirtual(
-                capacidad_maxima=av["capacidad_maxima"],
-                enlace_plataforma=av["enlace_plataforma"],
-                tipo_plataforma=av["tipo_plataforma"]
+        def load_json_career(filename):
+            path = os.path.join(career_dir, filename)
+            if os.path.exists(path):
+                with open(path, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            return []
+
+        # Periodo de esta carrera
+        p_data_list = load_json_career('periodos.json')
+        if p_data_list:
+            p_data = p_data_list[0]
+            p_obj = Periodo(
+                nombre_periodo=p_data["nombre_periodo"],
+                fecha_inicio=p_data["fecha_inicio"],
+                fecha_final=p_data["fecha_final"]
             )
+            from models.enums.Estado_Periodo import EstadoPeriodo
+            for state_enum in EstadoPeriodo:
+                if state_enum.value == p_data.get("estado_periodo"):
+                    p_obj._estado_periodo = state_enum
+                    break
+            periodos[c_id] = p_obj
+        else:
+            periodos[c_id] = Periodo("Periodo", "2024", "2024")
+
+        # Materias de esta carrera
+        mallas_dir = os.path.join(career_dir, 'mallas_curriculares')
+        import glob
+        if os.path.exists(mallas_dir):
+            for m_file in glob.glob(os.path.join(mallas_dir, '*.json')):
+                with open(m_file, 'r', encoding='utf-8') as f:
+                    m_list = json.load(f)
+                    for m in m_list:
+                        m_obj = Materia(
+                            id_materia=m["id_materia"],
+                            nombre_materia=m["nombre_materia"],
+                            nota_minima=m["nota_minima"],
+                            asistencia_minima=m["asistencia_minima"]
+                        )
+                        m_obj.carrera_id = c_id
+                        materias[m_obj.id_materia] = m_obj
+
+        # Docentes de esta carrera
+        for d in load_json_career('docentes.json'):
+            doc = Docente(
+                cedula=d["cedula"],
+                nombres=d["nombres"],
+                apellidos=d["apellidos"],
+                correo=d["correo"],
+                contrasenia=d["contrasenia"],
+                especialidad=d.get("especialidad", "")
+            )
+            doc.carrera_id = c_id
+            docentes[doc._correo] = doc
+
+        # Estudiantes de esta carrera
+        students_dir = os.path.join(career_dir, 'students')
+        if os.path.exists(students_dir):
+            est_files = glob.glob(os.path.join(students_dir, '*.json'))
+            est_list = []
+            for file_path in est_files:
+                filename = os.path.basename(file_path)
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    for e in data:
+                        e['_archivo_origen'] = filename
+                        est_list.append(e)
             
-        for doc_correo in s.get("docentes_correos", []):
-            if doc_correo in docentes:
-                sec.asignar_docente(docentes[doc_correo])
+            for e in est_list:
+                est = Estudiante(
+                    cedula=e["cedula"],
+                    nombres=e["nombres"],
+                    apellidos=e["apellidos"],
+                    correo=e["correo"],
+                    contrasenia=e["contrasenia"],
+                    id_estudiante=e["id_estudiante"],
+                    nombre_periodo=e["nombre_periodo"],
+                    tipo_matricula=e["tipo_matricula"]
+                )
+                est.esta_activo = e.get("esta_activo", 1)
+                est.notificaciones = e.get("notificaciones", [])
+                est._archivo_origen = e.get("_archivo_origen", "estudiantes.json")
+                est.carrera_id = c_id
+                estudiantes[est._correo] = est
+
+        # Secciones de esta carrera
+        for s in load_json_career('secciones.json'):
+            m_obj = materias.get(s["materia_id"])
+            coord_correo = s.get("coordinador_correo")
+            coord_obj = coordinadores.get(coord_correo) if coord_correo else next((co for co in coordinadores.values() if co.carrera and co.carrera.id_carrera == c_id), None)
+            if not coord_obj and coordinadores:
+                coord_obj = list(coordinadores.values())[0]
+
+            sec = (SeccionBuilder()
+                   .con_id_seccion(s["id_seccion"])
+                   .con_capacidad_estudiantil(s["capacidad_estudiantil"])
+                   .con_materia(m_obj)
+                   .con_coordinador(coord_obj)
+                   .build())
+            sec.carrera_id = c_id
+                   
+            if s.get("aula_virtual"):
+                av = s["aula_virtual"]
+                sec.aula_virtual = AulaVirtual(
+                    capacidad_maxima=av["capacidad_maxima"],
+                    enlace_plataforma=av["enlace_plataforma"],
+                    tipo_plataforma=av["tipo_plataforma"]
+                )
                 
-        for h in s.get("horarios", []):
-            from models.academico.Clase_Horario import Horario
-            hor = Horario(
-                turno=h["turno"],
-                hora_inicio=h["hora_inicio"],
-                hora_fin=h["hora_fin"],
-                modalidad="PRESENCIAL" if h["modalidad"] == "PRESENCIAL" else "VIRTUAL",
-                dias=h["dias"]
-            )
-            sec.agregar_horario(hor)
-            
-        for est_id in s.get("estudiantes_ids", []):
-            est_obj = next((e for e in estudiantes.values() if e._id_estudiante == est_id and (e._archivo_origen.startswith(f"estudiantes_{s['id_seccion']}_") or f"_{s['id_seccion']}_" in e._archivo_origen)), None)
-            if not est_obj:
-                est_obj = next((e for e in estudiantes.values() if e._id_estudiante == est_id), None)
-            if est_obj:
-                ya_tiene_materia = any(seccion.materia.id_materia == sec.materia.id_materia for seccion in est_obj.secciones_asociadas)
-                if not ya_tiene_materia:
+            for doc_correo in s.get("docentes_correos", []):
+                doc_obj = docentes.get(doc_correo)
+                if doc_obj:
+                    sec.asignar_docente(doc_obj)
+                    
+            for h in s.get("horarios", []):
+                hor = Horario(
+                    turno=h["turno"],
+                    hora_inicio=h["hora_inicio"],
+                    hora_fin=h["hora_fin"],
+                    modalidad="PRESENCIAL" if h["modalidad"] == "PRESENCIAL" else "VIRTUAL",
+                    dias=h["dias"]
+                )
+                sec.agregar_horario(hor)
+                
+            for est_id in s.get("estudiantes_ids", []):
+                est_obj = next((e for e in estudiantes.values() if e._id_estudiante == est_id and getattr(e, 'carrera_id', None) == c_id), None)
+                if est_obj:
                     sec.actualizar_estudiantes_inscritos(est_obj)
                     if sec not in est_obj.secciones_asociadas:
                         est_obj.secciones_asociadas.append(sec)
-                    
-        secciones[sec.id_seccion] = sec
+                        
+            secciones[sec.id_seccion] = sec
 
-    # 8. Notas
-    for n in load_json('notas.json'):
-        est_obj = next((e for e in estudiantes.values() if e._id_estudiante == n["estudiante_id"] and any(sec.materia.id_materia == n["materia_id"] for sec in e.secciones_asociadas)), None)
-        if not est_obj:
-            est_obj = next((e for e in estudiantes.values() if e._id_estudiante == n["estudiante_id"]), None)
-        m_obj = materias.get(n["materia_id"])
-        if est_obj and m_obj:
-            est_obj.historial.crear_nota_materia(
-                materia=m_obj,
-                periodo=periodo_actual,
-                parcial1=n["parcial1"],
-                parcial2=n["parcial2"],
-                asistencia=n["asistencia"]
-            )
-            nota_obj = est_obj.historial.lista_nota_materia[-1]
-            nota_obj.periodo_cerrado = n.get("periodo_cerrado", False)
+        # Notas de esta carrera
+        for n in load_json_career('notas.json'):
+            est_obj = next((e for e in estudiantes.values() if e._id_estudiante == n["estudiante_id"] and getattr(e, 'carrera_id', None) == c_id), None)
+            m_obj = materias.get(n["materia_id"])
+            if est_obj and m_obj:
+                est_obj.historial.crear_nota_materia(
+                    materia=m_obj,
+                    periodo=periodos[c_id],
+                    parcial1=n["parcial1"],
+                    parcial2=n["parcial2"],
+                    asistencia=n["asistencia"]
+                )
+                nota_obj = est_obj.historial.lista_nota_materia[-1]
+                nota_obj.periodo_cerrado = n.get("periodo_cerrado", False)
 
-    # Auto-sanación: asegurar que cada estudiante tenga un NotaMateria para cada sección asociada
-    for est_obj in estudiantes.values():
-        for sec in est_obj.secciones_asociadas:
-            if sec.materia:
-                nota_obj = next((n for n in est_obj.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
-                if not nota_obj:
-                    est_obj.historial.crear_nota_materia(
-                        materia=sec.materia,
-                        periodo=periodo_actual,
-                        parcial1=0.0,
-                        parcial2=0.0,
-                        asistencia=0
-                    )
+        # Auto-sanación de notas para esta carrera
+        for est_obj in estudiantes.values():
+            if getattr(est_obj, 'carrera_id', None) == c_id:
+                for sec in est_obj.secciones_asociadas:
+                    if sec.materia:
+                        nota_obj = next((n for n in est_obj.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
+                        if not nota_obj:
+                            est_obj.historial.crear_nota_materia(
+                                materia=sec.materia,
+                                periodo=periodos[c_id],
+                                parcial1=0.0,
+                                parcial2=0.0,
+                                asistencia=0
+                            )
 
-    # 9. Retiros
-    solicitudes_retiro.clear()
-    for sol in load_json('retiros.json'):
-        if sol.get("reporte") and isinstance(sol["reporte"], dict):
-            rep_data = sol["reporte"]
-            sol["reporte"] = Reporte(
-                tipo_de_reporte=rep_data.get("tipo_de_reporte"),
-                formato_documento=rep_data.get("formato_documento"),
-                emisor=rep_data.get("emisor"),
-                contenido=rep_data.get("contenido")
-            )
-        solicitudes_retiro.append(sol)
+        # Retiros de esta carrera
+        for sol in load_json_career('retiros.json'):
+            if sol.get("reporte") and isinstance(sol["reporte"], dict):
+                rep_data = sol["reporte"]
+                sol["reporte"] = Reporte(
+                    tipo_de_reporte=rep_data.get("tipo_de_reporte"),
+                    formato_documento=rep_data.get("formato_documento"),
+                    emisor=rep_data.get("emisor"),
+                    contenido=rep_data.get("contenido")
+                )
+            sol["id_carrera"] = c_id
+            solicitudes_retiro.append(sol)
+
+    if periodos:
+        periodo_actual = list(periodos.values())[0]
 
 
 def save_db():
     db_dir = os.path.join(os.path.dirname(__file__), 'database')
     
-    def save_json(filename, data):
+    def save_json_root(filename, data):
         with open(os.path.join(db_dir, filename), 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
-    # 1. Periodo
-    p_data = [{
-        "nombre_periodo": periodo_actual.nombre_periodo,
-        "fecha_inicio": periodo_actual.fecha_inicio,
-        "fecha_final": periodo_actual.fecha_final,
-        "estado_periodo": periodo_actual._estado_periodo.value if hasattr(periodo_actual, '_estado_periodo') else "En curso"
-    }] if periodo_actual else []
-    save_json('periodos.json', p_data)
-
-    # 2. Carreras
+    # 1. Carreras (root)
     c_data = []
     for c_obj in carreras.values():
         c_data.append({
@@ -290,9 +363,9 @@ def save_db():
             "nombre_carrera": c_obj.nombre_carrera,
             "capacidad_estudiantil": c_obj.capacidad_estudiantil
         })
-    save_json('carreras.json', c_data)
+    save_json_root('carreras.json', c_data)
 
-    # 3. Coordinadores
+    # 2. Coordinadores (root)
     coord_list = []
     for c in coordinadores.values():
         coord_list.append({
@@ -305,115 +378,135 @@ def save_db():
             "fecha_asignacion_cargo": c.fecha_asignacion_cargo,
             "id_carrera": c.carrera.id_carrera if c.carrera else None
         })
-    save_json('coordinadores.json', coord_list)
+    save_json_root('coordinadores.json', coord_list)
 
-    # 4. Docentes
-    doc_list = []
-    for d in docentes.values():
-        doc_list.append({
-            "cedula": d.cedula,
-            "nombres": d.nombres,
-            "apellidos": d.apellidos,
-            "correo": d._correo,
-            "contrasenia": d.contrasenia,
-            "especialidad": getattr(d, 'especialidad', '')
-        })
-    save_json('docentes.json', doc_list)
-
-    # 5. Estudiantes (en carpeta students)
-    from collections import defaultdict
-    est_grouped = defaultdict(list)
-    for e in estudiantes.values():
-        archivo_destino = getattr(e, '_archivo_origen', 'estudiantes.json')
-        est_grouped[archivo_destino].append({
-            "cedula": e.cedula,
-            "nombres": e.nombres,
-            "apellidos": e.apellidos,
-            "correo": e._correo,
-            "contrasenia": e.contrasenia,
-            "id_estudiante": e._id_estudiante,
-            "nombre_periodo": e.nombre_periodo,
-            "tipo_matricula": e._tipo_matricula,
-            "esta_activo": getattr(e, "esta_activo", 1),
-            "notificaciones": getattr(e, "notificaciones", [])
-        })
-    students_dir = os.path.join(db_dir, 'students')
-    if not os.path.exists(students_dir):
-        os.makedirs(students_dir)
-    
-    # Save grouped students
-    for filename, est_list in est_grouped.items():
-        with open(os.path.join(students_dir, filename), 'w', encoding='utf-8') as f:
-            json.dump(est_list, f, indent=4, ensure_ascii=False)
-
-    # 6. Secciones
-    sec_list = []
-    for s in secciones.values():
-        doc_emails = [d._correo for d in s.docentes]
-        est_ids = [e._id_estudiante for e in s.estudiantes_inscritos]
-        horarios_list = []
-        for h in s.lista_horarios:
-            horarios_list.append({
-                "turno": h.turno,
-                "hora_inicio": h.hora_inicio,
-                "hora_fin": h.hora_fin,
-                "modalidad": h._modalidad,
-                "dias": h.dias
-            })
-            
-        av_dict = None
-        if s.aula_virtual:
-            av_dict = {
-                "capacidad_maxima": s.aula_virtual.capacidad_maxima,
-                "enlace_plataforma": s.aula_virtual._enlace_plataforma,
-                "tipo_plataforma": s.aula_virtual._tipo_plataforma
-            }
-            
-        sec_list.append({
-            "id_seccion": s.id_seccion,
-            "capacidad_estudiantil": s.capacidad_estudiantil,
-            "materia_id": s.materia.id_materia if s.materia else "",
-            "coordinador_correo": s.coordinador._correo if s.coordinador else None,
-            "docentes_correos": doc_emails,
-            "estudiantes_ids": est_ids,
-            "horarios": horarios_list,
-            "aula_virtual": av_dict
-        })
-    save_json('secciones.json', sec_list)
-
-    # 7. Notas
-    notas_list = []
-    for est in estudiantes.values():
-        for n in est.historial.lista_nota_materia:
-            notas_list.append({
-                "estudiante_id": est._id_estudiante,
-                "materia_id": n.materia.id_materia,
-                "parcial1": n.parcial1,
-                "parcial2": n.parcial2,
-                "asistencia": n.asistencia,
-                "periodo_cerrado": getattr(n, "periodo_cerrado", False)
-            })
-    save_json('notas.json', notas_list)
-
-    # 8. Retiros
-    retiros_list = []
-    for sol in solicitudes_retiro:
-        rep_dict = None
-        if sol.get("reporte"):
-            if isinstance(sol["reporte"], Reporte):
-                rep_dict = {
-                    "tipo_de_reporte": sol["reporte"].tipo_de_reporte,
-                    "formato_documento": sol["reporte"].formato_documento,
-                    "emisor": sol["reporte"].emisor,
-                    "contenido": sol["reporte"].contenido
-                }
-            else:
-                rep_dict = sol["reporte"]
+    # 3. Guardar datos por carrera
+    for c_id in carreras.keys():
+        career_dir = os.path.join(db_dir, c_id)
+        os.makedirs(career_dir, exist_ok=True)
         
-        sol_copy = dict(sol)
-        sol_copy["reporte"] = rep_dict
-        retiros_list.append(sol_copy)
-    save_json('retiros.json', retiros_list)
+        def save_json_career(filename, data):
+            with open(os.path.join(career_dir, filename), 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+
+        # Periodo
+        p_obj = periodos.get(c_id)
+        if p_obj:
+            p_data = [{
+                "nombre_periodo": p_obj.nombre_periodo,
+                "fecha_inicio": p_obj.fecha_inicio,
+                "fecha_final": p_obj.fecha_final,
+                "estado_periodo": p_obj._estado_periodo.value if hasattr(p_obj, '_estado_periodo') else "En curso"
+            }]
+            save_json_career('periodos.json', p_data)
+
+        # Docentes de esta carrera
+        doc_list = []
+        for d in docentes.values():
+            if getattr(d, 'carrera_id', None) == c_id:
+                doc_list.append({
+                    "cedula": d.cedula,
+                    "nombres": d.nombres,
+                    "apellidos": d.apellidos,
+                    "correo": d._correo,
+                    "contrasenia": d.contrasenia,
+                    "especialidad": getattr(d, 'especialidad', '')
+                })
+        save_json_career('docentes.json', doc_list)
+
+        # Estudiantes de esta carrera
+        from collections import defaultdict
+        est_grouped = defaultdict(list)
+        for e in estudiantes.values():
+            if getattr(e, 'carrera_id', None) == c_id:
+                archivo_destino = getattr(e, '_archivo_origen', 'estudiantes.json')
+                est_grouped[archivo_destino].append({
+                    "cedula": e.cedula,
+                    "nombres": e.nombres,
+                    "apellidos": e.apellidos,
+                    "correo": e._correo,
+                    "contrasenia": e.contrasenia,
+                    "id_estudiante": e._id_estudiante,
+                    "nombre_periodo": e.nombre_periodo,
+                    "tipo_matricula": e._tipo_matricula,
+                    "esta_activo": getattr(e, "esta_activo", 1),
+                    "notificaciones": getattr(e, "notificaciones", [])
+                })
+        students_dir = os.path.join(career_dir, 'students')
+        os.makedirs(students_dir, exist_ok=True)
+        for filename, est_list in est_grouped.items():
+            with open(os.path.join(students_dir, filename), 'w', encoding='utf-8') as f:
+                json.dump(est_list, f, indent=4, ensure_ascii=False)
+
+        # Secciones de esta carrera
+        sec_list = []
+        for s in secciones.values():
+            if getattr(s, 'carrera_id', None) == c_id:
+                doc_emails = [d._correo for d in s.docentes]
+                est_ids = [e._id_estudiante for e in s.estudiantes_inscritos]
+                horarios_list = []
+                for h in s.lista_horarios:
+                    horarios_list.append({
+                        "turno": h.turno,
+                        "hora_inicio": h.hora_inicio,
+                        "hora_fin": h.hora_fin,
+                        "modalidad": h._modalidad,
+                        "dias": h.dias
+                    })
+                av_dict = None
+                if s.aula_virtual:
+                    av_dict = {
+                        "capacidad_maxima": s.aula_virtual.capacidad_maxima,
+                        "enlace_plataforma": s.aula_virtual._enlace_plataforma,
+                        "tipo_plataforma": s.aula_virtual._tipo_plataforma
+                    }
+                sec_list.append({
+                    "id_seccion": s.id_seccion,
+                    "capacidad_estudiantil": s.capacidad_estudiantil,
+                    "materia_id": s.materia.id_materia if s.materia else "",
+                    "coordinador_correo": s.coordinador._correo if s.coordinador else None,
+                    "docentes_correos": doc_emails,
+                    "estudiantes_ids": est_ids,
+                    "horarios": horarios_list,
+                    "aula_virtual": av_dict
+                })
+        save_json_career('secciones.json', sec_list)
+
+        # Notas de esta carrera
+        notas_list = []
+        for est in estudiantes.values():
+            if getattr(est, 'carrera_id', None) == c_id:
+                for n in est.historial.lista_nota_materia:
+                    notas_list.append({
+                        "estudiante_id": est._id_estudiante,
+                        "materia_id": n.materia.id_materia,
+                        "parcial1": n.parcial1,
+                        "parcial2": n.parcial2,
+                        "asistencia": n.asistencia,
+                        "periodo_cerrado": getattr(n, 'periodo_cerrado', False)
+                    })
+        save_json_career('notas.json', notas_list)
+
+        # Retiros de esta carrera
+        retiros_list = []
+        for sol in solicitudes_retiro:
+            if sol.get('id_carrera') == c_id:
+                sol_copy = dict(sol)
+                rep_dict = None
+                if sol_copy.get("reporte"):
+                    if isinstance(sol_copy["reporte"], Reporte):
+                        rep_dict = {
+                            "tipo_de_reporte": sol_copy["reporte"].tipo_de_reporte,
+                            "formato_documento": sol_copy["reporte"].formato_documento,
+                            "emisor": sol_copy["reporte"].emisor,
+                            "contenido": sol_copy["reporte"].contenido
+                        }
+                    else:
+                        rep_dict = sol_copy["reporte"]
+                sol_copy["reporte"] = rep_dict
+                sol_copy.pop('id_carrera', None)
+                retiros_list.append(sol_copy)
+        save_json_career('retiros.json', retiros_list)
 
 
 def obtener_usuario_por_correo(correo):
@@ -433,6 +526,12 @@ def obtener_usuario_por_correo(correo):
         return user, 'estudiante'
         
     return None, None
+
+def get_current_period():
+    c_id = session.get('carrera_id')
+    if c_id and c_id in periodos:
+        return periodos[c_id]
+    return periodo_actual
 
 def verificar_contrasenia(usuario, contrasenia_ingresada):
     if not usuario:
@@ -469,10 +568,13 @@ def login():
         
         if rol == 'estudiante':
             session['id'] = usuario._id_estudiante
+            session['carrera_id'] = getattr(usuario, 'carrera_id', None)
         elif rol == 'coordinador':
             session['id'] = usuario.id_coordinador
+            session['carrera_id'] = usuario.carrera.id_carrera if usuario.carrera else None
         else:
             session['id'] = usuario.cedula
+            session['carrera_id'] = getattr(usuario, 'carrera_id', None)
             
         return jsonify({"status": "success", "redirect": url_for('dashboard')})
     else:
@@ -505,7 +607,12 @@ def dashboard_estudiante():
     if 'usuario' not in session or session['rol'] != 'estudiante':
         return redirect(url_for('index'))
     
-    est = estudiantes[session['usuario']]
+    est = estudiantes.get(session['usuario'])
+    if not est:
+        return redirect(url_for('logout'))
+        
+    carrera_id = getattr(est, 'carrera_id', None)
+    p_actual = periodos.get(carrera_id) or periodo_actual
     
     # Calificaciones
     notas_info = []
@@ -516,7 +623,7 @@ def dashboard_estudiante():
             if not nota_obj:
                 est.historial.crear_nota_materia(
                     materia=sec.materia,
-                    periodo=periodo_actual,
+                    periodo=p_actual,
                     parcial1=0.0,
                     parcial2=0.0,
                     asistencia=0
@@ -552,8 +659,8 @@ def dashboard_estudiante():
         veredicto_badge=veredicto_badge,
         horarios=horarios_info,
         reportes=mis_reportes,
-        periodo=periodo_actual.nombre_periodo,
-        estado_periodo=periodo_actual.estado_periodo
+        periodo=p_actual.nombre_periodo,
+        estado_periodo=p_actual.estado_periodo
     )
 
 @app.route('/student/request_certificate', methods=['POST'])
@@ -622,7 +729,12 @@ def dashboard_docente():
     if 'usuario' not in session or session['rol'] != 'docente':
         return redirect(url_for('index'))
     
-    doc = docentes[session['usuario']]
+    doc = docentes.get(session['usuario'])
+    if not doc:
+        return redirect(url_for('logout'))
+        
+    carrera_id = getattr(doc, 'carrera_id', None)
+    p_actual = periodos.get(carrera_id) or periodo_actual
     
     secciones_info = []
     for sec in doc.secciones:
@@ -664,7 +776,7 @@ def dashboard_docente():
         secciones=secciones_info,
         promedio_rendimiento=promedio_doc,
         reportes=mis_reportes,
-        estado_periodo=periodo_actual.estado_periodo,
+        estado_periodo=p_actual.estado_periodo,
         horarios=horarios_info
     )
 
@@ -711,8 +823,15 @@ def teacher_student_info(student_id):
 def teacher_save_grades():
     if 'usuario' not in session or session['rol'] != 'docente':
         return jsonify({"status": "error", "message": "No autorizado"})
+        
+    docente_obj = docentes.get(session['usuario'])
+    if not docente_obj:
+        return jsonify({"status": "error", "message": "Docente no encontrado."})
+
+    carrera_id = getattr(docente_obj, 'carrera_id', None)
+    p_actual = periodos.get(carrera_id) or periodo_actual
     
-    if periodo_actual.estado_periodo != "En curso":
+    if p_actual.estado_periodo != "En curso":
         return jsonify({"status": "error", "message": "No se pueden modificar calificaciones. El período académico no está en curso."})
         
     estudiante_id = request.form.get('estudiante_id')
@@ -725,6 +844,11 @@ def teacher_save_grades():
     except ValueError:
         return jsonify({"status": "error", "message": "Valores de calificaciones o asistencia inválidos."})
 
+    if parcial1 < 0.0 or parcial1 > 10.0 or parcial2 < 0.0 or parcial2 > 10.0:
+        return jsonify({"status": "error", "message": "Las calificaciones parciales deben estar entre 0.0 y 10.0."})
+    if asistencia < 0 or asistencia > 100:
+        return jsonify({"status": "error", "message": "La asistencia debe estar entre 0 y 100."})
+
     sec = secciones.get(seccion_id)
     est = None
     if sec:
@@ -735,15 +859,11 @@ def teacher_save_grades():
     if not est or not sec:
         return jsonify({"status": "error", "message": "Estudiante o Sección no encontrados."})
 
-    docente_obj = docentes.get(session['usuario'])
-    if not docente_obj:
-        return jsonify({"status": "error", "message": "Docente no encontrado."})
-
     nota_obj = next((n for n in est.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
     if not nota_obj:
         nota_obj = est.historial.crear_nota_materia(
             materia=sec.materia,
-            periodo=periodo_actual,
+            periodo=p_actual,
             parcial1=0.0,
             parcial2=0.0,
             asistencia=0
@@ -789,10 +909,15 @@ def dashboard_coordinador():
         return redirect(url_for('index'))
     
     coord = coordinadores[session['usuario']]
+    carrera_id = coord.carrera.id_carrera if coord.carrera else None
+    p_actual = periodos.get(carrera_id) or periodo_actual
     
     # Secciones
     secciones_info = []
     for sec in secciones.values():
+        sec_carrera = getattr(sec, 'carrera_id', None)
+        if sec_carrera is not None and sec_carrera != carrera_id:
+            continue
         docentes_nombres = ", ".join(d.obtener_nombre_completo() for d in sec.docentes) if sec.docentes else "Sin Docente"
         secciones_info.append({
             "id_seccion": sec.id_seccion,
@@ -806,24 +931,26 @@ def dashboard_coordinador():
             "horario_detalles": ", ".join(f"{h.turno} ({', '.join(h.dias)}: {h.hora_inicio}-{h.hora_fin})" for h in sec.lista_horarios) if sec.lista_horarios else "Sin Horario"
         })
 
-    docentes_lista = list(docentes.values())
-    materias_lista = [{"id": m.id_materia, "nombre": m.nombre_materia} for m in materias.values()]
+    docentes_lista = [d for d in docentes.values() if getattr(d, 'carrera_id', None) is None or getattr(d, 'carrera_id', None) == carrera_id]
+    materias_lista = [{"id": m.id_materia, "nombre": m.nombre_materia} for m in materias.values() if getattr(m, 'carrera_id', None) is None or getattr(m, 'carrera_id', None) == carrera_id]
 
     # Estadísticas
-    estudiantes_activos = [e for e in estudiantes.values() if getattr(e, 'esta_activo', 1) == 1]
+    estudiantes_activos = [e for e in estudiantes.values() if (getattr(e, 'carrera_id', None) is None or getattr(e, 'carrera_id', None) == carrera_id) and getattr(e, 'esta_activo', 1) == 1]
     total_estudiantes = len(estudiantes_activos)
     total_aprobados = sum(1 for e in estudiantes_activos if e.esta_aprobado == EstadoDeAprobacionNivelacion.APROBADO)
     total_reprobados = sum(1 for e in estudiantes_activos if e.esta_aprobado == EstadoDeAprobacionNivelacion.REPROBADO)
     total_pendientes = sum(1 for e in estudiantes_activos if e.esta_aprobado == EstadoDeAprobacionNivelacion.PENDIENTE)
 
+    solicitudes_carrera = [s for s in solicitudes_retiro if s.get('id_carrera') is None or s.get('id_carrera') == carrera_id]
+
     return render_template(
         'dashboard_coordinador.html',
         coordinador=coord,
-        periodo=periodo_actual,
+        periodo=p_actual,
         secciones=secciones_info,
         docentes=docentes_lista,
         materias=materias_lista,
-        solicitudes=solicitudes_retiro,
+        solicitudes=solicitudes_carrera,
         stats={
             "total": total_estudiantes,
             "aprobados": total_aprobados,
@@ -839,12 +966,18 @@ def coordinator_toggle_period():
     
     accion = request.form.get('accion')
     coord = coordinadores[session['usuario']]
+    carrera_id = coord.carrera.id_carrera if coord.carrera else None
+    p_actual = periodos.get(carrera_id)
+
+    if not p_actual:
+        return jsonify({"status": "error", "message": "Periodo no encontrado para esta carrera."})
 
     if accion == "iniciar":
-        coord.abrir_periodo_matricula(periodo_actual)
+        coord.abrir_periodo_matricula(p_actual)
         msg = "El periodo académico ha sido INICIADO. Los estudiantes pueden inscribirse y los docentes colocar notas."
     elif accion == "finalizar":
-        coord.cerrar_periodo_matricula(periodo_actual, estudiantes.values())
+        career_students = [e for e in estudiantes.values() if getattr(e, 'carrera_id', None) == carrera_id]
+        coord.cerrar_periodo_matricula(p_actual, career_students)
         msg = "El periodo académico ha sido FINALIZADO. Se han consolidado todas las notas finales y actas."
     else:
         return jsonify({"status": "error", "message": "Acción no válida"})
@@ -853,7 +986,7 @@ def coordinator_toggle_period():
     return jsonify({
         "status": "success", 
         "message": msg, 
-        "estado_actual": periodo_actual.estado_periodo
+        "estado_actual": p_actual.estado_periodo
     })
 
 @app.route('/coordinator/approve_withdrawal', methods=['POST'])
@@ -931,6 +1064,7 @@ def coordinator_create_section():
                     .con_aula_virtual(aula_obj)
                     .con_entorno_asignado(aula_obj)
                     .build())
+        nueva_sec.carrera_id = coord.carrera.id_carrera if coord.carrera else None
         
         secciones[id_seccion] = nueva_sec
         
@@ -989,17 +1123,24 @@ def coordinator_delete_all_students():
     if auth_password != coord.contrasenia:
         return jsonify({"status": "error", "message": "Contraseña incorrecta. Operación cancelada."})
         
-    # Vaciar memoria
-    estudiantes.clear()
+    carrera_id = coord.carrera.id_carrera if coord.carrera else None
+    if not carrera_id:
+        return jsonify({"status": "error", "message": "No tienes una carrera asociada"})
+
+    # Vaciar memoria de estudiantes de esta carrera
+    for correo in list(estudiantes.keys()):
+        if getattr(estudiantes[correo], 'carrera_id', None) == carrera_id:
+            del estudiantes[correo]
     
     for sec in secciones.values():
-        sec.estudiantes_inscritos.clear()
-        sec.disponibilidad = True
+        if getattr(sec, 'carrera_id', None) == carrera_id:
+            sec.estudiantes_inscritos.clear()
+            sec.disponibilidad = True
         
-    # Eliminar archivos físicos
+    # Eliminar archivos físicos de esta carrera
     import glob
     db_dir = os.path.join(os.path.dirname(__file__), 'database')
-    students_dir = os.path.join(db_dir, 'students')
+    students_dir = os.path.join(db_dir, carrera_id, 'students')
     if os.path.exists(students_dir):
         files = glob.glob(os.path.join(students_dir, '*.json'))
         for f in files:
@@ -1009,7 +1150,68 @@ def coordinator_delete_all_students():
                 pass
                 
     save_db()
-    return jsonify({"status": "success", "message": "Todos los estudiantes y sus archivos han sido eliminados permanentemente."})
+    return jsonify({"status": "success", "message": "Todos los estudiantes de esta carrera y sus archivos han sido eliminados permanentemente."})
+
+@app.route('/teacher/save_all_grades', methods=['POST'])
+def teacher_save_all_grades():
+    if 'usuario' not in session or session['rol'] != 'docente':
+        return jsonify({"status": "error", "message": "No autorizado"})
+        
+    docente_obj = docentes.get(session['usuario'])
+    if not docente_obj:
+        return jsonify({"status": "error", "message": "Docente no encontrado."})
+
+    carrera_id = getattr(docente_obj, 'carrera_id', None)
+    p_actual = periodos.get(carrera_id) or periodo_actual
+    
+    if p_actual.estado_periodo != "En curso":
+        return jsonify({"status": "error", "message": "No se pueden modificar calificaciones. El período académico no está en curso."})
+        
+    data = request.json
+    if not data or not isinstance(data, list):
+        return jsonify({"status": "error", "message": "Datos inválidos. Se esperaba una lista de calificaciones."})
+
+    for item in data:
+        estudiante_id = item.get('estudiante_id')
+        seccion_id = item.get('seccion_id')
+        try:
+            parcial1 = float(item.get('parcial1', 0.0))
+            parcial2 = float(item.get('parcial2', 0.0))
+            asistencia = int(item.get('asistencia', 0))
+        except ValueError:
+            return jsonify({"status": "error", "message": f"Valores de calificaciones o asistencia inválidos para {estudiante_id}."})
+            
+        if parcial1 < 0.0 or parcial1 > 10.0 or parcial2 < 0.0 or parcial2 > 10.0:
+            return jsonify({"status": "error", "message": f"Las calificaciones parciales deben estar entre 0.0 y 10.0 para {estudiante_id}."})
+        if asistencia < 0 or asistencia > 100:
+            return jsonify({"status": "error", "message": f"La asistencia debe estar entre 0 y 100 para {estudiante_id}."})
+
+        sec = secciones.get(seccion_id)
+        est = None
+        if sec:
+            est = next((e for e in sec.estudiantes_inscritos if e._id_estudiante == estudiante_id), None)
+        if not est:
+            est = next((e for e in estudiantes.values() if e._id_estudiante == estudiante_id), None)
+
+        if not est or not sec:
+            continue
+
+        nota_obj = next((n for n in est.historial.lista_nota_materia if n.materia.id_materia == sec.materia.id_materia), None)
+        if not nota_obj:
+            nota_obj = est.historial.crear_nota_materia(
+                materia=sec.materia,
+                periodo=p_actual,
+                parcial1=0.0,
+                parcial2=0.0,
+                asistencia=0
+            )
+
+        nota_obj.parcial1 = parcial1
+        nota_obj.parcial2 = parcial2
+        nota_obj.asistencia = asistencia
+
+    save_notas()
+    return jsonify({"status": "success", "message": "Todas las calificaciones se han guardado exitosamente."})
 
 @app.route('/coordinator/import_students', methods=['POST'])
 def coordinator_import_students():
@@ -1076,6 +1278,10 @@ def coordinator_import_students():
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         target_filename = f"estudiantes_{seccion_id}_{timestamp}.json"
         
+        coord = coordinadores[session['usuario']]
+        carrera_id = coord.carrera.id_carrera if coord.carrera else None
+        p_actual = periodos.get(carrera_id) or periodo_actual
+
         imported_list = []
         for s_data in excel_students:
             correo = s_data['correo']
@@ -1093,6 +1299,7 @@ def coordinator_import_students():
                     tipo_matricula=s_data['tipo_matricula']
                 )
                 est_obj._archivo_origen = target_filename
+                est_obj.carrera_id = carrera_id
                 estudiantes[correo] = est_obj
             else:
                 est_obj.cedula = s_data['cedula']
@@ -1101,6 +1308,7 @@ def coordinator_import_students():
                 est_obj.contrasenia = s_data['contrasenia']
                 est_obj.nombre_periodo = s_data['nombre_periodo']
                 est_obj._tipo_matricula = s_data['tipo_matricula']
+                est_obj.carrera_id = carrera_id
                 
             est_obj.esta_activo = 1
             est_obj.inscribir_seccion(sec)
@@ -1109,7 +1317,7 @@ def coordinator_import_students():
             if not nota_obj:
                 est_obj.historial.crear_nota_materia(
                     materia=sec.materia,
-                    periodo=periodo_actual,
+                    periodo=p_actual,
                     parcial1=0.0,
                     parcial2=0.0,
                     asistencia=0
@@ -1170,6 +1378,8 @@ def coordinator_import_teachers():
                 val = row[col_idx]
                 d_data[field] = str(val).strip() if val is not None else ""
                 
+            coord = coordinadores[session['usuario']]
+            carrera_id = coord.carrera.id_carrera if coord.carrera else None
             correo = d_data['correo']
             
             if correo not in docentes:
@@ -1181,6 +1391,7 @@ def coordinator_import_teachers():
                     contrasenia=d_data['contrasenia'],
                     especialidad=d_data['especialidad']
                 )
+                doc_obj.carrera_id = carrera_id
                 docentes[correo] = doc_obj
             else:
                 doc_obj = docentes[correo]
@@ -1189,6 +1400,7 @@ def coordinator_import_teachers():
                 doc_obj.apellidos = d_data['apellidos']
                 doc_obj.contrasenia = d_data['contrasenia']
                 doc_obj.especialidad = d_data['especialidad']
+                doc_obj.carrera_id = carrera_id
                 
             imported_count += 1
             
@@ -1253,8 +1465,11 @@ def coordinator_import_curriculum():
         if len(excel_materias) != 5:
             return jsonify({"status": "error", "message": f"La malla curricular debe contener exactamente 5 materias, se encontraron {len(excel_materias)}."})
             
-        # Actualizar global materias
-        materias.clear()
+        # Actualizar global materias (solo de esta carrera)
+        for k in list(materias.keys()):
+            if getattr(materias[k], 'carrera_id', None) == carrera.id_carrera:
+                del materias[k]
+
         for m_data in excel_materias:
             try:
                 nota_minima = float(m_data["nota_minima"])
@@ -1268,10 +1483,12 @@ def coordinator_import_curriculum():
                 nota_minima=nota_minima,
                 asistencia_minima=asistencia_minima
             )
+            m.carrera_id = carrera.id_carrera
             materias[m.id_materia] = m
             
-        # Guardar JSON en la nueva carpeta
-        mallas_dir = os.path.join(os.path.dirname(__file__), 'database', 'mallas_curriculares')
+        # Guardar JSON en la carpeta de la carrera
+        career_dir = os.path.join(os.path.dirname(__file__), 'database', carrera.id_carrera)
+        mallas_dir = os.path.join(career_dir, 'mallas_curriculares')
         os.makedirs(mallas_dir, exist_ok=True)
         json_filename = f"{carrera.nombre_carrera}.json"
         json_path = os.path.join(mallas_dir, json_filename)
@@ -1279,7 +1496,7 @@ def coordinator_import_curriculum():
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(excel_materias, f, indent=2, ensure_ascii=False)
             
-        save_db() # Save DB as well so they are in db.json for now to keep consistency if needed.
+        save_db()
         
         return jsonify({
             "status": "success",

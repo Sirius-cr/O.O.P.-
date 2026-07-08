@@ -1,0 +1,82 @@
+[
+    {
+        "cedula": "1301234560",
+        "nombres": "Linus",
+        "apellidos": "Torvalds",
+        "correo": "linus@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Programación Orientada a Objetos"
+    },
+    {
+        "cedula": "1301234561",
+        "nombres": "Alan",
+        "apellidos": "Turing",
+        "correo": "alan@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Programación Orientada a Objetos"
+    },
+    {
+        "cedula": "1301234562",
+        "nombres": "Ada",
+        "apellidos": "Lovelace",
+        "correo": "ada@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Estructuras de Datos"
+    },
+    {
+        "cedula": "1301234563",
+        "nombres": "Grace",
+        "apellidos": "Hopper",
+        "correo": "grace@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Estructuras de Datos"
+    },
+    {
+        "cedula": "1301234564",
+        "nombres": "Margaret",
+        "apellidos": "Hamilton",
+        "correo": "margaret@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Base de Datos"
+    },
+    {
+        "cedula": "1301234565",
+        "nombres": "Tim",
+        "apellidos": "Berners-Lee",
+        "correo": "tim@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Base de Datos"
+    },
+    {
+        "cedula": "1301234566",
+        "nombres": "Guido",
+        "apellidos": "van Rossum",
+        "correo": "guido@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Ingeniería de Software"
+    },
+    {
+        "cedula": "1301234567",
+        "nombres": "Bjarne",
+        "apellidos": "Stroustrup",
+        "correo": "bjarne@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Ingeniería de Software"
+    },
+    {
+        "cedula": "1301234568",
+        "nombres": "James",
+        "apellidos": "Gosling",
+        "correo": "james@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Desarrollo Web"
+    },
+    {
+        "cedula": "1301234569",
+        "nombres": "Dennis",
+        "apellidos": "Ritchie",
+        "correo": "dennis@uleam.edu.ec",
+        "contrasenia": "password123",
+        "especialidad": "Desarrollo Web"
+    }
+]
